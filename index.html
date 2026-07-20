@@ -270,6 +270,55 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .dot.d3{background:rgba(62,232,255,0.55);}
 .dot.dv{background:#ff6a88;}
 
+/* ---------- GOALS (QUESTS COMPOSTAS) ---------- */
+.goal-card{padding:20px 22px; margin-bottom:14px; border-left:2px solid var(--violet); position:relative;}
+.goal-card.completed{opacity:.6;}
+.goal-top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:12px;}
+.goal-title-block{flex:1; min-width:0;}
+.goal-name{font-family:'Chakra Petch'; font-size:16px; font-weight:600; color:#fff; letter-spacing:.5px;}
+.goal-complete-badge{font-size:9px; letter-spacing:2px; color:var(--violet); border:1px solid rgba(167,139,250,0.5); padding:2px 7px; border-radius:2px; margin-top:5px; display:inline-block;}
+.goal-overall-shell{height:6px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; margin-top:8px;}
+.goal-overall-fill{height:100%; background:linear-gradient(90deg, var(--violet), var(--cyan)); transition:width .5s ease;}
+.goal-overall-pct{font-size:9px; color:var(--dim); letter-spacing:1px; margin-top:5px;}
+.goal-item{display:flex; align-items:center; gap:12px; padding:11px 0; border-top:1px solid var(--line);}
+.goal-item:first-of-type{border-top:1px solid var(--line); margin-top:8px;}
+.goal-check{
+  width:20px; height:20px; border:1px solid var(--dimmer); border-radius:3px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s;
+}
+.goal-check:hover{border-color:var(--violet);}
+.goal-check.done{background:var(--violet); border-color:var(--violet);}
+.goal-check.done::after{content:'✓'; color:#0d0620; font-size:12px; font-weight:700;}
+.goal-item-body{flex:1; min-width:0;}
+.goal-item-name{font-size:12px; color:var(--text); letter-spacing:.3px;}
+.goal-item-name.done{color:var(--dim); text-decoration:line-through;}
+.goal-item-link{font-size:9px; color:var(--dim); letter-spacing:1px; margin-top:3px; display:flex; align-items:center; gap:5px;}
+.goal-item-link .cat-dot{width:6px; height:6px; border-radius:50%; display:inline-block;}
+.goal-progress-shell{height:6px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; margin-top:6px;}
+.goal-progress-fill{height:100%; background:var(--violet); transition:width .5s ease;}
+.goal-progress-nums{font-size:9px; color:var(--dim); letter-spacing:.5px; margin-top:4px;}
+.goal-manual-add{
+  background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.4); color:var(--violet);
+  width:26px; height:26px; border-radius:2px; cursor:pointer; font-size:14px; flex-shrink:0;
+}
+.goal-manual-add:hover{background:rgba(167,139,250,0.22);}
+.goal-item-del{background:none; border:none; color:var(--dimmer); cursor:pointer; font-size:13px; padding:4px 6px; flex-shrink:0; opacity:.35;}
+.goal-item-del:hover{opacity:1; color:var(--rose);}
+.goal-del{background:none; border:none; color:var(--dimmer); cursor:pointer; font-size:14px; padding:2px 6px; flex-shrink:0; opacity:.5;}
+.goal-del:hover{color:var(--rose); opacity:1;}
+.goal-item-add-toggle{
+  width:100%; margin-top:10px; padding:9px; background:transparent; border:1px dashed var(--dimmer); color:var(--dim);
+  font-family:'JetBrains Mono'; font-size:10px; letter-spacing:1.5px; cursor:pointer; border-radius:2px;
+}
+.goal-item-add-toggle:hover{border-color:var(--violet); color:var(--violet);}
+.goal-item-form{display:none; margin-top:12px; padding-top:12px; border-top:1px solid var(--line);}
+.goal-item-form.open{display:block;}
+.goal-item-form input[type=text], .goal-item-form input[type=number]{
+  width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--line); color:var(--text);
+  font-family:'JetBrains Mono'; font-size:12px; padding:9px 11px; border-radius:2px; margin-bottom:9px;
+}
+.goal-empty{text-align:center; padding:26px 20px; color:var(--dim); font-size:11px; letter-spacing:1px; margin-bottom:10px;}
+
 /* ---------- RANDOM QUEST ---------- */
 .quest-header{display:flex; justify-content:space-between; align-items:center; margin:26px 0 12px; padding:0 2px;}
 .quest-header-title{display:flex; align-items:center; gap:8px; font-family:'Chakra Petch'; font-size:13px; letter-spacing:3px; color:var(--violet);}
@@ -317,8 +366,8 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .view-switch{display:flex; gap:8px; margin-bottom:22px;}
 .view-btn{
   flex:1; background:transparent; border:1px solid var(--line); color:var(--dim);
-  font-family:'Chakra Petch'; font-weight:600; font-size:12px; letter-spacing:3px; padding:12px;
-  border-radius:2px; cursor:pointer; transition:all .15s;
+  font-family:'Chakra Petch'; font-weight:600; font-size:11px; letter-spacing:1.5px; padding:12px 6px;
+  border-radius:2px; cursor:pointer; transition:all .15s; white-space:nowrap;
 }
 .view-btn:hover{border-color:var(--line-bright); color:var(--text);}
 .view-btn.on{background:rgba(62,232,255,0.08); border-color:var(--cyan); color:var(--cyan);}
@@ -520,6 +569,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
     <button class="view-btn" id="viewBtnChar">PERSONAGEM</button>
     <button class="view-btn" id="viewBtnCal">CALENDÁRIO</button>
     <button class="view-btn" id="viewBtnShop">LOJA</button>
+    <button class="view-btn" id="viewBtnGoals">QUESTS</button>
   </div>
 
   <div id="dashboardView">
@@ -800,7 +850,39 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
   </div><!-- /shopView -->
 
+  <div id="goalsView" style="display:none">
+
+    <div class="char-intro panel">
+      <div class="char-intro-title">METAS COMPOSTAS</div>
+      <p class="char-intro-text">Metas grandes travam quando ficam abstratas demais. Quebre a meta em itens concretos e ligue cada item numérico a um hábito que você já cumpre — cada conclusão soma progresso sozinha, sem você ter que atualizar nada na mão.</p>
+    </div>
+
+    <div id="goalsList"></div>
+
+    <div class="panel" style="padding:14px 14px 6px;">
+      <button class="add-toggle" id="goalAddToggle" style="border-color:rgba(167,139,250,0.4); color:var(--violet);">+ NOVA QUEST</button>
+      <div class="add-form" id="goalAddForm">
+        <input type="text" id="goalName" placeholder="Nome da quest — ex: Viagem Europa" maxlength="50">
+        <div class="form-actions">
+          <button class="btn btn-ghost" id="goalCancelAdd">CANCELAR</button>
+          <button class="btn btn-primary" id="goalConfirmAdd" style="background:var(--violet); border-color:var(--violet);">CRIAR QUEST</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /goalsView -->
+
   <footer>SISTEMA NEXUS &nbsp;·&nbsp; EVOLUÇÃO CONTÍNUA &nbsp;·&nbsp; v1.0</footer>
+</div>
+
+<div class="overlay" id="goalCompleteOverlay">
+  <div class="lvlup-card">
+    <div class="r" style="border-color:var(--violet) !important;"></div>
+    <div class="sub" style="color:#c4b5fd;">QUEST CONCLUÍDA</div>
+    <div class="big" style="color:var(--violet); text-shadow:0 0 24px rgba(167,139,250,0.6);" id="goalCompleteName">Viagem Europa</div>
+    <div class="newlvl" id="goalCompleteBonus" style="color:#c4b5fd;">+100 XP · +50 moedas</div>
+    <button class="btn btn-primary" id="goalCompleteClose" style="background:var(--violet); border-color:var(--violet);">CONTINUAR</button>
+  </div>
 </div>
 
 <div class="overlay" id="redeemOverlay">
@@ -868,13 +950,15 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
    → Configurações do projeto → Seus apps → app Web → SDK setup).
    ====================================================================== */
 const firebaseConfig = {
+  const firebaseConfig = {
   apiKey: "AIzaSyB5jfSVDdVK6LqiRSxhntQxl3_4SAeIBzQ",
   authDomain: "nexus-2e5b1.firebaseapp.com",
   projectId: "nexus-2e5b1",
   storageBucket: "nexus-2e5b1.firebasestorage.app",
   messagingSenderId: "586977879754",
   appId: "1:586977879754:web:fb845bf7d301f246f3b633"
-};/* ====================================================================== */
+};
+/* ====================================================================== */
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -1010,6 +1094,7 @@ function defaultState(){
     playerHp:100, playerMaxHp:100, gold:0,
     shieldWeekStart:null, shieldUsed:false,
     quest:null,
+    quests:[],
     habits:[
       {id:cid(), name:'Treino de força ou corrida', cat:'corpo', xp:35, done:false, lastDone:null, streak:0},
       {id:cid(), name:'Ler 15 minutos', cat:'mente', xp:10, done:false, lastDone:null, streak:0},
@@ -1061,6 +1146,7 @@ async function loadState(){
   if(state.shieldWeekStart === undefined) state.shieldWeekStart = null;
   if(state.shieldUsed === undefined) state.shieldUsed = false;
   if(state.quest === undefined) state.quest = null;
+  if(!state.quests) state.quests = [];
   rolloverDaily();
   rolloverBosses();
   rolloverShield();
@@ -1165,6 +1251,7 @@ function render(){
   renderCalendar();
   renderShop();
   renderQuest();
+  renderGoals();
 }
 
 function renderAttrs(){
@@ -1251,6 +1338,7 @@ function toggleHabit(id){
     state.gold += goldGain;
     showToast('+'+h.xp+' XP · +'+goldGain+' moedas · '+state.habits.find(x=>x.id===id).name);
     dealBossDamage(id, h.xp);
+    updateLinkedGoalItems(id, 1);
     log.habitsDone += 1;
     log.xpGained += h.xp;
     state.categoryXp[h.cat] = (state.categoryXp[h.cat]||0) + h.xp;
@@ -1260,6 +1348,7 @@ function toggleHabit(id){
     state.xp = Math.max(0, state.xp - h.xp);
     state.gold = Math.max(0, state.gold - goldForXp(h.xp));
     healBossDamage(id, h.xp);
+    updateLinkedGoalItems(id, -1);
     log.habitsDone = Math.max(0, log.habitsDone-1);
     log.xpGained = Math.max(0, log.xpGained - h.xp);
     state.categoryXp[h.cat] = Math.max(0, (state.categoryXp[h.cat]||0) - h.xp);
@@ -1997,25 +2086,30 @@ const viewBtnDash = document.getElementById('viewBtnDash');
 const viewBtnChar = document.getElementById('viewBtnChar');
 const viewBtnCal = document.getElementById('viewBtnCal');
 const viewBtnShop = document.getElementById('viewBtnShop');
+const viewBtnGoals = document.getElementById('viewBtnGoals');
 const dashboardView = document.getElementById('dashboardView');
 const characterView = document.getElementById('characterView');
 const calendarView = document.getElementById('calendarView');
 const shopView = document.getElementById('shopView');
+const goalsView = document.getElementById('goalsView');
 function setView(v){
   activeView = v;
   dashboardView.style.display = v==='dashboard' ? '' : 'none';
   characterView.style.display = v==='character' ? '' : 'none';
   calendarView.style.display = v==='calendar' ? '' : 'none';
   shopView.style.display = v==='shop' ? '' : 'none';
+  goalsView.style.display = v==='goals' ? '' : 'none';
   viewBtnDash.classList.toggle('on', v==='dashboard');
   viewBtnChar.classList.toggle('on', v==='character');
   viewBtnCal.classList.toggle('on', v==='calendar');
   viewBtnShop.classList.toggle('on', v==='shop');
+  viewBtnGoals.classList.toggle('on', v==='goals');
 }
 viewBtnDash.onclick = ()=>setView('dashboard');
 viewBtnChar.onclick = ()=>setView('character');
 viewBtnCal.onclick = ()=>setView('calendar');
 viewBtnShop.onclick = ()=>setView('shop');
+viewBtnGoals.onclick = ()=>setView('goals');
 
 
 /* ---- Random Quest ---- */
@@ -2132,6 +2226,303 @@ function renderQuest(){
     tickQuestTimer();
   }
 }
+
+/* ---- Goals (Quests compostas) ---- */
+let pendingGoalItemType = 'checklist';
+let pendingGoalItemHabit = null;
+let openGoalItemFormId = null;
+
+function goalItemFraction(item){
+  if(item.type==='checklist') return item.done ? 1 : 0;
+  return item.target>0 ? Math.min(1, item.current/item.target) : 0;
+}
+
+function goalOverallPct(goal){
+  if(goal.items.length===0) return 0;
+  const sum = goal.items.reduce((acc,it)=>acc+goalItemFraction(it), 0);
+  return Math.round((sum/goal.items.length)*100);
+}
+
+function checkGoalCompletion(goal){
+  if(goal.completed) return;
+  if(goal.items.length===0) return;
+  const allDone = goal.items.every(it=>goalItemFraction(it) >= 1);
+  if(allDone){
+    goal.completed = true;
+    const bonusXp = 60 + goal.items.length*15;
+    const bonusGold = 30 + goal.items.length*8;
+    gainXp(bonusXp);
+    state.gold += bonusGold;
+    setTimeout(()=>showGoalComplete(goal.name, bonusXp, bonusGold), 400);
+  }
+}
+
+function updateLinkedGoalItems(habitId, sign){
+  state.quests.forEach(goal=>{
+    goal.items.forEach(item=>{
+      if(item.type==='progress' && item.linkedHabitId===habitId){
+        if(sign>0){
+          item.current = Math.min(item.target, item.current + item.increment);
+        } else {
+          item.current = Math.max(0, item.current - item.increment);
+        }
+      }
+    });
+    checkGoalCompletion(goal);
+  });
+}
+
+function showGoalComplete(name, xp, gold){
+  document.getElementById('goalCompleteName').textContent = name;
+  document.getElementById('goalCompleteBonus').textContent = '+'+xp+' XP · +'+gold+' moedas';
+  document.getElementById('goalCompleteOverlay').classList.add('show');
+}
+document.getElementById('goalCompleteClose').onclick = ()=>document.getElementById('goalCompleteOverlay').classList.remove('show');
+
+function renderGoals(){
+  const list = document.getElementById('goalsList');
+  list.innerHTML = '';
+  if(state.quests.length===0){
+    list.innerHTML = '<div class="panel goal-empty">NENHUMA QUEST CRIADA — MONTE UMA GRANDE META E QUEBRE EM ITENS ABAIXO</div>';
+    return;
+  }
+  state.quests.forEach(goal=>{
+    const pct = goalOverallPct(goal);
+    const card = document.createElement('div');
+    card.className = 'panel goal-card' + (goal.completed?' completed':'');
+    let itemsHtml = '';
+    goal.items.forEach(item=>{
+      if(item.type==='checklist'){
+        itemsHtml += `
+          <div class="goal-item">
+            <div class="goal-check ${item.done?'done':''}" data-goalcheck="${goal.id}|${item.id}"></div>
+            <div class="goal-item-body">
+              <div class="goal-item-name ${item.done?'done':''}">${escapeHtml(item.name)}</div>
+            </div>
+            <button class="goal-item-del" data-goalitemdel="${goal.id}|${item.id}">✕</button>
+          </div>`;
+      } else {
+        const h = state.habits.find(x=>x.id===item.linkedHabitId);
+        const c = h ? CATS[h.cat] : null;
+        const itemPct = item.target>0 ? Math.min(100,(item.current/item.target)*100) : 0;
+        itemsHtml += `
+          <div class="goal-item">
+            <div class="goal-item-body">
+              <div class="goal-item-name">${escapeHtml(item.name)}</div>
+              <div class="goal-item-link">${h?`<span class="cat-dot" style="background:${c.color}"></span>+${item.increment}${item.unit?(' '+item.unit):''} a cada "${escapeHtml(h.name)}"`:'sem hábito vinculado · progresso manual'}</div>
+              <div class="goal-progress-shell"><div class="goal-progress-fill" style="width:${itemPct}%"></div></div>
+              <div class="goal-progress-nums">${item.current}${item.unit?(' '+item.unit):''} / ${item.target}${item.unit?(' '+item.unit):''}</div>
+            </div>
+            <button class="goal-manual-add" data-goalmanual="${goal.id}|${item.id}" title="Adicionar progresso manualmente">+</button>
+            <button class="goal-item-del" data-goalitemdel="${goal.id}|${item.id}">✕</button>
+          </div>`;
+      }
+    });
+    card.innerHTML = `
+      <div class="goal-top">
+        <div class="goal-title-block">
+          <div class="goal-name">${escapeHtml(goal.name)}</div>
+          ${goal.completed?'<span class="goal-complete-badge">CONCLUÍDA</span>':''}
+          <div class="goal-overall-shell"><div class="goal-overall-fill" style="width:${pct}%"></div></div>
+          <div class="goal-overall-pct">${pct}% completo &nbsp;·&nbsp; ${goal.items.length} item(ns)</div>
+        </div>
+        <button class="goal-del" data-goaldel="${goal.id}">✕</button>
+      </div>
+      ${itemsHtml}
+      <button class="goal-item-add-toggle" data-goalitemtoggle="${goal.id}">+ ADICIONAR ITEM</button>
+      <div class="goal-item-form" id="goalItemForm-${goal.id}">
+        <input type="text" id="goalItemName-${goal.id}" placeholder="Nome do item — ex: 20 mil Reais" maxlength="40">
+        <div class="row2" style="flex-direction:column; gap:12px;">
+          <div>
+            <label class="sub">TIPO</label>
+            <div class="chip-group" id="goalItemTypeChips-${goal.id}"></div>
+          </div>
+          <div id="goalItemProgressFields-${goal.id}" style="display:none;">
+            <label class="sub">META (NÚMERO)</label>
+            <input type="number" id="goalItemTarget-${goal.id}" placeholder="Ex: 20000" min="1">
+            <label class="sub">UNIDADE (opcional)</label>
+            <input type="text" id="goalItemUnit-${goal.id}" placeholder="Ex: R$, horas, km" maxlength="12">
+            <label class="sub">VINCULAR A UM HÁBITO (opcional)</label>
+            <div class="chip-group" id="goalItemHabitChips-${goal.id}" style="margin-bottom:9px;"></div>
+            <label class="sub">QUANTO CADA CONCLUSÃO ADICIONA</label>
+            <input type="number" id="goalItemIncrement-${goal.id}" placeholder="Ex: 1000" min="1">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-ghost" data-goalitemcancel="${goal.id}">CANCELAR</button>
+          <button class="btn btn-primary" data-goalitemconfirm="${goal.id}" style="background:var(--violet); border-color:var(--violet);">ADICIONAR</button>
+        </div>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+
+  list.querySelectorAll('[data-goalcheck]').forEach(el=> el.onclick = ()=>{
+    const [goalId,itemId] = el.dataset.goalcheck.split('|');
+    toggleGoalChecklistItem(goalId, itemId);
+  });
+  list.querySelectorAll('[data-goalmanual]').forEach(el=> el.onclick = ()=>{
+    const [goalId,itemId] = el.dataset.goalmanual.split('|');
+    manualAddGoalProgress(goalId, itemId);
+  });
+  list.querySelectorAll('[data-goalitemdel]').forEach(el=> el.onclick = ()=>{
+    const [goalId,itemId] = el.dataset.goalitemdel.split('|');
+    deleteGoalItem(goalId, itemId);
+  });
+  list.querySelectorAll('[data-goaldel]').forEach(el=> el.onclick = ()=> deleteGoal(el.dataset.goaldel));
+  list.querySelectorAll('[data-goalitemtoggle]').forEach(el=> el.onclick = ()=> openGoalItemForm(el.dataset.goalitemtoggle));
+  list.querySelectorAll('[data-goalitemcancel]').forEach(el=> el.onclick = ()=> closeGoalItemForm(el.dataset.goalitemcancel));
+  list.querySelectorAll('[data-goalitemconfirm]').forEach(el=> el.onclick = ()=> confirmAddGoalItem(el.dataset.goalitemconfirm));
+
+  if(openGoalItemFormId){
+    const form = document.getElementById('goalItemForm-'+openGoalItemFormId);
+    if(form){
+      form.classList.add('open');
+      buildGoalItemTypeChips(openGoalItemFormId);
+      buildGoalItemHabitChips(openGoalItemFormId);
+    }
+  }
+}
+
+function toggleGoalChecklistItem(goalId, itemId){
+  const goal = state.quests.find(g=>g.id===goalId);
+  if(!goal) return;
+  const item = goal.items.find(i=>i.id===itemId);
+  if(!item) return;
+  item.done = !item.done;
+  checkGoalCompletion(goal);
+  saveState();
+  render();
+}
+
+function manualAddGoalProgress(goalId, itemId){
+  const goal = state.quests.find(g=>g.id===goalId);
+  if(!goal) return;
+  const item = goal.items.find(i=>i.id===itemId);
+  if(!item || item.type!=='progress') return;
+  item.current = Math.min(item.target, item.current + item.increment);
+  checkGoalCompletion(goal);
+  saveState();
+  render();
+}
+
+function deleteGoalItem(goalId, itemId){
+  const goal = state.quests.find(g=>g.id===goalId);
+  if(!goal) return;
+  goal.items = goal.items.filter(i=>i.id!==itemId);
+  saveState();
+  render();
+}
+
+function deleteGoal(goalId){
+  state.quests = state.quests.filter(g=>g.id!==goalId);
+  saveState();
+  render();
+}
+
+function openGoalItemForm(goalId){
+  openGoalItemFormId = (openGoalItemFormId===goalId) ? null : goalId;
+  pendingGoalItemType = 'checklist';
+  pendingGoalItemHabit = null;
+  render();
+  setTimeout(()=>{
+    const el = document.getElementById('goalItemName-'+goalId);
+    if(el) el.focus();
+  }, 30);
+}
+function closeGoalItemForm(goalId){
+  openGoalItemFormId = null;
+  render();
+}
+
+function buildGoalItemTypeChips(goalId){
+  const box = document.getElementById('goalItemTypeChips-'+goalId);
+  if(!box) return;
+  box.innerHTML = '';
+  const types = [ {v:'checklist', label:'CHECKLIST'}, {v:'progress', label:'PROGRESSO NUMÉRICO'} ];
+  types.forEach(t=>{
+    const chip = document.createElement('button');
+    chip.type='button';
+    chip.className = 'chip' + (pendingGoalItemType===t.v?' on':'');
+    chip.style.setProperty('--chip-color', 'var(--violet)');
+    chip.textContent = t.label;
+    chip.onclick = ()=>{ pendingGoalItemType = t.v; buildGoalItemTypeChips(goalId); };
+    box.appendChild(chip);
+  });
+  const progFields = document.getElementById('goalItemProgressFields-'+goalId);
+  if(progFields) progFields.style.display = pendingGoalItemType==='progress' ? 'block' : 'none';
+}
+
+function buildGoalItemHabitChips(goalId){
+  const box = document.getElementById('goalItemHabitChips-'+goalId);
+  if(!box) return;
+  box.innerHTML = '';
+  const noneChip = document.createElement('button');
+  noneChip.type='button';
+  noneChip.className = 'chip' + (pendingGoalItemHabit===null?' on':'');
+  noneChip.style.setProperty('--chip-color', 'var(--dim)');
+  noneChip.textContent = 'NENHUM (MANUAL)';
+  noneChip.onclick = ()=>{ pendingGoalItemHabit = null; buildGoalItemHabitChips(goalId); };
+  box.appendChild(noneChip);
+  state.habits.forEach(h=>{
+    const c = CATS[h.cat];
+    const chip = document.createElement('button');
+    chip.type='button';
+    chip.className = 'chip' + (pendingGoalItemHabit===h.id?' on':'');
+    chip.style.setProperty('--chip-color', c.color);
+    chip.textContent = c.label+' · '+h.name;
+    chip.onclick = ()=>{ pendingGoalItemHabit = h.id; buildGoalItemHabitChips(goalId); };
+    box.appendChild(chip);
+  });
+}
+
+function confirmAddGoalItem(goalId){
+  const goal = state.quests.find(g=>g.id===goalId);
+  if(!goal) return;
+  const nameEl = document.getElementById('goalItemName-'+goalId);
+  const name = nameEl.value.trim();
+  if(!name){ nameEl.focus(); return; }
+
+  if(pendingGoalItemType==='checklist'){
+    goal.items.push({ id:cid(), type:'checklist', name, done:false });
+  } else {
+    const target = Math.floor(Number(document.getElementById('goalItemTarget-'+goalId).value));
+    const unit = document.getElementById('goalItemUnit-'+goalId).value.trim();
+    const increment = Math.floor(Number(document.getElementById('goalItemIncrement-'+goalId).value));
+    if(!target || target<=0){ document.getElementById('goalItemTarget-'+goalId).focus(); return; }
+    if(!increment || increment<=0){ document.getElementById('goalItemIncrement-'+goalId).focus(); return; }
+    goal.items.push({
+      id:cid(), type:'progress', name, target, current:0, unit,
+      linkedHabitId: pendingGoalItemHabit, increment
+    });
+  }
+  openGoalItemFormId = null;
+  saveState();
+  render();
+}
+
+const goalAddToggle = document.getElementById('goalAddToggle');
+const goalAddForm = document.getElementById('goalAddForm');
+goalAddToggle.onclick = ()=>{
+  goalAddForm.classList.toggle('open');
+  goalAddToggle.style.display = goalAddForm.classList.contains('open')?'none':'block';
+  if(goalAddForm.classList.contains('open')) document.getElementById('goalName').focus();
+};
+document.getElementById('goalCancelAdd').onclick = ()=>{
+  goalAddForm.classList.remove('open');
+  goalAddToggle.style.display='block';
+  document.getElementById('goalName').value='';
+};
+document.getElementById('goalConfirmAdd').onclick = ()=>{
+  const name = document.getElementById('goalName').value.trim();
+  if(!name){ document.getElementById('goalName').focus(); return; }
+  state.quests.push({ id:cid(), name, createdAt:todayStr(), completed:false, items:[] });
+  document.getElementById('goalName').value='';
+  goalAddForm.classList.remove('open');
+  goalAddToggle.style.display='block';
+  saveState();
+  render();
+};
 
 /* ---- clock ---- */
 function tickClock(){
