@@ -971,7 +971,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
    → Configurações do projeto → Seus apps → app Web → SDK setup).
    ====================================================================== */
 const firebaseConfig = {
-  apiKey: "AIzaSyB5jfSVDdVK6LqiRSxhntQxl3_4SAeIBzQ",
+   apiKey: "AIzaSyB5jfSVDdVK6LqiRSxhntQxl3_4SAeIBzQ",
   authDomain: "nexus-2e5b1.firebaseapp.com",
   projectId: "nexus-2e5b1",
   storageBucket: "nexus-2e5b1.firebasestorage.app",
@@ -1014,6 +1014,7 @@ auth.onAuthStateChanged(user=>{
     loadState();
   } else {
     currentUser = null;
+    if(unsubscribeSnapshot){ unsubscribeSnapshot(); unsubscribeSnapshot = null; }
     gate.style.display = 'flex';
     appWrap.style.display = 'none';
     badge.style.display = 'none';
@@ -1086,7 +1087,13 @@ let pendingShopType = 'fixed';
 let pendingRedeemItemId = null;
 let calRef = new Date();
 
-function todayStr(){ return new Date().toISOString().slice(0,10); }
+function localDateStr(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return y+'-'+m+'-'+day;
+}
+function todayStr(){ return localDateStr(new Date()); }
 function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
 function xpToNext(level){ return 100 + level*50; }
 function goldForXp(xp){ return Math.max(1, Math.round(xp/2)); }
@@ -1095,7 +1102,7 @@ function weekStartStr(dateStr){
   const day = d.getDay();
   const diff = (day===0? -6 : 1-day);
   d.setDate(d.getDate()+diff);
-  return d.toISOString().slice(0,10);
+  return localDateStr(d);
 }
 function daysUntilReset(){
   const day = new Date(todayStr()+'T00:00:00').getDay();
@@ -1141,12 +1148,7 @@ function defaultState(){
 }
 function cid(){ return Math.random().toString(36).slice(2,10); }
 
-async function loadState(){
-  try{
-    const snap = await db.collection('nexus_saves').doc(currentUser.uid).get();
-    if(snap.exists && snap.data().state){ state = JSON.parse(snap.data().state); }
-    else { state = defaultState(); }
-  }catch(e){ console.error('Erro ao carregar do Firestore:', e); state = defaultState(); }
+function migrateAndFinalizeState(){
   if(!state.bosses) state.bosses = [];
   if(!state.vices) state.vices = [];
   if(!state.character) state.character = { age:'', archetype:'guerreiro', goal:'', style:'', behavior:'', photo:null };
@@ -1171,6 +1173,17 @@ async function loadState(){
   rolloverDaily();
   rolloverBosses();
   rolloverShield();
+}
+
+let unsubscribeSnapshot = null;
+
+async function loadState(){
+  try{
+    const snap = await db.collection('nexus_saves').doc(currentUser.uid).get();
+    if(snap.exists && snap.data().state){ state = JSON.parse(snap.data().state); }
+    else { state = defaultState(); }
+  }catch(e){ console.error('Erro ao carregar do Firestore:', e); state = defaultState(); }
+  migrateAndFinalizeState();
   if(state.quest && state.quest.status==='active' && Date.now() >= state.quest.deadline){
     const dmg = state.quest.dmg;
     const qname = state.quest.name;
@@ -1179,7 +1192,22 @@ async function loadState(){
     setTimeout(()=>showToast('MISSÃO EXPIROU ENQUANTO VOCÊ ESTAVA FORA: '+qname+' · -'+dmg+' HP'), 300);
   }
   render();
+  startRealtimeSync();
 }
+
+function startRealtimeSync(){
+  if(unsubscribeSnapshot){ unsubscribeSnapshot(); unsubscribeSnapshot = null; }
+  unsubscribeSnapshot = db.collection('nexus_saves').doc(currentUser.uid).onSnapshot(snap=>{
+    if(snap.metadata.hasPendingWrites) return; // ignora o eco da nossa própria escrita
+    if(!snap.exists) return;
+    const data = snap.data();
+    if(!data || !data.state) return;
+    state = JSON.parse(data.state);
+    migrateAndFinalizeState();
+    render();
+  }, err=>{ console.error('Erro de sincronização em tempo real:', err); });
+}
+
 async function saveState(){
   if(!currentUser) return;
   try{
@@ -1859,7 +1887,7 @@ function renderChart(){
   for(let i=13; i>=0; i--){
     const d = new Date();
     d.setDate(d.getDate()-i);
-    const ds = d.toISOString().slice(0,10);
+    const ds = localDateStr(d);
     const log = state.dailyLog[ds];
     days.push({ date:ds, day:d.getDate(), xp: log ? log.xpGained : 0 });
   }
