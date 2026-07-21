@@ -56,7 +56,81 @@ body::before{
 }
 @keyframes scan{ 0%{top:-5%;} 100%{top:105%;} }
 
+.embers{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;}
+.ember{
+  position:absolute; bottom:-10px; border-radius:50%;
+  background:radial-gradient(circle, rgba(62,232,255,0.9), rgba(62,232,255,0));
+  animation:emberRise linear infinite;
+  opacity:0;
+}
+.ember.violet{background:radial-gradient(circle, rgba(167,139,250,0.85), rgba(167,139,250,0));}
+@keyframes emberRise{
+  0%{transform:translateY(0) translateX(0); opacity:0;}
+  8%{opacity:.7;}
+  92%{opacity:.4;}
+  100%{transform:translateY(-105vh) translateX(var(--drift,20px)); opacity:0;}
+}
+
 .wrap{position:relative; z-index:2; max-width:980px; margin:0 auto; padding:34px 22px 90px;}
+
+/* ---------- IDENTITY BANNER ---------- */
+.identity-banner{
+  padding:18px 22px; margin-bottom:18px; position:relative; overflow:hidden;
+  border-left:2px solid var(--cyan);
+  background:linear-gradient(100deg, rgba(62,232,255,0.06), rgba(167,139,250,0.04) 60%, transparent);
+}
+.identity-banner::after{
+  content:''; position:absolute; top:0; right:-40px; width:160px; height:100%;
+  background:linear-gradient(115deg, transparent 40%, rgba(62,232,255,0.06) 50%, transparent 60%);
+  animation:idSheen 6s ease-in-out infinite;
+}
+@keyframes idSheen{ 0%,100%{transform:translateX(-40px);} 50%{transform:translateX(40px);} }
+.identity-greeting{font-size:9px; letter-spacing:3px; color:var(--dim); margin-bottom:6px;}
+.identity-phrase{font-family:'Chakra Petch'; font-size:14px; font-weight:600; color:#fff; line-height:1.5; letter-spacing:.3px; position:relative; z-index:1;}
+.identity-phrase em{color:var(--cyan); font-style:normal;}
+.identity-empty-link{font-size:10px; color:var(--violet); cursor:pointer; text-decoration:underline; letter-spacing:.5px;}
+
+/* ---------- RITUAL RING (daily progress) ---------- */
+.ritual-ring-wrap{position:relative; width:52px; height:52px; flex-shrink:0;}
+.ritual-ring-wrap svg{width:100%; height:100%; transform:rotate(-90deg);}
+.ritual-ring-wrap .track{fill:none; stroke:rgba(255,255,255,0.07); stroke-width:5;}
+.ritual-ring-wrap .fill{fill:none; stroke:var(--emerald); stroke-width:5; stroke-linecap:round; filter:drop-shadow(0 0 5px rgba(62,232,154,0.7)); transition:stroke-dashoffset .6s cubic-bezier(.4,1.4,.4,1);}
+.ritual-ring-num{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Chakra Petch'; font-size:11px; font-weight:700; color:#fff;}
+
+/* ---------- HABIT COMPLETION JUICE ---------- */
+@keyframes checkPop{
+  0%{transform:scale(1);}
+  40%{transform:scale(1.35);}
+  100%{transform:scale(1);}
+}
+.check.pop, .vice-check.pop{animation:checkPop .4s cubic-bezier(.4,1.6,.4,1);}
+.burst-particle{
+  position:fixed; width:6px; height:6px; border-radius:50%; pointer-events:none; z-index:200;
+  animation:burstFly .7s cubic-bezier(.2,.8,.4,1) forwards;
+}
+@keyframes burstFly{
+  0%{transform:translate(0,0) scale(1); opacity:1;}
+  100%{transform:translate(var(--bx), var(--by)) scale(.2); opacity:0;}
+}
+.float-xp{
+  position:fixed; font-family:'Chakra Petch'; font-weight:700; font-size:15px; color:var(--cyan);
+  pointer-events:none; z-index:200; text-shadow:0 0 10px rgba(62,232,255,0.8);
+  animation:floatUp 1.1s ease-out forwards;
+}
+.float-xp.neg{color:var(--rose); text-shadow:0 0 10px rgba(255,106,136,0.8);}
+@keyframes floatUp{
+  0%{transform:translateY(0); opacity:0;}
+  15%{opacity:1;}
+  100%{transform:translateY(-46px); opacity:0;}
+}
+.habit.just-done{animation:habitGlow .6s ease;}
+@keyframes habitGlow{
+  0%{box-shadow:0 0 0 rgba(62,232,255,0);}
+  35%{box-shadow:0 0 22px rgba(62,232,255,0.25);}
+  100%{box-shadow:0 0 0 rgba(62,232,255,0);}
+}
+.streak-box .flame{transition:transform .3s ease, text-shadow .3s ease;}
+.streak-box .flame.hot{text-shadow:0 0 14px rgba(255,181,69,0.7);}
 
 /* ---------- HEADER ---------- */
 .hud-top{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:26px; flex-wrap:wrap; gap:14px;}
@@ -564,6 +638,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
 <div class="wrap" id="appWrap" style="display:none;">
 <div class="scan"></div>
+<div class="embers" id="embersLayer"></div>
 
   <div class="hud-top">
     <div class="brand">
@@ -595,6 +670,11 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
   <div id="dashboardView">
 
+  <div class="panel identity-banner" id="identityBanner">
+    <div class="identity-greeting" id="identityGreeting">BOM DIA, OPERADOR</div>
+    <div class="identity-phrase" id="identityPhrase">Defina quem você está se tornando na aba <em>PERSONAGEM</em> — isso aparece aqui todo dia como lembrete.</div>
+  </div>
+
   <div class="panel player">
     <div class="lvl-ring">
       <svg viewBox="0 0 88 88">
@@ -621,6 +701,13 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
     <div class="gold-box">
       <div class="gold-num"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#ffb545" stroke-width="1.6"/><text x="10" y="14" text-anchor="middle" font-size="10" font-family="Chakra Petch" fill="#ffb545" font-weight="700">$</text></svg><span id="goldNum">0</span></div>
       <span>MOEDAS</span>
+    </div>
+    <div class="ritual-ring-wrap" title="Hábitos concluídos hoje">
+      <svg viewBox="0 0 52 52">
+        <circle class="track" cx="26" cy="26" r="21"/>
+        <circle class="fill" id="ritualRingFill" cx="26" cy="26" r="21" stroke-dasharray="131.9" stroke-dashoffset="131.9"/>
+      </svg>
+      <div class="ritual-ring-num" id="ritualRingNum">0%</div>
     </div>
   </div>
 
@@ -971,7 +1058,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
    → Configurações do projeto → Seus apps → app Web → SDK setup).
    ====================================================================== */
 const firebaseConfig = {
-   apiKey: "AIzaSyB5jfSVDdVK6LqiRSxhntQxl3_4SAeIBzQ",
+  apiKey: "AIzaSyB5jfSVDdVK6LqiRSxhntQxl3_4SAeIBzQ",
   authDomain: "nexus-2e5b1.firebaseapp.com",
   projectId: "nexus-2e5b1",
   storageBucket: "nexus-2e5b1.firebasestorage.app",
@@ -1012,6 +1099,7 @@ auth.onAuthStateChanged(user=>{
     document.getElementById('userAvatar').src = user.photoURL || '';
     document.getElementById('userName').textContent = user.displayName || user.email || '';
     loadState();
+    spawnEmbers();
   } else {
     currentUser = null;
     if(unsubscribeSnapshot){ unsubscribeSnapshot(); unsubscribeSnapshot = null; }
@@ -1270,6 +1358,7 @@ function render(){
   document.getElementById('ringFill').style.strokeDasharray = circumference;
   document.getElementById('ringFill').style.strokeDashoffset = circumference - (pct/100)*circumference;
   document.getElementById('streakNum').textContent = state.streak;
+  document.getElementById('streakNum').classList.toggle('hot', state.streak>=3);
   document.getElementById('goldNum').textContent = state.gold;
 
   const hpPct = Math.max(0, Math.min(100, (state.playerHp/state.playerMaxHp)*100));
@@ -1301,6 +1390,8 @@ function render(){
   renderShop();
   renderQuest();
   renderGoals();
+  renderIdentityBanner();
+  renderRitualRing();
 }
 
 function renderAttrs(){
@@ -1363,13 +1454,13 @@ function renderHabits(){
     `;
     list.appendChild(row);
   });
-  list.querySelectorAll('.check').forEach(el=> el.onclick = ()=>toggleHabit(el.dataset.id));
+  list.querySelectorAll('.check').forEach(el=> el.onclick = (e)=>toggleHabit(el.dataset.id, e.currentTarget));
   list.querySelectorAll('[data-del]').forEach(el=> el.onclick = ()=>deleteHabit(el.dataset.del));
 }
 
 function escapeHtml(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
-function toggleHabit(id){
+function toggleHabit(id, checkEl){
   const h = state.habits.find(x=>x.id===id);
   if(!h) return;
   const today = todayStr();
@@ -1391,6 +1482,7 @@ function toggleHabit(id){
     log.habitsDone += 1;
     log.xpGained += h.xp;
     state.categoryXp[h.cat] = (state.categoryXp[h.cat]||0) + h.xp;
+    if(checkEl) celebrateCompletion(checkEl, h.xp, '#3ee8ff');
   } else {
     h.done = false;
     h.streak = Math.max(0, h.streak-1);
@@ -1529,11 +1621,11 @@ function renderVices(){
     `;
     list.appendChild(row);
   });
-  list.querySelectorAll('[data-viceid]').forEach(el=> el.onclick = ()=>toggleVice(el.dataset.viceid));
+  list.querySelectorAll('[data-viceid]').forEach(el=> el.onclick = (e)=>toggleVice(el.dataset.viceid, e.currentTarget));
   list.querySelectorAll('[data-vicedel]').forEach(el=> el.onclick = ()=>deleteVice(el.dataset.vicedel));
 }
 
-function toggleVice(id){
+function toggleVice(id, checkEl){
   const v = state.vices.find(x=>x.id===id);
   if(!v) return;
   const today = todayStr();
@@ -1546,6 +1638,7 @@ function toggleVice(id){
     loseHp(v.dmg);
     showToast('-'+v.dmg+' HP · -'+goldLoss+' moedas · '+v.name);
     log.vicesDone += 1;
+    if(checkEl) celebrateCompletion(checkEl, -v.dmg, '#ff6a88');
   } else {
     v.done = false;
     healHp(v.dmg);
@@ -2638,6 +2731,92 @@ document.getElementById('goalConfirmAdd').onclick = ()=>{
   saveState();
   render();
 };
+
+/* ---- Identity banner (psychology: identity-based habits) ---- */
+function renderIdentityBanner(){
+  const hour = new Date().getHours();
+  const greeting = hour<5 ? 'AINDA ACORDADO,' : hour<12 ? 'BOM DIA,' : hour<18 ? 'BOA TARDE,' : 'BOA NOITE,';
+  document.getElementById('identityGreeting').textContent = greeting+' '+(state.name||'OPERADOR').toUpperCase();
+
+  const phraseEl = document.getElementById('identityPhrase');
+  const goal = state.character && state.character.goal ? state.character.goal.trim() : '';
+  if(goal){
+    let reinforcement = '';
+    if(state.streak>=7) reinforcement = ' Você já provou isso por '+state.streak+' dias seguidos — não é mais intenção, é identidade.';
+    else if(state.streak>=3) reinforcement = ' '+state.streak+' dias seguidos confirmando quem você é.';
+    else reinforcement = ' Cada hábito de hoje é um voto pra essa pessoa.';
+    phraseEl.innerHTML = '<em>"'+escapeHtml(goal)+'"</em>'+reinforcement;
+  } else {
+    phraseEl.innerHTML = 'Defina quem você está se tornando na aba <em>PERSONAGEM</em> — isso aparece aqui todo dia como lembrete.';
+  }
+}
+
+/* ---- Ritual ring (daily completion %) ---- */
+function renderRitualRing(){
+  const total = state.habits.length;
+  const done = state.habits.filter(h=>h.done).length;
+  const pct = total>0 ? Math.round((done/total)*100) : 0;
+  const circumference = 131.9;
+  const fillEl = document.getElementById('ritualRingFill');
+  fillEl.style.strokeDasharray = circumference;
+  fillEl.style.strokeDashoffset = circumference - (pct/100)*circumference;
+  document.getElementById('ritualRingNum').textContent = pct+'%';
+}
+
+/* ---- Ambient ember particles ---- */
+function spawnEmbers(){
+  const layer = document.getElementById('embersLayer');
+  if(!layer || layer.children.length>0) return;
+  const count = 16;
+  for(let i=0;i<count;i++){
+    const em = document.createElement('div');
+    em.className = 'ember' + (Math.random()<0.4?' violet':'');
+    const size = 2 + Math.random()*3;
+    em.style.width = size+'px';
+    em.style.height = size+'px';
+    em.style.left = (Math.random()*100)+'vw';
+    em.style.setProperty('--drift', (Math.random()*60-30)+'px');
+    const duration = 14 + Math.random()*14;
+    em.style.animationDuration = duration+'s';
+    em.style.animationDelay = (-Math.random()*duration)+'s';
+    layer.appendChild(em);
+  }
+}
+
+/* ---- Completion juice: particle burst + floating XP + pop ---- */
+function celebrateCompletion(el, xp, color){
+  el.classList.add('pop');
+  setTimeout(()=>el.classList.remove('pop'), 400);
+  const habitRow = el.closest('.habit') || el.closest('.vice');
+  if(habitRow){ habitRow.classList.add('just-done'); setTimeout(()=>habitRow.classList.remove('just-done'), 650); }
+
+  const rect = el.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+
+  const particleCount = 10;
+  for(let i=0;i<particleCount;i++){
+    const p = document.createElement('div');
+    p.className = 'burst-particle';
+    const angle = (Math.PI*2*i/particleCount) + Math.random()*0.4;
+    const dist = 30 + Math.random()*30;
+    p.style.setProperty('--bx', Math.cos(angle)*dist+'px');
+    p.style.setProperty('--by', Math.sin(angle)*dist+'px');
+    p.style.left = cx+'px';
+    p.style.top = cy+'px';
+    p.style.background = color;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 750);
+  }
+
+  const xpTxt = document.createElement('div');
+  xpTxt.className = 'float-xp'+(xp<0?' neg':'');
+  xpTxt.textContent = (xp<0?'':'+')+xp+' XP';
+  xpTxt.style.left = (cx+16)+'px';
+  xpTxt.style.top = (cy-10)+'px';
+  document.body.appendChild(xpTxt);
+  setTimeout(()=>xpTxt.remove(), 1150);
+}
 
 /* ---- clock ---- */
 function tickClock(){
