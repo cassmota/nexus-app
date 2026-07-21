@@ -329,8 +329,11 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .cal-cell{
   aspect-ratio:1; border-radius:2px; display:flex; align-items:center; justify-content:center; position:relative;
   font-size:9px; color:var(--dim); background:rgba(255,255,255,0.03); border:1px solid transparent;
+  transition:transform .12s ease, border-color .12s ease;
 }
+.cal-cell:hover{border-color:var(--line-bright); transform:scale(1.08); z-index:1;}
 .cal-cell.outside{opacity:.25;}
+.cal-cell.outside:hover{transform:none; border-color:transparent;}
 .cal-cell.today{border-color:var(--cyan); color:#fff;}
 .cal-cell.lvl1{background:rgba(62,232,255,0.12); color:var(--text);}
 .cal-cell.lvl2{background:rgba(62,232,255,0.28); color:#fff;}
@@ -343,6 +346,79 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .dot.d2{background:rgba(62,232,255,0.32);}
 .dot.d3{background:rgba(62,232,255,0.55);}
 .dot.dv{background:#ff6a88;}
+
+/* ---------- MURAL DOS SONHOS ---------- */
+.mural-add-panel{padding:16px 20px; margin-bottom:16px;}
+.mural-grid{
+  columns:4 200px; column-gap:14px;
+}
+.mural-card{
+  break-inside:avoid; margin-bottom:14px; position:relative; overflow:hidden;
+  border:1px solid var(--line); background:var(--panel-solid); cursor:pointer;
+  transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.mural-card:nth-child(3n+1){transform:rotate(-1.1deg);}
+.mural-card:nth-child(3n+2){transform:rotate(0.8deg);}
+.mural-card:nth-child(3n){transform:rotate(-0.4deg);}
+.mural-card:hover{transform:rotate(0deg) scale(1.03); border-color:var(--amber); box-shadow:0 8px 26px rgba(255,181,69,0.18); z-index:2;}
+.mural-card img{width:100%; display:block;}
+.mural-card-caption{
+  padding:9px 11px; font-size:10px; color:var(--dim); letter-spacing:.4px;
+  border-top:1px solid var(--line); min-height:30px; display:flex; align-items:center;
+}
+.mural-card-caption.empty{color:var(--dimmer); font-style:italic;}
+.mural-empty{
+  text-align:center; padding:50px 20px; color:var(--dim); font-size:11px; letter-spacing:1px;
+  border:1px dashed var(--dimmer); border-radius:2px;
+}
+
+.mural-lightbox-inner{
+  max-width:min(640px, 92vw); max-height:90vh; display:flex; flex-direction:column; gap:14px;
+  background:var(--panel-solid); border:1px solid var(--line-bright); padding:20px; position:relative;
+  animation:pop .3s cubic-bezier(.2,1.6,.4,1) both;
+}
+.mural-lightbox-inner img{width:100%; max-height:60vh; object-fit:contain; display:block; border:1px solid var(--line);}
+.mural-lightbox-close{
+  position:absolute; top:-14px; right:-14px; width:30px; height:30px; border-radius:50%;
+  background:var(--panel-solid); border:1px solid var(--line-bright); color:var(--text); cursor:pointer; font-size:13px; z-index:1;
+}
+.mural-lightbox-close:hover{border-color:var(--rose); color:var(--rose);}
+.mural-caption-input{
+  width:100%; background:rgba(255,255,255,0.03); border:1px solid var(--line); color:var(--text);
+  font-family:'JetBrains Mono'; font-size:12px; padding:10px 12px; border-radius:2px;
+}
+.mural-caption-input:focus{outline:none; border-color:var(--line-bright);}
+.mural-lightbox-actions{display:flex; justify-content:space-between; gap:10px;}
+
+@media(max-width:640px){
+  .mural-grid{columns:2 150px;}
+}
+
+/* ---------- DAY DETAIL MODAL ---------- */
+.day-detail-card{
+  width:100%; max-width:420px; max-height:80vh; overflow-y:auto;
+  background:var(--panel-solid); border:1px solid var(--line-bright); padding:26px 26px 22px;
+  animation:pop .35s cubic-bezier(.2,1.6,.4,1) both;
+}
+.day-detail-header{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin-bottom:20px;}
+.day-detail-eyebrow{font-size:9px; letter-spacing:3px; color:var(--dim); margin-bottom:6px;}
+.day-detail-title{font-family:'Chakra Petch'; font-size:18px; font-weight:700; color:#fff; letter-spacing:1px;}
+.day-detail-summary{font-size:10px; color:var(--cyan); letter-spacing:.5px; margin-top:6px;}
+.day-detail-x{background:none; border:1px solid var(--line); color:var(--dim); width:26px; height:26px; border-radius:2px; cursor:pointer; font-size:12px; flex-shrink:0;}
+.day-detail-x:hover{border-color:var(--rose); color:var(--rose);}
+.day-detail-section{margin-bottom:18px;}
+.day-detail-section:last-child{margin-bottom:0;}
+.day-detail-section-title{font-size:10px; letter-spacing:2px; margin-bottom:10px; font-family:'Chakra Petch'; font-weight:600;}
+.day-detail-section-title.good{color:var(--emerald);}
+.day-detail-section-title.bad{color:var(--rose);}
+.day-detail-row{
+  display:flex; align-items:center; gap:10px; padding:9px 10px; margin-bottom:6px;
+  background:rgba(255,255,255,0.03); border-left:2px solid var(--row-color, var(--cyan)); border-radius:2px;
+}
+.day-detail-name{flex:1; font-size:12px; color:var(--text); letter-spacing:.3px;}
+.day-detail-xp{font-size:11px; color:var(--cyan); font-weight:700; letter-spacing:.5px;}
+.day-detail-xp.neg{color:var(--rose);}
+.day-detail-empty{font-size:10px; color:var(--dimmer); letter-spacing:.5px; padding:6px 2px;}
 
 /* ---------- GOALS (QUESTS COMPOSTAS) ---------- */
 .goal-card{padding:20px 22px; margin-bottom:14px; border-left:2px solid var(--violet); position:relative;}
@@ -666,6 +742,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
     <button class="view-btn" id="viewBtnCal">CALENDÁRIO</button>
     <button class="view-btn" id="viewBtnShop">LOJA</button>
     <button class="view-btn" id="viewBtnGoals">QUESTS</button>
+    <button class="view-btn" id="viewBtnMural">MURAL</button>
   </div>
 
   <div id="dashboardView">
@@ -980,6 +1057,23 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
   </div><!-- /goalsView -->
 
+  <div id="muralView" style="display:none">
+
+    <div class="char-intro panel">
+      <div class="char-intro-title">MURAL DOS SONHOS</div>
+      <p class="char-intro-text">Visualização repetida de uma meta fortalece o compromisso com ela — é o mesmo princípio por trás de quadros de visão e afirmações visuais. Monte aqui uma colagem com imagens do que você está construindo: o lugar que quer conhecer, o corpo que está treinando pra ter, a vida que está montando peça por peça.</p>
+    </div>
+
+    <div class="panel mural-add-panel">
+      <input type="file" id="muralInput" accept="image/*" multiple style="display:none;">
+      <button class="add-toggle" id="muralAddBtn" style="border-color:rgba(255,181,69,0.4); color:var(--amber);">+ ADICIONAR IMAGEM AO MURAL</button>
+    </div>
+
+    <div class="mural-grid" id="muralGrid"></div>
+    <div class="mural-empty" id="muralEmpty" style="display:none;">Seu mural está vazio — adicione a primeira imagem do que você está construindo.</div>
+
+  </div><!-- /muralView -->
+
   <footer>SISTEMA NEXUS &nbsp;·&nbsp; EVOLUÇÃO CONTÍNUA &nbsp;·&nbsp; v1.0</footer>
 </div>
 
@@ -990,6 +1084,41 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
     <div class="big" style="color:var(--violet); text-shadow:0 0 24px rgba(167,139,250,0.6);" id="goalCompleteName">Viagem Europa</div>
     <div class="newlvl" id="goalCompleteBonus" style="color:#c4b5fd;">+100 XP · +50 moedas</div>
     <button class="btn btn-primary" id="goalCompleteClose" style="background:var(--violet); border-color:var(--violet);">CONTINUAR</button>
+  </div>
+</div>
+
+<div class="overlay" id="dayDetailOverlay">
+  <div class="day-detail-card">
+    <div class="day-detail-header">
+      <div>
+        <div class="day-detail-eyebrow">REGISTRO DO DIA</div>
+        <div class="day-detail-title" id="dayDetailTitle">—</div>
+        <div class="day-detail-summary" id="dayDetailSummary">—</div>
+      </div>
+      <button class="day-detail-x" id="dayDetailClose">✕</button>
+    </div>
+
+    <div class="day-detail-section">
+      <div class="day-detail-section-title good">✓ HÁBITOS CONCLUÍDOS</div>
+      <div id="dayDetailGood"></div>
+    </div>
+
+    <div class="day-detail-section">
+      <div class="day-detail-section-title bad">✕ MAUS HÁBITOS</div>
+      <div id="dayDetailBad"></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="muralLightbox">
+  <div class="mural-lightbox-inner">
+    <button class="mural-lightbox-close" id="muralLightboxClose">✕</button>
+    <img id="muralLightboxImg" src="" alt="">
+    <input type="text" id="muralLightboxCaption" class="mural-caption-input" placeholder="Adicione uma legenda — ex: Torre Eiffel, 2027" maxlength="80">
+    <div class="mural-lightbox-actions">
+      <button class="btn btn-ghost" id="muralLightboxDelete" style="border-color:rgba(255,106,136,0.4); color:var(--rose);">REMOVER DO MURAL</button>
+      <button class="btn btn-primary" id="muralLightboxSave" style="background:var(--amber); border-color:var(--amber); color:#1a1204;">SALVAR LEGENDA</button>
+    </div>
   </div>
 </div>
 
@@ -1199,8 +1328,11 @@ function daysUntilReset(){
   return d;
 }
 function ensureLogDay(dateStr){
-  if(!state.dailyLog[dateStr]) state.dailyLog[dateStr] = { habitsDone:0, xpGained:0, vicesDone:0 };
-  return state.dailyLog[dateStr];
+  if(!state.dailyLog[dateStr]) state.dailyLog[dateStr] = { habitsDone:0, xpGained:0, vicesDone:0, habitsList:[], vicesList:[] };
+  const log = state.dailyLog[dateStr];
+  if(!log.habitsList) log.habitsList = [];
+  if(!log.vicesList) log.vicesList = [];
+  return log;
 }
 
 function defaultState(){
@@ -1210,6 +1342,7 @@ function defaultState(){
     shieldWeekStart:null, shieldUsed:false,
     quest:null,
     quests:[],
+    mural:[],
     habits:[
       {id:cid(), name:'Treino de força ou corrida', cat:'corpo', xp:35, done:false, lastDone:null, streak:0},
       {id:cid(), name:'Ler 15 minutos', cat:'mente', xp:10, done:false, lastDone:null, streak:0},
@@ -1244,6 +1377,10 @@ function migrateAndFinalizeState(){
   if(!state.categoryXp) state.categoryXp = { corpo:0, mente:0, disciplina:0, espirito:0, foco:0 };
   Object.keys(CATS).forEach(k=>{ if(state.categoryXp[k]===undefined) state.categoryXp[k]=0; });
   if(!state.dailyLog) state.dailyLog = {};
+  Object.values(state.dailyLog).forEach(log=>{
+    if(!log.habitsList) log.habitsList = [];
+    if(!log.vicesList) log.vicesList = [];
+  });
   if(!state.shopItems) state.shopItems = [
     { id:cid(), name:'Vida Real', cost:null, custom:true },
     { id:cid(), name:'30 min de série ou jogo', cost:30, custom:false },
@@ -1257,6 +1394,7 @@ function migrateAndFinalizeState(){
   if(state.shieldUsed === undefined) state.shieldUsed = false;
   if(state.quest === undefined) state.quest = null;
   if(!state.quests) state.quests = [];
+  if(!state.mural) state.mural = [];
   state.quests.forEach(g=>{ if(g.photo===undefined) g.photo = null; });
   rolloverDaily();
   rolloverBosses();
@@ -1392,6 +1530,7 @@ function render(){
   renderGoals();
   renderIdentityBanner();
   renderRitualRing();
+  renderMural();
 }
 
 function renderAttrs(){
@@ -1481,6 +1620,7 @@ function toggleHabit(id, checkEl){
     updateLinkedGoalItems(id, 1);
     log.habitsDone += 1;
     log.xpGained += h.xp;
+    log.habitsList.push({ habitId:h.id, name:h.name, xp:h.xp, cat:h.cat });
     state.categoryXp[h.cat] = (state.categoryXp[h.cat]||0) + h.xp;
     if(checkEl) celebrateCompletion(checkEl, h.xp, '#3ee8ff');
   } else {
@@ -1492,6 +1632,7 @@ function toggleHabit(id, checkEl){
     updateLinkedGoalItems(id, -1);
     log.habitsDone = Math.max(0, log.habitsDone-1);
     log.xpGained = Math.max(0, log.xpGained - h.xp);
+    log.habitsList = log.habitsList.filter(e=>e.habitId!==id);
     state.categoryXp[h.cat] = Math.max(0, (state.categoryXp[h.cat]||0) - h.xp);
   }
   saveState();
@@ -1638,12 +1779,14 @@ function toggleVice(id, checkEl){
     loseHp(v.dmg);
     showToast('-'+v.dmg+' HP · -'+goldLoss+' moedas · '+v.name);
     log.vicesDone += 1;
+    log.vicesList.push({ viceId:v.id, name:v.name, dmg:v.dmg });
     if(checkEl) celebrateCompletion(checkEl, -v.dmg, '#ff6a88');
   } else {
     v.done = false;
     healHp(v.dmg);
     state.gold += goldForXp(v.dmg);
     log.vicesDone = Math.max(0, log.vicesDone-1);
+    log.vicesList = log.vicesList.filter(e=>e.viceId!==id);
   }
   saveState();
   render();
@@ -2057,12 +2200,72 @@ function renderCalendar(){
     if(!c.outside){
       const log = state.dailyLog[c.date];
       cell.title = c.date+(log? ' · '+log.habitsDone+' hábito(s) · '+log.xpGained+' XP'+(log.vicesDone?' · '+log.vicesDone+' mau hábito':'') : ' · sem registro');
+      cell.style.cursor = 'pointer';
+      cell.onclick = ()=>openDayDetail(c.date);
     }
     grid.appendChild(cell);
   });
 }
 document.getElementById('calPrev').onclick = ()=>{ calRef.setMonth(calRef.getMonth()-1); renderCalendar(); };
 document.getElementById('calNext').onclick = ()=>{ calRef.setMonth(calRef.getMonth()+1); renderCalendar(); };
+
+function openDayDetail(dateStr){
+  const log = state.dailyLog[dateStr];
+  const [y,m,d] = dateStr.split('-');
+  const dateObj = new Date(Number(y), Number(m)-1, Number(d));
+  const weekdayNames = ['DOMINGO','SEGUNDA','TERÇA','QUARTA','QUINTA','SEXTA','SÁBADO'];
+  const monthNamesShort = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+  document.getElementById('dayDetailTitle').textContent = weekdayNames[dateObj.getDay()]+', '+Number(d)+' DE '+monthNamesShort[Number(m)-1];
+
+  const habitsList = (log && log.habitsList) ? log.habitsList : [];
+  const vicesList = (log && log.vicesList) ? log.vicesList : [];
+  const summaryEl = document.getElementById('dayDetailSummary');
+
+  if(!log || (habitsList.length===0 && vicesList.length===0)){
+    summaryEl.textContent = 'Nenhum registro neste dia.';
+  } else {
+    summaryEl.textContent = habitsList.length+' hábito(s) concluído(s) · '+(log.xpGained||0)+' XP'+(vicesList.length?' · '+vicesList.length+' mau hábito':'');
+  }
+
+  const goodBox = document.getElementById('dayDetailGood');
+  goodBox.innerHTML = '';
+  if(habitsList.length===0){
+    goodBox.innerHTML = '<div class="day-detail-empty">Nenhum hábito concluído neste dia.</div>';
+  } else {
+    habitsList.forEach(h=>{
+      const c = CATS[h.cat] || { color:'#3ee8ff', label:'' };
+      const row = document.createElement('div');
+      row.className = 'day-detail-row';
+      row.style.setProperty('--row-color', c.color);
+      row.innerHTML = `<span class="cat-dot" style="background:${c.color}"></span>
+        <span class="day-detail-name">${escapeHtml(h.name)}</span>
+        <span class="day-detail-xp">+${h.xp} XP</span>`;
+      goodBox.appendChild(row);
+    });
+  }
+
+  const badBox = document.getElementById('dayDetailBad');
+  badBox.innerHTML = '';
+  if(vicesList.length===0){
+    badBox.innerHTML = '<div class="day-detail-empty">Nenhum mau hábito registrado neste dia.</div>';
+  } else {
+    vicesList.forEach(v=>{
+      const row = document.createElement('div');
+      row.className = 'day-detail-row';
+      row.style.setProperty('--row-color', '#ff6a88');
+      row.innerHTML = `<span class="cat-dot" style="background:#ff6a88"></span>
+        <span class="day-detail-name">${escapeHtml(v.name)}</span>
+        <span class="day-detail-xp neg">-${v.dmg} HP</span>`;
+      badBox.appendChild(row);
+    });
+  }
+
+  document.getElementById('dayDetailOverlay').classList.add('show');
+}
+document.getElementById('dayDetailClose').onclick = ()=>document.getElementById('dayDetailOverlay').classList.remove('show');
+document.getElementById('dayDetailOverlay').addEventListener('click', (e)=>{
+  if(e.target.id==='dayDetailOverlay') document.getElementById('dayDetailOverlay').classList.remove('show');
+});
 
 /* ---- Shop ---- */
 function renderShop(){
@@ -2229,11 +2432,13 @@ const viewBtnChar = document.getElementById('viewBtnChar');
 const viewBtnCal = document.getElementById('viewBtnCal');
 const viewBtnShop = document.getElementById('viewBtnShop');
 const viewBtnGoals = document.getElementById('viewBtnGoals');
+const viewBtnMural = document.getElementById('viewBtnMural');
 const dashboardView = document.getElementById('dashboardView');
 const characterView = document.getElementById('characterView');
 const calendarView = document.getElementById('calendarView');
 const shopView = document.getElementById('shopView');
 const goalsView = document.getElementById('goalsView');
+const muralView = document.getElementById('muralView');
 function setView(v){
   activeView = v;
   dashboardView.style.display = v==='dashboard' ? '' : 'none';
@@ -2241,17 +2446,20 @@ function setView(v){
   calendarView.style.display = v==='calendar' ? '' : 'none';
   shopView.style.display = v==='shop' ? '' : 'none';
   goalsView.style.display = v==='goals' ? '' : 'none';
+  muralView.style.display = v==='mural' ? '' : 'none';
   viewBtnDash.classList.toggle('on', v==='dashboard');
   viewBtnChar.classList.toggle('on', v==='character');
   viewBtnCal.classList.toggle('on', v==='calendar');
   viewBtnShop.classList.toggle('on', v==='shop');
   viewBtnGoals.classList.toggle('on', v==='goals');
+  viewBtnMural.classList.toggle('on', v==='mural');
 }
 viewBtnDash.onclick = ()=>setView('dashboard');
 viewBtnChar.onclick = ()=>setView('character');
 viewBtnCal.onclick = ()=>setView('calendar');
 viewBtnShop.onclick = ()=>setView('shop');
 viewBtnGoals.onclick = ()=>setView('goals');
+viewBtnMural.onclick = ()=>setView('mural');
 
 
 /* ---- Random Quest ---- */
@@ -2730,6 +2938,91 @@ document.getElementById('goalConfirmAdd').onclick = ()=>{
   goalAddToggle.style.display='block';
   saveState();
   render();
+};
+
+/* ---- Mural dos Sonhos (vision board) ---- */
+let openLightboxPhotoId = null;
+
+function renderMural(){
+  const grid = document.getElementById('muralGrid');
+  const empty = document.getElementById('muralEmpty');
+  grid.innerHTML = '';
+  if(state.mural.length===0){
+    grid.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  grid.style.display = '';
+  empty.style.display = 'none';
+  state.mural.forEach(photo=>{
+    const card = document.createElement('div');
+    card.className = 'mural-card';
+    card.innerHTML = `
+      <img src="${photo.src}" alt="">
+      <div class="mural-card-caption ${photo.caption?'':'empty'}">${photo.caption ? escapeHtml(photo.caption) : 'sem legenda'}</div>
+    `;
+    card.onclick = ()=>openMuralLightbox(photo.id);
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('muralAddBtn').onclick = ()=> document.getElementById('muralInput').click();
+document.getElementById('muralInput').addEventListener('change', (e)=>{
+  const files = Array.from(e.target.files||[]);
+  if(files.length===0) return;
+  let pending = files.length;
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = (ev)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const maxDim = 900;
+        let w = img.width, h = img.height;
+        if(w>h){ if(w>maxDim){ h = Math.round(h*maxDim/w); w = maxDim; } }
+        else { if(h>maxDim){ w = Math.round(w*maxDim/h); h = maxDim; } }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+        state.mural.push({ id:cid(), src:canvas.toDataURL('image/jpeg', 0.85), caption:'', addedAt:todayStr() });
+        pending--;
+        if(pending===0){ saveState(); render(); }
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  e.target.value = '';
+});
+
+function openMuralLightbox(id){
+  const photo = state.mural.find(p=>p.id===id);
+  if(!photo) return;
+  openLightboxPhotoId = id;
+  document.getElementById('muralLightboxImg').src = photo.src;
+  document.getElementById('muralLightboxCaption').value = photo.caption || '';
+  document.getElementById('muralLightbox').classList.add('show');
+}
+function closeMuralLightbox(){
+  document.getElementById('muralLightbox').classList.remove('show');
+  openLightboxPhotoId = null;
+}
+document.getElementById('muralLightboxClose').onclick = closeMuralLightbox;
+document.getElementById('muralLightbox').addEventListener('click', (e)=>{
+  if(e.target.id==='muralLightbox') closeMuralLightbox();
+});
+document.getElementById('muralLightboxSave').onclick = ()=>{
+  const photo = state.mural.find(p=>p.id===openLightboxPhotoId);
+  if(!photo) return;
+  photo.caption = document.getElementById('muralLightboxCaption').value.trim();
+  saveState();
+  render();
+  closeMuralLightbox();
+};
+document.getElementById('muralLightboxDelete').onclick = ()=>{
+  state.mural = state.mural.filter(p=>p.id!==openLightboxPhotoId);
+  saveState();
+  render();
+  closeMuralLightbox();
 };
 
 /* ---- Identity banner (psychology: identity-based habits) ---- */
