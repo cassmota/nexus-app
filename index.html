@@ -7,29 +7,29 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root{
-  --bg:#070a0f;
-  --panel:rgba(16,22,32,0.55);
-  --panel-solid:#0d131c;
-  --line:rgba(120,170,210,0.14);
-  --line-bright:rgba(120,200,255,0.4);
-  --cyan:#3ee8ff;
-  --violet:#a78bfa;
-  --amber:#ffb545;
-  --emerald:#3ee89a;
-  --rose:#ff6a88;
-  --text:#dce8f2;
-  --dim:#5f7488;
-  --dimmer:#3a4756;
+  --bg:#0c0c0b;
+  --panel:rgba(255,255,255,0.045);
+  --panel-solid:#161513;
+  --line:rgba(255,255,255,0.09);
+  --line-bright:rgba(255,90,31,0.55);
+  --cyan:#ff4d1f;
+  --violet:#ffd400;
+  --amber:#ffb020;
+  --emerald:#22c55e;
+  --rose:#ef4444;
+  --text:#f2f0ea;
+  --dim:#8c887f;
+  --dimmer:#4a463f;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
 html,body{height:100%;}
 body{
   background:
-    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(62,232,255,0.09), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 90% 10%, rgba(167,139,250,0.08), transparent 60%),
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(255,77,31,0.12), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 90% 10%, rgba(255,212,0,0.07), transparent 60%),
     var(--bg);
   color:var(--text);
   font-family:'JetBrains Mono', monospace;
@@ -41,33 +41,28 @@ body::before{
   content:'';
   position:fixed; inset:0;
   background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size:42px 42px;
+    repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 26px),
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.02) 0%, transparent 2%),
+    radial-gradient(circle at 70% 65%, rgba(255,255,255,0.018) 0%, transparent 2%),
+    radial-gradient(circle at 45% 80%, rgba(255,255,255,0.02) 0%, transparent 1.5%);
   mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 75%);
   pointer-events:none;
   z-index:0;
 }
-.scan{
-  position:fixed; left:0; right:0; height:2px;
-  background:linear-gradient(90deg, transparent, rgba(62,232,255,0.35), transparent);
-  animation:scan 7s linear infinite;
-  pointer-events:none; z-index:1;
-}
-@keyframes scan{ 0%{top:-5%;} 100%{top:105%;} }
+.scan{ display:none; }
 
 .embers{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;}
 .ember{
   position:absolute; bottom:-10px; border-radius:50%;
-  background:radial-gradient(circle, rgba(62,232,255,0.9), rgba(62,232,255,0));
+  background:radial-gradient(circle, rgba(255,77,31,0.9), rgba(255,77,31,0));
   animation:emberRise linear infinite;
   opacity:0;
 }
-.ember.violet{background:radial-gradient(circle, rgba(167,139,250,0.85), rgba(167,139,250,0));}
+.ember.violet{background:radial-gradient(circle, rgba(255,212,0,0.85), rgba(255,212,0,0));}
 @keyframes emberRise{
   0%{transform:translateY(0) translateX(0); opacity:0;}
-  8%{opacity:.7;}
-  92%{opacity:.4;}
+  8%{opacity:.55;}
+  92%{opacity:.3;}
   100%{transform:translateY(-105vh) translateX(var(--drift,20px)); opacity:0;}
 }
 
@@ -77,16 +72,16 @@ body::before{
 .identity-banner{
   padding:18px 22px; margin-bottom:18px; position:relative; overflow:hidden;
   border-left:2px solid var(--cyan);
-  background:linear-gradient(100deg, rgba(62,232,255,0.06), rgba(167,139,250,0.04) 60%, transparent);
+  background:linear-gradient(100deg, rgba(255,77,31,0.06), rgba(255,212,0,0.04) 60%, transparent);
 }
 .identity-banner::after{
   content:''; position:absolute; top:0; right:-40px; width:160px; height:100%;
-  background:linear-gradient(115deg, transparent 40%, rgba(62,232,255,0.06) 50%, transparent 60%);
+  background:linear-gradient(115deg, transparent 40%, rgba(255,77,31,0.06) 50%, transparent 60%);
   animation:idSheen 6s ease-in-out infinite;
 }
 @keyframes idSheen{ 0%,100%{transform:translateX(-40px);} 50%{transform:translateX(40px);} }
 .identity-greeting{font-size:9px; letter-spacing:3px; color:var(--dim); margin-bottom:6px;}
-.identity-phrase{font-family:'Chakra Petch'; font-size:14px; font-weight:600; color:#fff; line-height:1.5; letter-spacing:.3px; position:relative; z-index:1;}
+.identity-phrase{font-family:'Oswald'; font-size:14px; font-weight:600; color:#fff; line-height:1.5; letter-spacing:.3px; position:relative; z-index:1;}
 .identity-phrase em{color:var(--cyan); font-style:normal;}
 .identity-empty-link{font-size:10px; color:var(--violet); cursor:pointer; text-decoration:underline; letter-spacing:.5px;}
 
@@ -94,8 +89,8 @@ body::before{
 .ritual-ring-wrap{position:relative; width:52px; height:52px; flex-shrink:0;}
 .ritual-ring-wrap svg{width:100%; height:100%; transform:rotate(-90deg);}
 .ritual-ring-wrap .track{fill:none; stroke:rgba(255,255,255,0.07); stroke-width:5;}
-.ritual-ring-wrap .fill{fill:none; stroke:var(--emerald); stroke-width:5; stroke-linecap:round; filter:drop-shadow(0 0 5px rgba(62,232,154,0.7)); transition:stroke-dashoffset .6s cubic-bezier(.4,1.4,.4,1);}
-.ritual-ring-num{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Chakra Petch'; font-size:11px; font-weight:700; color:#fff;}
+.ritual-ring-wrap .fill{fill:none; stroke:var(--emerald); stroke-width:5; stroke-linecap:round; filter:drop-shadow(0 0 5px rgba(34,197,94,0.7)); transition:stroke-dashoffset .6s cubic-bezier(.4,1.4,.4,1);}
+.ritual-ring-num{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Oswald'; font-size:11px; font-weight:700; color:#fff;}
 
 /* ---------- HABIT COMPLETION JUICE ---------- */
 @keyframes checkPop{
@@ -113,11 +108,11 @@ body::before{
   100%{transform:translate(var(--bx), var(--by)) scale(.2); opacity:0;}
 }
 .float-xp{
-  position:fixed; font-family:'Chakra Petch'; font-weight:700; font-size:15px; color:var(--cyan);
-  pointer-events:none; z-index:200; text-shadow:0 0 10px rgba(62,232,255,0.8);
+  position:fixed; font-family:'Oswald'; font-weight:700; font-size:15px; color:var(--cyan);
+  pointer-events:none; z-index:200; text-shadow:0 0 10px rgba(255,77,31,0.8);
   animation:floatUp 1.1s ease-out forwards;
 }
-.float-xp.neg{color:var(--rose); text-shadow:0 0 10px rgba(255,106,136,0.8);}
+.float-xp.neg{color:var(--rose); text-shadow:0 0 10px rgba(239,68,68,0.8);}
 @keyframes floatUp{
   0%{transform:translateY(0); opacity:0;}
   15%{opacity:1;}
@@ -125,12 +120,12 @@ body::before{
 }
 .habit.just-done{animation:habitGlow .6s ease;}
 @keyframes habitGlow{
-  0%{box-shadow:0 0 0 rgba(62,232,255,0);}
-  35%{box-shadow:0 0 22px rgba(62,232,255,0.25);}
-  100%{box-shadow:0 0 0 rgba(62,232,255,0);}
+  0%{box-shadow:0 0 0 rgba(255,77,31,0);}
+  35%{box-shadow:0 0 22px rgba(255,77,31,0.25);}
+  100%{box-shadow:0 0 0 rgba(255,77,31,0);}
 }
 .streak-box .flame{transition:transform .3s ease, text-shadow .3s ease;}
-.streak-box .flame.hot{text-shadow:0 0 14px rgba(255,181,69,0.7);}
+.streak-box .flame.hot{text-shadow:0 0 14px rgba(255,176,32,0.7);}
 
 /* ---------- HEADER ---------- */
 .hud-top{display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:26px; flex-wrap:wrap; gap:14px;}
@@ -139,9 +134,9 @@ body::before{
 .brand-mark{width:34px; height:34px; position:relative;}
 .brand-mark svg{width:100%; height:100%;}
 .brand-text h1{
-  font-family:'Chakra Petch', sans-serif; font-weight:700; font-size:22px; letter-spacing:3px; color:#fff;
+  font-family:'Bebas Neue', sans-serif; font-weight:400; font-size:32px; letter-spacing:4px; color:#fff; line-height:1;
 }
-.brand-text span{font-size:10px; letter-spacing:4px; color:var(--dim); display:block; margin-top:2px;}
+.brand-text span{font-size:10px; letter-spacing:4px; color:var(--dim); display:block; margin-top:4px; font-family:'Oswald',sans-serif; font-weight:500;}
 .datetime{font-size:11px; color:var(--dim); text-align:right; letter-spacing:1px;}
 .datetime b{color:var(--cyan); font-weight:500;}
 
@@ -161,22 +156,22 @@ body::before{
 .lvl-ring{position:relative; width:88px; height:88px; flex-shrink:0;}
 .lvl-ring svg{width:100%; height:100%; transform:rotate(-90deg);}
 .lvl-ring .track{fill:none; stroke:rgba(255,255,255,0.06); stroke-width:5;}
-.lvl-ring .fill{fill:none; stroke:var(--cyan); stroke-width:5; stroke-linecap:round; filter:drop-shadow(0 0 6px rgba(62,232,255,0.7)); transition:stroke-dashoffset .6s cubic-bezier(.4,1.4,.4,1);}
+.lvl-ring .fill{fill:none; stroke:var(--cyan); stroke-width:5; stroke-linecap:round; filter:drop-shadow(0 0 6px rgba(255,77,31,0.7)); transition:stroke-dashoffset .6s cubic-bezier(.4,1.4,.4,1);}
 .lvl-num{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
-.lvl-num b{font-family:'Chakra Petch'; font-size:26px; color:#fff; line-height:1;}
+.lvl-num b{font-family:'Oswald'; font-size:26px; color:#fff; line-height:1;}
 .lvl-num span{font-size:8px; letter-spacing:2px; color:var(--dim); margin-top:2px;}
 
 .player-info{flex:1; min-width:220px;}
 .player-info .name-row{display:flex; align-items:center; gap:10px; margin-bottom:10px;}
 .player-info .name-row input{
   background:transparent; border:none; border-bottom:1px solid transparent;
-  font-family:'Chakra Petch'; font-size:18px; color:#fff; font-weight:600; letter-spacing:1px;
+  font-family:'Oswald'; font-size:18px; color:#fff; font-weight:600; letter-spacing:1px;
   padding:2px 0; width:220px;
 }
 .player-info .name-row input:focus{outline:none; border-bottom:1px solid var(--line-bright);}
-.tag{font-size:9px; letter-spacing:2px; color:var(--cyan); border:1px solid rgba(62,232,255,0.35); padding:3px 8px; border-radius:2px;}
+.tag{font-size:9px; letter-spacing:2px; color:var(--cyan); border:1px solid rgba(255,77,31,0.35); padding:3px 8px; border-radius:2px;}
 .xp-bar-shell{height:8px; background:rgba(255,255,255,0.05); border:1px solid var(--line); border-radius:2px; overflow:hidden; position:relative;}
-.xp-bar-fill{height:100%; background:linear-gradient(90deg, var(--violet), var(--cyan)); transition:width .6s cubic-bezier(.4,1.4,.4,1); box-shadow:0 0 10px rgba(62,232,255,0.5);}
+.xp-bar-fill{height:100%; background:linear-gradient(90deg, var(--violet), var(--cyan)); transition:width .6s cubic-bezier(.4,1.4,.4,1); box-shadow:0 0 10px rgba(255,77,31,0.5);}
 .xp-labels{display:flex; justify-content:space-between; font-size:10px; color:var(--dim); margin-top:6px; letter-spacing:1px;}
 .xp-labels b{color:var(--text); font-weight:500;}
 
@@ -187,17 +182,17 @@ body::before{
 .hp-labels b{color:#ff8a9a; font-weight:500;}
 .shield-badge{
   display:inline-flex; align-items:center; gap:6px; margin-top:9px; font-size:9px; letter-spacing:1.5px;
-  color:var(--emerald); border:1px solid rgba(62,232,154,0.3); background:rgba(62,232,154,0.06);
+  color:var(--emerald); border:1px solid rgba(34,197,94,0.3); background:rgba(34,197,94,0.06);
   padding:5px 10px; border-radius:2px; width:fit-content;
 }
 .shield-badge.used{color:var(--dim); border-color:var(--line); background:transparent;}
 
 .streak-box{text-align:center; min-width:90px;}
-.streak-box .flame{font-family:'Chakra Petch'; font-size:26px; font-weight:700; color:var(--amber); line-height:1;}
+.streak-box .flame{font-family:'Oswald'; font-size:26px; font-weight:700; color:var(--amber); line-height:1;}
 .streak-box span{font-size:9px; letter-spacing:2px; color:var(--dim); display:block; margin-top:4px;}
 
 .gold-box{text-align:center; min-width:90px;}
-.gold-box .gold-num{font-family:'Chakra Petch'; font-size:26px; font-weight:700; color:var(--amber); line-height:1; display:flex; align-items:center; justify-content:center; gap:6px;}
+.gold-box .gold-num{font-family:'Oswald'; font-size:26px; font-weight:700; color:var(--amber); line-height:1; display:flex; align-items:center; justify-content:center; gap:6px;}
 .gold-box .gold-num svg{width:20px; height:20px; flex-shrink:0;}
 .gold-box span{font-size:9px; letter-spacing:2px; color:var(--dim); display:block; margin-top:4px;}
 
@@ -218,7 +213,7 @@ body::before{
   border-radius:2px; cursor:pointer; transition:all .15s;
 }
 .tab-btn:hover{border-color:var(--line-bright); color:var(--text);}
-.tab-btn.on{background:rgba(62,232,255,0.08); border-color:var(--cyan); color:var(--cyan);}
+.tab-btn.on{background:rgba(255,77,31,0.08); border-color:var(--cyan); color:var(--cyan);}
 
 /* ---------- HABIT LIST ---------- */
 .habit{
@@ -236,7 +231,7 @@ body::before{
 .check.done{background:var(--cat-color, var(--cyan)); border-color:var(--cat-color, var(--cyan));}
 .check.done::after{content:'✓'; color:#04121a; font-size:13px; font-weight:700;}
 .h-body{flex:1; min-width:0;}
-.h-name{font-family:'Chakra Petch'; font-size:14px; font-weight:500; color:var(--text); letter-spacing:.5px;}
+.h-name{font-family:'Oswald'; font-size:14px; font-weight:500; color:var(--text); letter-spacing:.5px;}
 .h-name.done{color:var(--dim); text-decoration:line-through;}
 .h-meta{font-size:9px; color:var(--dim); letter-spacing:1px; margin-top:3px; display:flex; gap:10px;}
 .h-meta .cat-dot{width:6px; height:6px; border-radius:50%; background:var(--cat-color); display:inline-block; margin-right:5px;}
@@ -282,7 +277,7 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .photo-frame{
   width:168px; height:168px; flex-shrink:0; position:relative; overflow:hidden; cursor:pointer;
   border:1px solid var(--line-bright);
-  background:linear-gradient(160deg, rgba(62,232,255,0.06), rgba(167,139,250,0.06));
+  background:linear-gradient(160deg, rgba(255,77,31,0.06), rgba(255,212,0,0.06));
   transition:border-color .15s;
 }
 .photo-frame:hover{border-color:var(--cyan);}
@@ -299,7 +294,7 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 }
 .sheet-stats{flex:1; min-width:220px; display:flex; flex-direction:column; gap:12px;}
 .sheet-name-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
-.sheet-name{font-family:'Chakra Petch'; font-size:19px; font-weight:600; color:#fff; letter-spacing:.5px;}
+.sheet-name{font-family:'Oswald'; font-size:19px; font-weight:600; color:#fff; letter-spacing:.5px;}
 .sheet-sub{font-size:10px; letter-spacing:1.5px; color:var(--dim);}
 .sheet-sub b{color:var(--cyan); font-weight:500;}
 .sheet-bar-block{margin-top:2px;}
@@ -311,7 +306,7 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .mini-attr-val{width:36px; text-align:right; font-size:10px; color:var(--text); flex-shrink:0;}
 
 /* ---------- SECTION TITLE (shared) ---------- */
-.section-title{font-family:'Chakra Petch'; font-size:12px; letter-spacing:3px; color:var(--cyan); margin-bottom:8px;}
+.section-title{font-family:'Oswald'; font-size:12px; letter-spacing:3px; color:var(--cyan); margin-bottom:8px;}
 
 /* ---------- EVOLUTION CHART ---------- */
 .chart-panel{padding:20px 22px;}
@@ -335,17 +330,17 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .cal-cell.outside{opacity:.25;}
 .cal-cell.outside:hover{transform:none; border-color:transparent;}
 .cal-cell.today{border-color:var(--cyan); color:#fff;}
-.cal-cell.lvl1{background:rgba(62,232,255,0.12); color:var(--text);}
-.cal-cell.lvl2{background:rgba(62,232,255,0.28); color:#fff;}
-.cal-cell.lvl3{background:rgba(62,232,255,0.5); color:#fff; box-shadow:0 0 8px rgba(62,232,255,0.4);}
-.cal-cell .vdot{position:absolute; bottom:2px; right:2px; width:5px; height:5px; border-radius:50%; background:#ff6a88;}
+.cal-cell.lvl1{background:rgba(255,77,31,0.12); color:var(--text);}
+.cal-cell.lvl2{background:rgba(255,77,31,0.28); color:#fff;}
+.cal-cell.lvl3{background:rgba(255,77,31,0.5); color:#fff; box-shadow:0 0 8px rgba(255,77,31,0.4);}
+.cal-cell .vdot{position:absolute; bottom:2px; right:2px; width:5px; height:5px; border-radius:50%; background:#ef4444;}
 .cal-legend{display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; font-size:9px; color:var(--dim); letter-spacing:.5px;}
 .cal-legend .dot{display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:5px; vertical-align:middle;}
 .dot.d0{background:rgba(255,255,255,0.06);}
-.dot.d1{background:rgba(62,232,255,0.15);}
-.dot.d2{background:rgba(62,232,255,0.32);}
-.dot.d3{background:rgba(62,232,255,0.55);}
-.dot.dv{background:#ff6a88;}
+.dot.d1{background:rgba(255,77,31,0.15);}
+.dot.d2{background:rgba(255,77,31,0.32);}
+.dot.d3{background:rgba(255,77,31,0.55);}
+.dot.dv{background:#ef4444;}
 
 /* ---------- MURAL DOS SONHOS ---------- */
 .mural-add-panel{padding:16px 20px; margin-bottom:16px;}
@@ -360,7 +355,7 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .mural-card:nth-child(3n+1){transform:rotate(-1.1deg);}
 .mural-card:nth-child(3n+2){transform:rotate(0.8deg);}
 .mural-card:nth-child(3n){transform:rotate(-0.4deg);}
-.mural-card:hover{transform:rotate(0deg) scale(1.03); border-color:var(--amber); box-shadow:0 8px 26px rgba(255,181,69,0.18); z-index:2;}
+.mural-card:hover{transform:rotate(0deg) scale(1.03); border-color:var(--amber); box-shadow:0 8px 26px rgba(255,176,32,0.18); z-index:2;}
 .mural-card img{width:100%; display:block;}
 .mural-card-caption{
   padding:9px 11px; font-size:10px; color:var(--dim); letter-spacing:.4px;
@@ -402,13 +397,13 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 }
 .day-detail-header{display:flex; justify-content:space-between; align-items:flex-start; gap:14px; margin-bottom:20px;}
 .day-detail-eyebrow{font-size:9px; letter-spacing:3px; color:var(--dim); margin-bottom:6px;}
-.day-detail-title{font-family:'Chakra Petch'; font-size:18px; font-weight:700; color:#fff; letter-spacing:1px;}
+.day-detail-title{font-family:'Oswald'; font-size:18px; font-weight:700; color:#fff; letter-spacing:1px;}
 .day-detail-summary{font-size:10px; color:var(--cyan); letter-spacing:.5px; margin-top:6px;}
 .day-detail-x{background:none; border:1px solid var(--line); color:var(--dim); width:26px; height:26px; border-radius:2px; cursor:pointer; font-size:12px; flex-shrink:0;}
 .day-detail-x:hover{border-color:var(--rose); color:var(--rose);}
 .day-detail-section{margin-bottom:18px;}
 .day-detail-section:last-child{margin-bottom:0;}
-.day-detail-section-title{font-size:10px; letter-spacing:2px; margin-bottom:10px; font-family:'Chakra Petch'; font-weight:600;}
+.day-detail-section-title{font-size:10px; letter-spacing:2px; margin-bottom:10px; font-family:'Oswald'; font-weight:600;}
 .day-detail-section-title.good{color:var(--emerald);}
 .day-detail-section-title.bad{color:var(--rose);}
 .day-detail-row{
@@ -425,8 +420,8 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .goal-card.completed{opacity:.6;}
 .goal-top{display:flex; align-items:flex-start; justify-content:space-between; gap:10px; margin-bottom:12px;}
 .goal-title-block{flex:1; min-width:0;}
-.goal-name{font-family:'Chakra Petch'; font-size:16px; font-weight:600; color:#fff; letter-spacing:.5px;}
-.goal-complete-badge{font-size:9px; letter-spacing:2px; color:var(--violet); border:1px solid rgba(167,139,250,0.5); padding:2px 7px; border-radius:2px; margin-top:5px; display:inline-block;}
+.goal-name{font-family:'Oswald'; font-size:16px; font-weight:600; color:#fff; letter-spacing:.5px;}
+.goal-complete-badge{font-size:9px; letter-spacing:2px; color:var(--violet); border:1px solid rgba(255,212,0,0.5); padding:2px 7px; border-radius:2px; margin-top:5px; display:inline-block;}
 .goal-overall-shell{height:6px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; margin-top:8px;}
 .goal-overall-fill{height:100%; background:linear-gradient(90deg, var(--violet), var(--cyan)); transition:width .5s ease;}
 .goal-overall-pct{font-size:9px; color:var(--dim); letter-spacing:1px; margin-top:5px;}
@@ -455,11 +450,11 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .goal-manual-input:focus{outline:none; border-color:var(--line-bright);}
 .goal-manual-btn{
   width:26px; height:26px; border-radius:2px; cursor:pointer; font-size:15px; font-weight:700; line-height:1; flex-shrink:0;
-  background:rgba(167,139,250,0.1); border:1px solid rgba(167,139,250,0.4); color:var(--violet);
+  background:rgba(255,212,0,0.1); border:1px solid rgba(255,212,0,0.4); color:var(--violet);
 }
-.goal-manual-btn:hover{background:rgba(167,139,250,0.22);}
-.goal-manual-btn.sub{background:rgba(255,106,136,0.1); border-color:rgba(255,106,136,0.4); color:var(--rose);}
-.goal-manual-btn.sub:hover{background:rgba(255,106,136,0.22);}
+.goal-manual-btn:hover{background:rgba(255,212,0,0.22);}
+.goal-manual-btn.sub{background:rgba(239,68,68,0.1); border-color:rgba(239,68,68,0.4); color:var(--rose);}
+.goal-manual-btn.sub:hover{background:rgba(239,68,68,0.22);}
 .goal-photo{
   width:100%; height:140px; border-radius:2px; margin-bottom:16px; position:relative; cursor:pointer;
   background:rgba(255,255,255,0.02); border:1px solid var(--line); background-size:cover; background-position:center;
@@ -492,60 +487,60 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 
 /* ---------- RANDOM QUEST ---------- */
 .quest-header{display:flex; justify-content:space-between; align-items:center; margin:26px 0 12px; padding:0 2px;}
-.quest-header-title{display:flex; align-items:center; gap:8px; font-family:'Chakra Petch'; font-size:13px; letter-spacing:3px; color:var(--violet);}
+.quest-header-title{display:flex; align-items:center; gap:8px; font-family:'Oswald'; font-size:13px; letter-spacing:3px; color:var(--violet);}
 .quest-panel{padding:20px 22px;}
 .quest-empty{text-align:center; padding:16px 0 20px; color:var(--dim); font-size:11px; letter-spacing:1px;}
 .quest-card{text-align:center;}
 .quest-card.active{text-align:left;}
 .quest-tier{display:inline-block; font-size:9px; letter-spacing:2px; border:1px solid; padding:3px 9px; border-radius:2px; margin-bottom:10px;}
-.quest-name{font-family:'Chakra Petch'; font-size:17px; font-weight:600; color:#fff; letter-spacing:.5px; margin-bottom:8px;}
+.quest-name{font-family:'Oswald'; font-size:17px; font-weight:600; color:#fff; letter-spacing:.5px; margin-bottom:8px;}
 .quest-rewards{font-size:11px; color:var(--dim); letter-spacing:1px; margin-bottom:16px;}
 .quest-actions{display:flex; gap:8px; justify-content:center;}
 .quest-card.active .quest-actions{justify-content:flex-start;}
 .quest-timer-shell{height:8px; background:rgba(255,255,255,0.05); border:1px solid var(--line); border-radius:2px; overflow:hidden; margin-bottom:8px;}
 .quest-timer-bar{height:100%; background:linear-gradient(90deg, var(--violet), var(--cyan)); transition:width 1s linear;}
-.quest-timer-bar.urgent{background:linear-gradient(90deg, #ff2f57, #ff6a88); animation:pulseHp .8s ease-in-out infinite;}
-.quest-countdown{font-family:'Chakra Petch'; font-size:26px; font-weight:700; color:#fff; letter-spacing:1px; margin-bottom:14px;}
+.quest-timer-bar.urgent{background:linear-gradient(90deg, #ff2f57, #ef4444); animation:pulseHp .8s ease-in-out infinite;}
+.quest-countdown{font-family:'Oswald'; font-size:26px; font-weight:700; color:#fff; letter-spacing:1px; margin-bottom:14px;}
 .quest-warn{font-size:9px; color:var(--dim); letter-spacing:.5px; margin-top:12px;}
 
 /* ---------- SHOP ---------- */
-.shop-balance{padding:18px 22px; display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-left:2px solid #ffb545;}
+.shop-balance{padding:18px 22px; display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-left:2px solid #ffb020;}
 .shop-balance-label{font-size:10px; letter-spacing:3px; color:var(--dim);}
-.shop-balance-num{font-family:'Chakra Petch'; font-size:24px; font-weight:700; color:#ffb545; display:flex; align-items:center; gap:8px;}
+.shop-balance-num{font-family:'Oswald'; font-size:24px; font-weight:700; color:#ffb020; display:flex; align-items:center; gap:8px;}
 .shop-item{
   display:flex; align-items:center; gap:14px; padding:15px 18px; margin-bottom:8px;
-  border-left:2px solid #ffb545; animation:rise .35s ease both;
+  border-left:2px solid #ffb020; animation:rise .35s ease both;
 }
 .shop-item-body{flex:1; min-width:0;}
-.shop-item-name{font-family:'Chakra Petch'; font-size:14px; font-weight:500; color:var(--text); letter-spacing:.5px;}
+.shop-item-name{font-family:'Oswald'; font-size:14px; font-weight:500; color:var(--text); letter-spacing:.5px;}
 .shop-item-meta{font-size:9px; color:var(--dim); letter-spacing:1px; margin-top:3px;}
-.shop-cost{font-size:11px; color:#ffb545; font-weight:700; letter-spacing:1px; flex-shrink:0; white-space:nowrap;}
-.shop-variable-badge{font-size:8px; letter-spacing:2px; color:#ffcf8a; border:1px solid rgba(255,181,69,0.4); padding:2px 6px; border-radius:2px;}
+.shop-cost{font-size:11px; color:#ffb020; font-weight:700; letter-spacing:1px; flex-shrink:0; white-space:nowrap;}
+.shop-variable-badge{font-size:8px; letter-spacing:2px; color:#ffcf8a; border:1px solid rgba(255,176,32,0.4); padding:2px 6px; border-radius:2px;}
 .shop-buy-btn{
-  background:rgba(255,181,69,0.1); border:1px solid rgba(255,181,69,0.45); color:#ffb545;
+  background:rgba(255,176,32,0.1); border:1px solid rgba(255,176,32,0.45); color:#ffb020;
   font-family:'JetBrains Mono'; font-size:9px; letter-spacing:1.5px; padding:8px 12px; border-radius:2px; cursor:pointer; flex-shrink:0;
 }
-.shop-buy-btn:hover{background:rgba(255,181,69,0.2); border-color:#ffb545;}
+.shop-buy-btn:hover{background:rgba(255,176,32,0.2); border-color:#ffb020;}
 .shop-buy-btn:disabled{opacity:.35; cursor:not-allowed;}
 .history-row{display:flex; justify-content:space-between; align-items:center; padding:12px 4px; border-bottom:1px solid var(--line); font-size:11px;}
 .history-row:last-child{border-bottom:none;}
 .history-left{color:var(--text);}
 .history-left span{display:block; font-size:9px; color:var(--dim); margin-top:2px; letter-spacing:1px;}
-.history-cost{color:#ffb545; font-weight:700; letter-spacing:1px; flex-shrink:0;}
+.history-cost{color:#ffb020; font-weight:700; letter-spacing:1px; flex-shrink:0;}
 
 /* ---------- VIEW SWITCH ---------- */
 .view-switch{display:flex; gap:8px; margin-bottom:22px;}
 .view-btn{
   flex:1; background:transparent; border:1px solid var(--line); color:var(--dim);
-  font-family:'Chakra Petch'; font-weight:600; font-size:11px; letter-spacing:1.5px; padding:12px 6px;
+  font-family:'Oswald'; font-weight:600; font-size:11px; letter-spacing:1.5px; padding:12px 6px;
   border-radius:2px; cursor:pointer; transition:all .15s; white-space:nowrap;
 }
 .view-btn:hover{border-color:var(--line-bright); color:var(--text);}
-.view-btn.on{background:rgba(62,232,255,0.08); border-color:var(--cyan); color:var(--cyan);}
+.view-btn.on{background:rgba(255,77,31,0.08); border-color:var(--cyan); color:var(--cyan);}
 
 /* ---------- CHARACTER SHEET ---------- */
 .char-intro{padding:18px 20px; margin-bottom:14px; border-left:2px solid var(--cyan);}
-.char-intro-title{font-family:'Chakra Petch'; font-size:12px; letter-spacing:3px; color:var(--cyan); margin-bottom:8px;}
+.char-intro-title{font-family:'Oswald'; font-size:12px; letter-spacing:3px; color:var(--cyan); margin-bottom:8px;}
 .char-intro-text{font-size:11px; line-height:1.7; color:var(--dim); letter-spacing:.3px;}
 .char-intro-text em{color:var(--text); font-style:normal;}
 .char-block{padding:18px 20px; margin-bottom:12px;}
@@ -572,7 +567,7 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 
 /* ---------- VICES (MAUS HÁBITOS) ---------- */
 .vice-header{display:flex; justify-content:space-between; align-items:center; margin:26px 0 12px; padding:0 2px;}
-.vice-header-title{display:flex; align-items:center; gap:8px; font-family:'Chakra Petch'; font-size:13px; letter-spacing:3px; color:#ff8a9a;}
+.vice-header-title{display:flex; align-items:center; gap:8px; font-family:'Oswald'; font-size:13px; letter-spacing:3px; color:#ff8a9a;}
 .vice-sub{font-size:10px; letter-spacing:1px; color:var(--dim);}
 .vice{
   display:flex; align-items:center; gap:14px; padding:15px 18px; margin-bottom:8px;
@@ -583,51 +578,51 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
   width:22px; height:22px; border:1px solid rgba(255,90,110,0.4); border-radius:3px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s;
 }
-.vice-check:hover{border-color:#ff6a88;}
+.vice-check:hover{border-color:#ef4444;}
 .vice-check.done{background:#ff2f57; border-color:#ff2f57;}
 .vice-check.done::after{content:'−'; color:#160408; font-size:15px; font-weight:700;}
-.vice-name{font-family:'Chakra Petch'; font-size:14px; font-weight:500; color:var(--text); letter-spacing:.5px;}
+.vice-name{font-family:'Oswald'; font-size:14px; font-weight:500; color:var(--text); letter-spacing:.5px;}
 .vice-name.done{color:#ff8a9a;}
 .vice-meta{font-size:9px; color:var(--dim); letter-spacing:1px; margin-top:3px;}
-.vice-dmg{font-size:11px; color:#ff6a88; font-weight:700; letter-spacing:1px; flex-shrink:0;}
+.vice-dmg{font-size:11px; color:#ef4444; font-weight:700; letter-spacing:1px; flex-shrink:0;}
 .vice-empty{text-align:center; padding:26px 20px; color:var(--dim); font-size:11px; letter-spacing:1px;}
 
 /* ---------- BOSS ---------- */
 .boss-header{display:flex; justify-content:space-between; align-items:center; margin:26px 0 12px; padding:0 2px;}
-.boss-header-title{display:flex; align-items:center; gap:8px; font-family:'Chakra Petch'; font-size:13px; letter-spacing:3px; color:#ff9aad;}
+.boss-header-title{display:flex; align-items:center; gap:8px; font-family:'Oswald'; font-size:13px; letter-spacing:3px; color:#ff9aad;}
 .boss-countdown{font-size:10px; letter-spacing:1px; color:var(--dim);}
 .boss-card{
   padding:20px 22px; margin-bottom:12px; position:relative; overflow:hidden;
-  border:1px solid rgba(255,106,136,0.25);
+  border:1px solid rgba(239,68,68,0.25);
 }
 .boss-card::before{
   content:''; position:absolute; top:-1px; left:14px; right:14px; height:1px;
-  background:linear-gradient(90deg, transparent, rgba(255,106,136,0.6), transparent);
+  background:linear-gradient(90deg, transparent, rgba(239,68,68,0.6), transparent);
 }
 .boss-card.defeated{opacity:.55; filter:grayscale(.6);}
 .boss-top{display:flex; align-items:center; gap:14px; margin-bottom:12px;}
-.boss-glyph{width:40px; height:40px; flex-shrink:0; color:#ff6a88;}
+.boss-glyph{width:40px; height:40px; flex-shrink:0; color:#ef4444;}
 .boss-title-block{flex:1; min-width:0;}
-.boss-name{font-family:'Chakra Petch'; font-size:16px; font-weight:600; color:#fff; letter-spacing:.5px;}
+.boss-name{font-family:'Oswald'; font-size:16px; font-weight:600; color:#fff; letter-spacing:.5px;}
 .boss-link{font-size:9px; letter-spacing:1.5px; color:var(--dim); margin-top:4px; display:flex; align-items:center; gap:6px;}
 .boss-link .cat-dot{width:6px; height:6px; border-radius:50%; display:inline-block;}
 .boss-del{background:none; border:none; color:var(--dimmer); cursor:pointer; font-size:14px; padding:4px 6px; flex-shrink:0;}
 .boss-del:hover{color:var(--rose);}
-.boss-hp-shell{height:14px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,106,136,0.3); border-radius:2px; overflow:hidden; position:relative;}
-.boss-hp-fill{height:100%; background:linear-gradient(90deg, #ff2f57, #ff6a88); transition:width .5s cubic-bezier(.4,1.4,.4,1); box-shadow:0 0 12px rgba(255,60,90,0.6);}
+.boss-hp-shell{height:14px; background:rgba(255,255,255,0.05); border:1px solid rgba(239,68,68,0.3); border-radius:2px; overflow:hidden; position:relative;}
+.boss-hp-fill{height:100%; background:linear-gradient(90deg, #ff2f57, #ef4444); transition:width .5s cubic-bezier(.4,1.4,.4,1); box-shadow:0 0 12px rgba(255,60,90,0.6);}
 .boss-hp-fill.low{animation:pulseHp 1s ease-in-out infinite;}
 @keyframes pulseHp{ 0%,100%{filter:brightness(1);} 50%{filter:brightness(1.5);} }
 .boss-hp-label{display:flex; justify-content:space-between; font-size:9px; color:var(--dim); margin-top:6px; letter-spacing:1px;}
-.boss-defeated-badge{position:absolute; top:16px; right:18px; font-size:9px; letter-spacing:2px; color:#ff6a88; border:1px solid rgba(255,106,136,0.5); padding:3px 8px; border-radius:2px; transform:rotate(4deg);}
+.boss-defeated-badge{position:absolute; top:16px; right:18px; font-size:9px; letter-spacing:2px; color:#ef4444; border:1px solid rgba(239,68,68,0.5); padding:3px 8px; border-radius:2px; transform:rotate(4deg);}
 .boss-empty{text-align:center; padding:26px 20px; color:var(--dim); font-size:11px; letter-spacing:1px; margin-bottom:10px;}
-.r-boss{border-color:#ff6a88 !important;}
+.r-boss{border-color:#ef4444 !important;}
 
 /* ---------- LOGIN GATE ---------- */
 .login-gate{
   position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center;
   background:
-    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(62,232,255,0.09), transparent 60%),
-    radial-gradient(ellipse 700px 500px at 90% 10%, rgba(167,139,250,0.08), transparent 60%),
+    radial-gradient(ellipse 900px 500px at 15% -10%, rgba(255,77,31,0.09), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 90% 10%, rgba(255,212,0,0.08), transparent 60%),
     var(--bg);
   padding:20px;
 }
@@ -635,19 +630,19 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
   width:100%; max-width:360px; text-align:center; padding:40px 32px;
   background:var(--panel); border:1px solid var(--line); backdrop-filter:blur(14px); border-radius:2px;
 }
-.login-title{font-family:'Chakra Petch'; font-weight:700; font-size:26px; letter-spacing:4px; color:#fff; margin-bottom:10px;}
+.login-title{font-family:'Oswald'; font-weight:700; font-size:26px; letter-spacing:4px; color:#fff; margin-bottom:10px;}
 .login-sub{font-size:11px; line-height:1.7; color:var(--dim); letter-spacing:.3px; margin-bottom:26px;}
 .google-btn{
   width:100%; display:flex; align-items:center; justify-content:center; gap:10px;
   background:#fff; color:#1f1f1f; border:none; border-radius:2px; padding:13px; cursor:pointer;
   font-family:'JetBrains Mono'; font-size:11px; letter-spacing:1.5px; font-weight:700; transition:transform .15s, box-shadow .15s;
 }
-.google-btn:hover{transform:translateY(-1px); box-shadow:0 4px 18px rgba(62,232,255,0.25);}
+.google-btn:hover{transform:translateY(-1px); box-shadow:0 4px 18px rgba(255,77,31,0.25);}
 .config-warning{
-  font-size:10px; line-height:1.6; color:#ffb545; border:1px solid rgba(255,181,69,0.4);
-  background:rgba(255,181,69,0.08); padding:10px 12px; border-radius:2px; margin-bottom:18px; text-align:left; letter-spacing:.3px;
+  font-size:10px; line-height:1.6; color:#ffb020; border:1px solid rgba(255,176,32,0.4);
+  background:rgba(255,176,32,0.08); padding:10px 12px; border-radius:2px; margin-bottom:18px; text-align:left; letter-spacing:.3px;
 }
-.login-error{font-size:10px; color:#ff6a88; margin-top:14px; letter-spacing:.3px; min-height:14px;}
+.login-error{font-size:10px; color:#ef4444; margin-top:14px; letter-spacing:.3px; min-height:14px;}
 .login-loading{font-size:10px; color:var(--dim); letter-spacing:2px; margin-top:16px;}
 
 .user-badge{display:none; align-items:center; gap:8px;}
@@ -671,8 +666,8 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .lvlup-card .r{position:absolute; inset:-1px; border:1px solid var(--cyan); opacity:0; animation:ring 1.4s ease-out infinite;}
 @keyframes ring{ 0%{opacity:.7; inset:-1px;} 100%{opacity:0; inset:-22px;} }
 .lvlup-card .sub{font-size:11px; letter-spacing:5px; color:var(--dim); margin-bottom:10px;}
-.lvlup-card .big{font-family:'Chakra Petch'; font-size:52px; font-weight:700; color:#fff; text-shadow:0 0 24px rgba(62,232,255,0.6);}
-.lvlup-card .newlvl{font-family:'Chakra Petch'; font-size:16px; color:var(--cyan); margin-top:8px; letter-spacing:2px;}
+.lvlup-card .big{font-family:'Oswald'; font-size:52px; font-weight:700; color:#fff; text-shadow:0 0 24px rgba(255,77,31,0.6);}
+.lvlup-card .newlvl{font-family:'Oswald'; font-size:16px; color:var(--cyan); margin-top:8px; letter-spacing:2px;}
 .lvlup-card button{margin-top:24px;}
 
 /* ---------- TOAST ---------- */
@@ -700,7 +695,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
 <div class="login-gate" id="loginGate">
   <div class="login-card">
-    <svg viewBox="0 0 40 40" fill="none" width="44" height="44" style="margin:0 auto 16px; display:block;"><polygon points="20,2 36,11 36,29 20,38 4,29 4,11" stroke="#3ee8ff" stroke-width="1.4"/><circle cx="20" cy="20" r="5" fill="#3ee8ff"/></svg>
+    <svg viewBox="0 0 40 40" fill="none" width="44" height="44" style="margin:0 auto 16px; display:block;"><polygon points="20,2 36,11 36,29 20,38 4,29 4,11" stroke="#ff4d1f" stroke-width="1.4"/><circle cx="20" cy="20" r="5" fill="#ff4d1f"/></svg>
     <div class="login-title">NEXUS</div>
     <p class="login-sub">Entre com sua conta Google pra sincronizar seu progresso em qualquer navegador ou aparelho.</p>
     <div class="config-warning" id="configWarning" style="display:none;">⚠️ O Firebase deste app ainda não foi configurado. Cole seu <code>firebaseConfig</code> no topo do &lt;script&gt; antes de usar.</div>
@@ -719,7 +714,10 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   <div class="hud-top">
     <div class="brand">
       <div class="brand-mark">
-        <svg viewBox="0 0 40 40" fill="none"><polygon points="20,2 36,11 36,29 20,38 4,29 4,11" stroke="#3ee8ff" stroke-width="1.4"/><circle cx="20" cy="20" r="5" fill="#3ee8ff"/></svg>
+        <svg viewBox="0 0 40 40" fill="none">
+          <path d="M20 3c2 6-4 8-4 13a4 4 0 008 0c0-2-1-3-1-3 3 2 5 6 5 10a8 8 0 01-16 0c0-7 5-9 8-20z" fill="#ff4d1f"/>
+          <path d="M20 17c1 3-2 4-2 6.5a2 2 0 004 0c0-1.2-.6-1.8-.6-1.8 1.4 1 2.6 2.8 2.6 4.8a4 4 0 01-8 0c0-4 2.5-5 4-9.5z" fill="#ffd400"/>
+        </svg>
       </div>
       <div class="brand-text">
         <h1>NEXUS</h1>
@@ -776,7 +774,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
       <span>DIAS&nbsp;SEGUIDOS</span>
     </div>
     <div class="gold-box">
-      <div class="gold-num"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#ffb545" stroke-width="1.6"/><text x="10" y="14" text-anchor="middle" font-size="10" font-family="Chakra Petch" fill="#ffb545" font-weight="700">$</text></svg><span id="goldNum">0</span></div>
+      <div class="gold-num"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="none" stroke="#ffb020" stroke-width="1.6"/><text x="10" y="14" text-anchor="middle" font-size="10" font-family="Oswald" fill="#ffb020" font-weight="700">$</text></svg><span id="goldNum">0</span></div>
       <span>MOEDAS</span>
     </div>
     <div class="ritual-ring-wrap" title="Hábitos concluídos hoje">
@@ -816,7 +814,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
   <div class="vice-header">
     <div class="vice-header-title">
-      <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="8.5" fill="none" stroke="#ff6a88" stroke-width="1.3"/><path d="M6 10h8" stroke="#ff6a88" stroke-width="1.3"/></svg>
+      <svg viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="8.5" fill="none" stroke="#ef4444" stroke-width="1.3"/><path d="M6 10h8" stroke="#ef4444" stroke-width="1.3"/></svg>
       <span>MAUS HÁBITOS</span>
     </div>
     <div class="vice-sub">marcar tira vida</div>
@@ -824,7 +822,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
   <div class="panel" style="padding:14px 14px 6px;">
     <div id="viceList"></div>
-    <button class="add-toggle" id="viceAddToggle" style="border-color:rgba(255,106,136,0.4); color:#ff6a88;">+ NOVO MAU HÁBITO</button>
+    <button class="add-toggle" id="viceAddToggle" style="border-color:rgba(239,68,68,0.4); color:#ef4444;">+ NOVO MAU HÁBITO</button>
     <div class="add-form" id="viceAddForm">
       <input type="text" id="vName" placeholder="Nome do mau hábito — ex: Rolar redes sociais à toa" maxlength="40">
       <div class="row2" style="flex-direction:column; gap:14px;">
@@ -835,14 +833,14 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
       </div>
       <div class="form-actions">
         <button class="btn btn-ghost" id="viceCancelAdd">CANCELAR</button>
-        <button class="btn btn-primary" id="viceConfirmAdd" style="background:#ff6a88; border-color:#ff6a88;">CRIAR</button>
+        <button class="btn btn-primary" id="viceConfirmAdd" style="background:#ef4444; border-color:#ef4444;">CRIAR</button>
       </div>
     </div>
   </div>
 
   <div class="boss-header">
     <div class="boss-header-title">
-      <svg viewBox="0 0 20 20" width="16" height="16"><polygon points="10,1 19,6 19,14 10,19 1,14 1,6" fill="none" stroke="#ff6a88" stroke-width="1.3"/></svg>
+      <svg viewBox="0 0 20 20" width="16" height="16"><polygon points="10,1 19,6 19,14 10,19 1,14 1,6" fill="none" stroke="#ef4444" stroke-width="1.3"/></svg>
       <span>CHEFE SEMANAL</span>
     </div>
     <div class="boss-countdown" id="bossCountdown">reinicia em — dias</div>
@@ -851,7 +849,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   <div id="bossList"></div>
 
   <div class="panel" style="padding:14px 14px 6px;">
-    <button class="add-toggle" id="bossAddToggle" style="border-color:rgba(255,106,136,0.4); color:#ff6a88;">+ INVOCAR CHEFE</button>
+    <button class="add-toggle" id="bossAddToggle" style="border-color:rgba(239,68,68,0.4); color:#ef4444;">+ INVOCAR CHEFE</button>
     <div class="add-form" id="bossAddForm">
       <input type="text" id="bName" placeholder="Nome do chefe — ex: O Procrastinador" maxlength="40">
       <div class="row2" style="flex-direction:column; gap:14px;">
@@ -866,14 +864,14 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
       </div>
       <div class="form-actions">
         <button class="btn btn-ghost" id="bossCancelAdd">CANCELAR</button>
-        <button class="btn btn-primary" id="bossConfirmAdd" style="background:#ff6a88; border-color:#ff6a88;">INVOCAR</button>
+        <button class="btn btn-primary" id="bossConfirmAdd" style="background:#ef4444; border-color:#ef4444;">INVOCAR</button>
       </div>
     </div>
   </div>
 
   <div class="quest-header">
     <div class="quest-header-title">
-      <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 2l2.2 4.6 5 .7-3.6 3.6.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.6 5-.7z" fill="none" stroke="#a78bfa" stroke-width="1.3"/></svg>
+      <svg viewBox="0 0 20 20" width="16" height="16"><path d="M10 2l2.2 4.6 5 .7-3.6 3.6.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.6 5-.7z" fill="none" stroke="#ffd400" stroke-width="1.3"/></svg>
       <span>MISSÃO ALEATÓRIA</span>
     </div>
   </div>
@@ -998,7 +996,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
     <div class="panel shop-balance">
       <div class="shop-balance-label">SEU SALDO</div>
-      <div class="shop-balance-num"><svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="8" fill="none" stroke="#ffb545" stroke-width="1.6"/><text x="10" y="14" text-anchor="middle" font-size="10" font-family="Chakra Petch" fill="#ffb545" font-weight="700">$</text></svg><span id="shopGoldNum">0</span></div>
+      <div class="shop-balance-num"><svg viewBox="0 0 20 20" width="20" height="20"><circle cx="10" cy="10" r="8" fill="none" stroke="#ffb020" stroke-width="1.6"/><text x="10" y="14" text-anchor="middle" font-size="10" font-family="Oswald" fill="#ffb020" font-weight="700">$</text></svg><span id="shopGoldNum">0</span></div>
     </div>
 
     <div class="char-intro panel">
@@ -1023,7 +1021,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
         </div>
         <div class="form-actions">
           <button class="btn btn-ghost" id="shopCancelAdd">CANCELAR</button>
-          <button class="btn btn-primary" id="shopConfirmAdd" style="background:#ffb545; border-color:#ffb545; color:#160e02;">CRIAR</button>
+          <button class="btn btn-primary" id="shopConfirmAdd" style="background:#ffb020; border-color:#ffb020; color:#160e02;">CRIAR</button>
         </div>
       </div>
     </div>
@@ -1045,7 +1043,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
     <div id="goalsList"></div>
 
     <div class="panel" style="padding:14px 14px 6px;">
-      <button class="add-toggle" id="goalAddToggle" style="border-color:rgba(167,139,250,0.4); color:var(--violet);">+ NOVA QUEST</button>
+      <button class="add-toggle" id="goalAddToggle" style="border-color:rgba(255,212,0,0.4); color:var(--violet);">+ NOVA QUEST</button>
       <div class="add-form" id="goalAddForm">
         <input type="text" id="goalName" placeholder="Nome da quest — ex: Viagem Europa" maxlength="50">
         <div class="form-actions">
@@ -1066,7 +1064,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 
     <div class="panel mural-add-panel">
       <input type="file" id="muralInput" accept="image/*" multiple style="display:none;">
-      <button class="add-toggle" id="muralAddBtn" style="border-color:rgba(255,181,69,0.4); color:var(--amber);">+ ADICIONAR IMAGEM AO MURAL</button>
+      <button class="add-toggle" id="muralAddBtn" style="border-color:rgba(255,176,32,0.4); color:var(--amber);">+ ADICIONAR IMAGEM AO MURAL</button>
     </div>
 
     <div class="mural-grid" id="muralGrid"></div>
@@ -1081,7 +1079,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   <div class="lvlup-card">
     <div class="r" style="border-color:var(--violet) !important;"></div>
     <div class="sub" style="color:#c4b5fd;">QUEST CONCLUÍDA</div>
-    <div class="big" style="color:var(--violet); text-shadow:0 0 24px rgba(167,139,250,0.6);" id="goalCompleteName">Viagem Europa</div>
+    <div class="big" style="color:var(--violet); text-shadow:0 0 24px rgba(255,212,0,0.6);" id="goalCompleteName">Viagem Europa</div>
     <div class="newlvl" id="goalCompleteBonus" style="color:#c4b5fd;">+100 XP · +50 moedas</div>
     <button class="btn btn-primary" id="goalCompleteClose" style="background:var(--violet); border-color:var(--violet);">CONTINUAR</button>
   </div>
@@ -1116,7 +1114,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
     <img id="muralLightboxImg" src="" alt="">
     <input type="text" id="muralLightboxCaption" class="mural-caption-input" placeholder="Adicione uma legenda — ex: Torre Eiffel, 2027" maxlength="80">
     <div class="mural-lightbox-actions">
-      <button class="btn btn-ghost" id="muralLightboxDelete" style="border-color:rgba(255,106,136,0.4); color:var(--rose);">REMOVER DO MURAL</button>
+      <button class="btn btn-ghost" id="muralLightboxDelete" style="border-color:rgba(239,68,68,0.4); color:var(--rose);">REMOVER DO MURAL</button>
       <button class="btn btn-primary" id="muralLightboxSave" style="background:var(--amber); border-color:var(--amber); color:#1a1204;">SALVAR LEGENDA</button>
     </div>
   </div>
@@ -1125,14 +1123,14 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 <div class="overlay" id="redeemOverlay">
   <div class="lvlup-card" style="text-align:left; padding:34px 36px;">
     <div class="sub" style="text-align:center; color:#ffcf8a;">RESGATE DE VALOR VARIÁVEL</div>
-    <div class="big" style="text-align:center; font-size:22px; color:#ffb545; margin-bottom:18px;" id="redeemItemName">Vida Real</div>
+    <div class="big" style="text-align:center; font-size:22px; color:#ffb020; margin-bottom:18px;" id="redeemItemName">Vida Real</div>
     <label class="sub">O QUE VOCÊ VAI COMPRAR? (opcional)</label>
     <input type="text" id="redeemNote" class="char-input" maxlength="60" placeholder="Ex: Ingresso de cinema" style="margin-bottom:14px;">
     <label class="sub">QUANTO VAI CUSTAR (MOEDAS)?</label>
     <input type="number" id="redeemAmount" class="char-input" min="1" placeholder="Ex: 120">
     <div class="form-actions" style="margin-top:18px;">
       <button class="btn btn-ghost" id="redeemCancel">CANCELAR</button>
-      <button class="btn btn-primary" id="redeemConfirm" style="background:#ffb545; border-color:#ffb545; color:#160e02;">CONFIRMAR RESGATE</button>
+      <button class="btn btn-primary" id="redeemConfirm" style="background:#ffb020; border-color:#ffb020; color:#160e02;">CONFIRMAR RESGATE</button>
     </div>
   </div>
 </div>
@@ -1151,9 +1149,9 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   <div class="lvlup-card boss-defeat-card">
     <div class="r r-boss"></div>
     <div class="sub" style="color:#ff9aad;">CONFRONTO ENCERRADO</div>
-    <div class="big" style="color:#ff6a88; text-shadow:0 0 24px rgba(255,106,136,0.6);">CHEFE DERROTADO</div>
+    <div class="big" style="color:#ef4444; text-shadow:0 0 24px rgba(239,68,68,0.6);">CHEFE DERROTADO</div>
     <div class="newlvl" id="bossDefeatText" style="color:#ff9aad;">O Procrastinador caiu</div>
-    <button class="btn btn-primary" id="bossOverlayClose" style="background:#ff6a88; border-color:#ff6a88;">CONTINUAR</button>
+    <button class="btn btn-primary" id="bossOverlayClose" style="background:#ef4444; border-color:#ef4444;">CONTINUAR</button>
   </div>
 </div>
 
@@ -1161,10 +1159,10 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   <div class="lvlup-card">
     <div class="r r-boss"></div>
     <div class="sub" style="color:#ff9aad;">VIDA ESGOTADA</div>
-    <div class="big" style="color:#ff6a88; text-shadow:0 0 24px rgba(255,106,136,0.6);">RECOMEÇO</div>
+    <div class="big" style="color:#ef4444; text-shadow:0 0 24px rgba(239,68,68,0.6);">RECOMEÇO</div>
     <div class="newlvl" id="downText" style="color:#ff9aad;">NÍVEL 3</div>
     <p class="char-hint" style="text-align:center; margin-top:12px; color:#ffb9c6;">Isso não apaga o que você já construiu. Todo mundo tropeça — o que importa é continuar. Sua proteção semanal recarrega segunda-feira.</p>
-    <button class="btn btn-primary" id="downOverlayClose" style="background:#ff6a88; border-color:#ff6a88;">CONTINUAR</button>
+    <button class="btn btn-primary" id="downOverlayClose" style="background:#ef4444; border-color:#ef4444;">CONTINUAR</button>
   </div>
 </div>
 
@@ -1172,7 +1170,7 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   <div class="lvlup-card">
     <div class="r" style="border-color:var(--emerald) !important;"></div>
     <div class="sub" style="color:#8ff0c4;">PROTEÇÃO ATIVADA</div>
-    <div class="big" style="color:var(--emerald); text-shadow:0 0 24px rgba(62,232,154,0.6);">ESCUDO ABSORVEU O GOLPE</div>
+    <div class="big" style="color:var(--emerald); text-shadow:0 0 24px rgba(34,197,94,0.6);">ESCUDO ABSORVEU O GOLPE</div>
     <p class="char-hint" style="text-align:center; margin-top:12px; color:#a8f2d4;">Sua vida zerou, mas seu nível e suas moedas continuam intactos. Todo personagem tem direito a um tropeço — a proteção volta na próxima segunda-feira.</p>
     <button class="btn btn-primary" id="shieldOverlayClose" style="background:var(--emerald); border-color:var(--emerald); color:#04140c;">CONTINUAR</button>
   </div>
@@ -1239,11 +1237,11 @@ auth.onAuthStateChanged(user=>{
 });
 
 const CATS = {
-  corpo:      { label:'CORPO',      color:'#3ee8ff' },
-  mente:      { label:'MENTE',      color:'#a78bfa' },
-  disciplina: { label:'DISCIPLINA', color:'#ffb545' },
-  espirito:   { label:'ESPÍRITO',   color:'#3ee89a' },
-  foco:       { label:'FOCO',       color:'#ff6a88' },
+  corpo:      { label:'CORPO',      color:'#ff4d1f' },
+  mente:      { label:'MENTE',      color:'#ffd400' },
+  disciplina: { label:'DISCIPLINA', color:'#ffb020' },
+  espirito:   { label:'ESPÍRITO',   color:'#22c55e' },
+  foco:       { label:'FOCO',       color:'#ef4444' },
 };
 const GLYPHS = {
   corpo: `<polygon points="19,2 34,10.5 34,27.5 19,36 4,27.5 4,10.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 19h14M19 12v14" stroke="currentColor" stroke-width="1.6"/>`,
@@ -1256,18 +1254,18 @@ const XP_TIERS = [ {v:10,label:'BAIXO · 10'}, {v:20,label:'MÉDIO · 20'}, {v:3
 const BOSS_HP_TIERS = [ {v:100,label:'MENOR · 100'}, {v:250,label:'MÉDIO · 250'}, {v:500,label:'MAIOR · 500'} ];
 const VICE_TIERS = [ {v:10,label:'LEVE · -10'}, {v:20,label:'MODERADO · -20'}, {v:35,label:'SEVERO · -35'} ];
 const ARCHETYPES = {
-  guerreiro:    { label:'GUERREIRO',     color:'#3ee8ff', desc:'age mesmo com medo' },
-  sabio:        { label:'SÁBIO',         color:'#a78bfa', desc:'entende antes de agir' },
-  estrategista: { label:'ESTRATEGISTA',  color:'#ffb545', desc:'constrói sistemas sólidos' },
-  visionario:   { label:'VISIONÁRIO',    color:'#3ee89a', desc:'enxerga o que ainda não existe' },
-  rebelde:      { label:'REBELDE',       color:'#ff6a88', desc:'rompe padrões que não servem' },
+  guerreiro:    { label:'GUERREIRO',     color:'#ff4d1f', desc:'age mesmo com medo' },
+  sabio:        { label:'SÁBIO',         color:'#ffd400', desc:'entende antes de agir' },
+  estrategista: { label:'ESTRATEGISTA',  color:'#ffb020', desc:'constrói sistemas sólidos' },
+  visionario:   { label:'VISIONÁRIO',    color:'#22c55e', desc:'enxerga o que ainda não existe' },
+  rebelde:      { label:'REBELDE',       color:'#ef4444', desc:'rompe padrões que não servem' },
 };
 const ARCH_GLYPH = `<polygon points="14,1 27,7.5 27,20.5 14,27 1,20.5 1,7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14" r="4" fill="currentColor"/>`;
 
 const QUEST_TIERS = {
-  facil:   { label:'FÁCIL',   color:'#3ee89a' },
-  medio:   { label:'MÉDIO',   color:'#ffb545' },
-  dificil: { label:'DIFÍCIL', color:'#ff6a88' },
+  facil:   { label:'FÁCIL',   color:'#22c55e' },
+  medio:   { label:'MÉDIO',   color:'#ffb020' },
+  dificil: { label:'DIFÍCIL', color:'#ef4444' },
 };
 const QUEST_POOL = [
   // FÁCIL — resposta rápida, baixo risco
@@ -1622,7 +1620,7 @@ function toggleHabit(id, checkEl){
     log.xpGained += h.xp;
     log.habitsList.push({ habitId:h.id, name:h.name, xp:h.xp, cat:h.cat });
     state.categoryXp[h.cat] = (state.categoryXp[h.cat]||0) + h.xp;
-    if(checkEl) celebrateCompletion(checkEl, h.xp, '#3ee8ff');
+    if(checkEl) celebrateCompletion(checkEl, h.xp, '#ff4d1f');
   } else {
     h.done = false;
     h.streak = Math.max(0, h.streak-1);
@@ -1780,7 +1778,7 @@ function toggleVice(id, checkEl){
     showToast('-'+v.dmg+' HP · -'+goldLoss+' moedas · '+v.name);
     log.vicesDone += 1;
     log.vicesList.push({ viceId:v.id, name:v.name, dmg:v.dmg });
-    if(checkEl) celebrateCompletion(checkEl, -v.dmg, '#ff6a88');
+    if(checkEl) celebrateCompletion(checkEl, -v.dmg, '#ef4444');
   } else {
     v.done = false;
     healHp(v.dmg);
@@ -1820,7 +1818,7 @@ function buildViceDmgChips(){
     const chip = document.createElement('button');
     chip.type='button';
     chip.className = 'chip' + (pendingViceDmg===t.v?' on':'');
-    chip.style.setProperty('--chip-color', '#ff6a88');
+    chip.style.setProperty('--chip-color', '#ef4444');
     chip.textContent = t.label;
     chip.onclick = ()=>{ pendingViceDmg = t.v; buildViceDmgChips(); };
     box.appendChild(chip);
@@ -1906,7 +1904,7 @@ function buildBossHpChips(){
     const chip = document.createElement('button');
     chip.type='button';
     chip.className = 'chip' + (pendingBossHp===t.v?' on':'');
-    chip.style.setProperty('--chip-color', '#ff6a88');
+    chip.style.setProperty('--chip-color', '#ef4444');
     chip.textContent = t.label;
     chip.onclick = ()=>{ pendingBossHp = t.v; buildBossHpChips(); };
     box.appendChild(chip);
@@ -1983,7 +1981,7 @@ function buildChips(){
     const chip = document.createElement('button');
     chip.type='button';
     chip.className = 'chip' + (pendingXp===t.v?' on':'');
-    chip.style.setProperty('--chip-color', '#3ee8ff');
+    chip.style.setProperty('--chip-color', '#ff4d1f');
     chip.textContent = t.label;
     chip.onclick = ()=>{ pendingXp = t.v; buildChips(); };
     xpBox.appendChild(chip);
@@ -2137,14 +2135,14 @@ function renderChart(){
     const x = i * (barW + barGap);
     const y = H - padB - h;
     const isToday = d.date === today;
-    bars += `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(h,2)}" rx="1.5" fill="${isToday?'#3ee8ff':'url(#barGrad)'}" opacity="${isToday?1:0.85}"/>`;
+    bars += `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(h,2)}" rx="1.5" fill="${isToday?'#ff4d1f':'url(#barGrad)'}" opacity="${isToday?1:0.85}"/>`;
     if(i%2===0 || days.length<=14){
       bars += `<text x="${x+barW/2}" y="${H-8}" text-anchor="middle" font-size="8" fill="#5f7488" font-family="JetBrains Mono">${d.day}</text>`;
     }
   });
   const svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <defs><linearGradient id="barGrad" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#3ee8ff"/>
+      <stop offset="0%" stop-color="#ffd400"/><stop offset="100%" stop-color="#ff4d1f"/>
     </linearGradient></defs>
     <line x1="0" y1="${H-padB}" x2="${W}" y2="${H-padB}" stroke="#1a2733" stroke-width="1"/>
     ${bars}
@@ -2233,7 +2231,7 @@ function openDayDetail(dateStr){
     goodBox.innerHTML = '<div class="day-detail-empty">Nenhum hábito concluído neste dia.</div>';
   } else {
     habitsList.forEach(h=>{
-      const c = CATS[h.cat] || { color:'#3ee8ff', label:'' };
+      const c = CATS[h.cat] || { color:'#ff4d1f', label:'' };
       const row = document.createElement('div');
       row.className = 'day-detail-row';
       row.style.setProperty('--row-color', c.color);
@@ -2252,8 +2250,8 @@ function openDayDetail(dateStr){
     vicesList.forEach(v=>{
       const row = document.createElement('div');
       row.className = 'day-detail-row';
-      row.style.setProperty('--row-color', '#ff6a88');
-      row.innerHTML = `<span class="cat-dot" style="background:#ff6a88"></span>
+      row.style.setProperty('--row-color', '#ef4444');
+      row.innerHTML = `<span class="cat-dot" style="background:#ef4444"></span>
         <span class="day-detail-name">${escapeHtml(v.name)}</span>
         <span class="day-detail-xp neg">-${v.dmg} HP</span>`;
       badBox.appendChild(row);
@@ -2389,7 +2387,7 @@ function buildShopTypeChips(){
     const chip = document.createElement('button');
     chip.type='button';
     chip.className = 'chip' + (pendingShopType===t.v?' on':'');
-    chip.style.setProperty('--chip-color', '#ffb545');
+    chip.style.setProperty('--chip-color', '#ffb020');
     chip.textContent = t.label;
     chip.onclick = ()=>{ pendingShopType = t.v; buildShopTypeChips(); };
     box.appendChild(chip);
@@ -2538,7 +2536,7 @@ function renderQuest(){
 
   if(!q){
     panel.innerHTML = `<div class="quest-empty">Nenhuma missão no momento — sorteie um desafio extra pra ganhar XP e moedas.</div>
-      <button class="add-toggle" id="questRollBtn" style="border-color:rgba(167,139,250,0.4); color:var(--violet);">🎲 SORTEAR MISSÃO</button>`;
+      <button class="add-toggle" id="questRollBtn" style="border-color:rgba(255,212,0,0.4); color:var(--violet);">🎲 SORTEAR MISSÃO</button>`;
     document.getElementById('questRollBtn').onclick = rollQuest;
     return;
   }
