@@ -271,32 +271,6 @@ body::before{
 .btn-ghost{background:transparent; color:var(--dim);}
 label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block; margin-bottom:7px;}
 
-/* ---------- EVOLVING AVATAR ---------- */
-.avatar-panel{padding:24px 22px 26px; text-align:center; margin-bottom:14px; position:relative; overflow:hidden;}
-.avatar-panel::before{
-  content:''; position:absolute; inset:0;
-  background:radial-gradient(ellipse 260px 200px at 50% 20%, rgba(255,77,31,0.08), transparent 70%);
-  pointer-events:none;
-}
-.avatar-panel-title{font-size:10px; letter-spacing:3px; color:var(--dim); margin-bottom:14px; position:relative;}
-.avatar-stage{width:150px; height:200px; margin:0 auto 12px; position:relative;}
-.avatar-stage svg{width:100%; height:100%; overflow:visible;}
-.avatar-tier-name{font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:3px; color:#fff; line-height:1;}
-.avatar-tier-desc{font-size:10px; color:var(--dim); letter-spacing:.5px; margin-top:6px; max-width:320px; margin-left:auto; margin-right:auto;}
-.avatar-progress-shell{height:6px; max-width:260px; margin:16px auto 0; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden;}
-.avatar-progress-fill{height:100%; background:linear-gradient(90deg, var(--cyan), var(--violet)); transition:width .6s ease;}
-.avatar-progress-label{font-size:9px; color:var(--dimmer); letter-spacing:1px; margin-top:8px;}
-
-.mini-avatar{width:56px; height:74px; flex-shrink:0;}
-.mini-avatar svg{width:100%; height:100%; overflow:visible;}
-
-@keyframes avatarEvolve{
-  0%{transform:scale(1); filter:brightness(1);}
-  30%{transform:scale(1.08); filter:brightness(1.6);}
-  100%{transform:scale(1); filter:brightness(1);}
-}
-.avatar-stage.evolved{animation:avatarEvolve .8s ease;}
-
 /* ---------- RPG SHEET ---------- */
 .sheet-panel{padding:22px;}
 .sheet-wrap{display:flex; gap:26px; flex-wrap:wrap;}
@@ -689,7 +663,7 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
   animation:pop .5s cubic-bezier(.2,1.6,.4,1) both;
 }
 @keyframes pop{ from{opacity:0; transform:scale(.8);} to{opacity:1; transform:scale(1);} }
-.lvlup-card .r{position:absolute; inset:-1px; border:1px solid var(--cyan); opacity:0; animation:ring 1.4s ease-out infinite;}
+.lvlup-card .r{position:absolute; inset:-1px; border:1px solid var(--cyan); opacity:0; animation:ring 1.4s ease-out infinite; pointer-events:none;}
 @keyframes ring{ 0%{opacity:.7; inset:-1px;} 100%{opacity:0; inset:-22px;} }
 .lvlup-card .sub{font-size:11px; letter-spacing:5px; color:var(--dim); margin-bottom:10px;}
 .lvlup-card .big{font-family:'Oswald'; font-size:52px; font-weight:700; color:#fff; text-shadow:0 0 24px rgba(255,77,31,0.6);}
@@ -777,7 +751,6 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   </div>
 
   <div class="panel player">
-    <div class="mini-avatar" id="miniAvatarStage"></div>
     <div class="lvl-ring">
       <svg viewBox="0 0 88 88">
         <circle class="track" cx="44" cy="44" r="38"/>
@@ -908,15 +881,6 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   </div><!-- /dashboardView -->
 
   <div id="characterView" style="display:none">
-
-    <div class="panel avatar-panel">
-      <div class="avatar-panel-title">AVATAR DE EVOLUÇÃO</div>
-      <div class="avatar-stage" id="avatarStage"></div>
-      <div class="avatar-tier-name" id="avatarTierName">RECRUTA</div>
-      <div class="avatar-tier-desc" id="avatarTierDesc">O corpo muda junto com o hábito. Continue.</div>
-      <div class="avatar-progress-shell"><div class="avatar-progress-fill" id="avatarProgressFill" style="width:0%"></div></div>
-      <div class="avatar-progress-label" id="avatarProgressLabel">2 níveis para a próxima evolução</div>
-    </div>
 
     <div class="panel sheet-panel">
       <div class="sheet-wrap">
@@ -1299,138 +1263,6 @@ const ARCHETYPES = {
 };
 const ARCH_GLYPH = `<polygon points="14,1 27,7.5 27,20.5 14,27 1,20.5 1,7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="14" r="4" fill="currentColor"/>`;
 
-const AVATAR_TIERS = [
-  { // 0 — RECRUTA (níveis 1-3)
-    color:'#6b675c',
-    desc:'Todo mundo começa sedentário. O primeiro hábito já muda isso.',
-    svg:`
-      <path d="M69,17 C71,21 73,24 69,26 C66,24 67,20 69,17 Z" fill="#6b675c" opacity=".6"/>
-      <circle cx="56" cy="27" r="10.5" fill="currentColor"/>
-      <polygon points="47,42 69,40 65,86 51,88" fill="currentColor"/>
-      <polyline points="47,44 43,64 41,84" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="67,42 71,62 74,83" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="53,87 49,128 47,150" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="63,87 66,128 68,150" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="43" y1="151" x2="51" y2="151" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-      <line x1="64" y1="151" x2="72" y2="151" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
-    `
-  },
-  { // 1 — OPERADOR (níveis 4-6)
-    color:'#c9822e',
-    desc:'Definição começando a aparecer. Seu esforço já ecoa.',
-    svg:`
-      <circle cx="58" cy="26" r="11" fill="currentColor"/>
-      <polygon points="45,41 73,40 69,87 51,89" fill="currentColor"/>
-      <polyline points="45,43 41,63 40,83" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="71,42 76,62 78,82" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="52,88 48,128 46,150" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="66,88 69,128 71,150" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="42" y1="151" x2="50" y2="151" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
-      <line x1="67" y1="151" x2="75" y2="151" stroke="currentColor" stroke-width="4.5" stroke-linecap="round"/>
-      <line x1="30" y1="40" x2="37" y2="46" stroke="currentColor" stroke-width="2" opacity=".5" stroke-linecap="round"/>
-      <line x1="86" y1="40" x2="79" y2="46" stroke="currentColor" stroke-width="2" opacity=".5" stroke-linecap="round"/>
-    `
-  },
-  { // 2 — ADEPTO (níveis 7-9)
-    color:'#ff8a3d',
-    desc:'Postura ereta, presença confiante. Isso é constância.',
-    svg:`
-      <circle cx="60" cy="24" r="12" fill="currentColor"/>
-      <polygon points="42,39 78,39 71,88 49,88" fill="currentColor"/>
-      <polyline points="42,43 36,58 47,70" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="78,43 84,58 73,70" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="50,89 45,130 43,152" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="70,89 75,130 77,152" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="38" y1="153" x2="48" y2="153" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-      <line x1="72" y1="153" x2="82" y2="153" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-      <line x1="60" y1="62" x2="60" y2="80" stroke="#160e02" stroke-width="1.4" opacity=".35"/>
-    `
-  },
-  { // 3 — VANGUARDA (níveis 10-12)
-    color:'#ff4d1f',
-    desc:'Corpo atlético, resultado de repetição. Nada de sorte.',
-    svg:`
-      <circle cx="60" cy="23" r="12" fill="currentColor"/>
-      <polygon points="38,37 82,37 73,88 47,88" fill="currentColor"/>
-      <line x1="38" y1="43" x2="79" y2="63" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
-      <line x1="82" y1="43" x2="41" y2="63" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
-      <polyline points="48,89 41,131 38,153" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="72,89 79,131 82,153" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="33" y1="154" x2="44" y2="154" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/>
-      <line x1="76" y1="154" x2="87" y2="154" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/>
-      <line x1="54" y1="68" x2="66" y2="68" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-      <line x1="54" y1="78" x2="66" y2="78" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-    `
-  },
-  { // 4 — ESPECTRO (níveis 13-15)
-    color:'#ff4d1f',
-    desc:'Físico definido, disciplina visível de longe.',
-    svg:`
-      <circle cx="60" cy="90" r="58" fill="none" stroke="#ffd400" stroke-width="1.5" opacity=".14"/>
-      <circle cx="60" cy="22" r="12" fill="currentColor"/>
-      <polygon points="36,36 84,36 74,88 46,88" fill="currentColor"/>
-      <polyline points="84,41 97,58 81,45" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="36,41 29,58 42,70" fill="none" stroke="currentColor" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="46,89 38,131 35,153" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="74,89 82,131 85,153" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="30" y1="154" x2="41" y2="154" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-      <line x1="80" y1="154" x2="91" y2="154" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
-      <line x1="52" y1="64" x2="68" y2="64" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-      <line x1="52" y1="72" x2="68" y2="72" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-      <line x1="52" y1="80" x2="68" y2="80" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-    `
-  },
-  { // 5 — ASCENDENTE (níveis 16-18)
-    color:'#ff4d1f',
-    desc:'Físico de campeão. Poucos chegam até aqui.',
-    svg:`
-      <circle cx="60" cy="90" r="64" fill="none" stroke="#ffd400" stroke-width="1.5" opacity=".16"/>
-      <circle cx="60" cy="90" r="52" fill="none" stroke="#ffd400" stroke-width="1.5" opacity=".1"/>
-      <circle cx="60" cy="21" r="12" fill="currentColor"/>
-      <polygon points="34,35 86,35 75,88 45,88" fill="currentColor"/>
-      <polyline points="34,40 21,56 37,44" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="86,40 99,56 83,44" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="44,89 34,131 31,154" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="76,89 86,131 89,154" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="26" y1="155" x2="38" y2="155" stroke="currentColor" stroke-width="6.5" stroke-linecap="round"/>
-      <line x1="83" y1="155" x2="95" y2="155" stroke="currentColor" stroke-width="6.5" stroke-linecap="round"/>
-      <path d="M60,50 l2.4,5 5.4,.6 -4,3.7 1.2,5.3 -4.6,-2.8 -4.6,2.8 1.2,-5.3 -4,-3.7 5.4,-.6 Z" fill="#ffb020"/>
-      <line x1="51" y1="65" x2="69" y2="65" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-      <line x1="51" y1="73" x2="69" y2="73" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-      <line x1="51" y1="81" x2="69" y2="81" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-    `
-  },
-  { // 6 — LENDA (nível 19+)
-    color:'#ffb020',
-    desc:'Forma lendária. Você não é mais quem começou.',
-    svg:`
-      <circle cx="60" cy="90" r="70" fill="none" stroke="#ff4d1f" stroke-width="1.5" opacity=".14"/>
-      <circle cx="60" cy="90" r="58" fill="none" stroke="#ffd400" stroke-width="1.5" opacity=".16"/>
-      <circle cx="60" cy="90" r="46" fill="none" stroke="#ff4d1f" stroke-width="1.5" opacity=".1"/>
-      <line x1="60" y1="38" x2="60" y2="26" stroke="#ffd400" stroke-width="1.5" opacity=".5"/>
-      <line x1="34" y1="46" x2="42" y2="52" stroke="#ffd400" stroke-width="1.5" opacity=".5"/>
-      <line x1="86" y1="46" x2="78" y2="52" stroke="#ffd400" stroke-width="1.5" opacity=".5"/>
-      <path d="M60,2 l2.6,5.6 6,.7 -4.4,4.1 1.3,5.9 -5.1,-3.1 -5.1,3.1 1.3,-5.9 -4.4,-4.1 6,-.7 Z" fill="#ffd400"/>
-      <circle cx="60" cy="20" r="12" fill="currentColor"/>
-      <polygon points="32,34 88,34 76,88 44,88" fill="currentColor"/>
-      <polyline points="32,39 17,55 35,43" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="88,39 103,55 85,43" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="42,89 30,131 27,155" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="78,89 90,131 93,155" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="22" y1="156" x2="35" y2="156" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
-      <line x1="87" y1="156" x2="100" y2="156" stroke="currentColor" stroke-width="7" stroke-linecap="round"/>
-      <path d="M60,48 l2.7,5.6 6.1,.7 -4.4,4.2 1.3,6 -5.7,-3.1 -5.7,3.1 1.3,-6 -4.4,-4.2 6.1,-.7 Z" fill="#ff4d1f"/>
-      <line x1="50" y1="65" x2="70" y2="65" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-      <line x1="50" y1="73" x2="70" y2="73" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-      <line x1="50" y1="81" x2="70" y2="81" stroke="#1a0a02" stroke-width="1.4" opacity=".3"/>
-    `
-  },
-];
-
-function avatarTierIndex(level){
-  return Math.min(AVATAR_TIERS.length-1, Math.floor((level-1)/3));
-}
-
 const QUEST_TIERS = {
   facil:   { label:'FÁCIL',   color:'#22c55e' },
   medio:   { label:'MÉDIO',   color:'#ffb020' },
@@ -1510,7 +1342,6 @@ function defaultState(){
     quest:null,
     quests:[],
     mural:[],
-    lastAvatarTier:0,
     habits:[
       {id:cid(), name:'Treino de força ou corrida', cat:'corpo', xp:35, done:false, lastDone:null, streak:0},
       {id:cid(), name:'Ler 15 minutos', cat:'mente', xp:10, done:false, lastDone:null, streak:0},
@@ -1529,6 +1360,7 @@ function defaultState(){
     dailyLog:{},
     shopItems:[
       { id:cid(), name:'Vida Real', cost:null, custom:true },
+      { id:cid(), name:'Poção de Vida (+25 HP)', cost:20, custom:false, heal:25 },
       { id:cid(), name:'30 min de série ou jogo', cost:30, custom:false },
       { id:cid(), name:'Um doce ou sobremesa', cost:15, custom:false },
     ],
@@ -1551,9 +1383,13 @@ function migrateAndFinalizeState(){
   });
   if(!state.shopItems) state.shopItems = [
     { id:cid(), name:'Vida Real', cost:null, custom:true },
+    { id:cid(), name:'Poção de Vida (+25 HP)', cost:20, custom:false, heal:25 },
     { id:cid(), name:'30 min de série ou jogo', cost:30, custom:false },
     { id:cid(), name:'Um doce ou sobremesa', cost:15, custom:false },
   ];
+  if(!state.shopItems.some(it=>it.heal)){
+    state.shopItems.push({ id:cid(), name:'Poção de Vida (+25 HP)', cost:20, custom:false, heal:25 });
+  }
   if(!state.purchaseHistory) state.purchaseHistory = [];
   if(state.playerHp === undefined) state.playerHp = 100;
   if(state.gold === undefined) state.gold = 0;
@@ -1563,7 +1399,6 @@ function migrateAndFinalizeState(){
   if(state.quest === undefined) state.quest = null;
   if(!state.quests) state.quests = [];
   if(!state.mural) state.mural = [];
-  if(state.lastAvatarTier === undefined) state.lastAvatarTier = avatarTierIndex(state.level);
   state.quests.forEach(g=>{ if(g.photo===undefined) g.photo = null; });
   rolloverDaily();
   rolloverBosses();
@@ -1700,7 +1535,6 @@ function render(){
   renderIdentityBanner();
   renderRitualRing();
   renderMural();
-  renderAvatarPanels();
 }
 
 function renderAttrs(){
@@ -1849,6 +1683,7 @@ function gainXp(amount){
   if(state.xp >= need){
     state.xp -= need;
     state.level += 1;
+    state.playerHp = state.playerMaxHp;
     setTimeout(()=>showLevelUp(state.level), 350);
   }
 }
@@ -1895,7 +1730,7 @@ function showToast(msg){
 }
 
 function showLevelUp(lvl){
-  document.getElementById('lvlUpText').textContent = 'NÍVEL '+lvl+' ALCANÇADO';
+  document.getElementById('lvlUpText').textContent = 'NÍVEL '+lvl+' ALCANÇADO · VIDA RESTAURADA';
   document.getElementById('lvlOverlay').classList.add('show');
 }
 document.getElementById('lvlUpClose').onclick = ()=>document.getElementById('lvlOverlay').classList.remove('show');
@@ -2173,57 +2008,6 @@ document.getElementById('confirmAdd').onclick = ()=>{
   render();
 };
 
-/* ---- Evolving avatar ---- */
-function renderAvatarPanels(){
-  const tierIdx = avatarTierIndex(state.level);
-  const tier = AVATAR_TIERS[tierIdx];
-  const rankLabel = RANKS[Math.min(RANKS.length-1, tierIdx)];
-  const evolved = tierIdx > state.lastAvatarTier;
-
-  const stage = document.getElementById('avatarStage');
-  const mini = document.getElementById('miniAvatarStage');
-  if(stage){
-    stage.innerHTML = `<svg viewBox="0 0 120 170" style="color:${tier.color}">${tier.svg}</svg>`;
-    stage.style.color = tier.color;
-  }
-  if(mini){
-    mini.innerHTML = `<svg viewBox="0 0 120 170" style="color:${tier.color}">${tier.svg}</svg>`;
-  }
-  const nameEl = document.getElementById('avatarTierName');
-  const descEl = document.getElementById('avatarTierDesc');
-  if(nameEl) nameEl.textContent = rankLabel;
-  if(descEl) descEl.textContent = tier.desc;
-
-  const progFill = document.getElementById('avatarProgressFill');
-  const progLabel = document.getElementById('avatarProgressLabel');
-  if(progFill && progLabel){
-    if(tierIdx >= AVATAR_TIERS.length-1){
-      progFill.style.width = '100%';
-      progLabel.textContent = 'Forma máxima alcançada';
-    } else {
-      const tierStartLevel = tierIdx*3 + 1;
-      const nextTierLevel = tierStartLevel + 3;
-      const intoTier = state.level - tierStartLevel;
-      const pct = Math.max(0, Math.min(100, (intoTier/3)*100));
-      progFill.style.width = pct+'%';
-      const levelsLeft = nextTierLevel - state.level;
-      progLabel.textContent = levelsLeft<=0 ? 'Evoluindo...' : levelsLeft+(levelsLeft===1?' nível':' níveis')+' para a próxima evolução';
-    }
-  }
-
-  if(evolved){
-    state.lastAvatarTier = tierIdx;
-    if(stage){
-      stage.classList.add('evolved');
-      setTimeout(()=>stage.classList.remove('evolved'), 850);
-    }
-    setTimeout(()=>showToast('SEU AVATAR EVOLUIU · AGORA VOCÊ É '+(rankLabel==='LENDA'?'':'UM ')+rankLabel), 550);
-    saveState();
-  } else if(tierIdx !== state.lastAvatarTier){
-    state.lastAvatarTier = tierIdx;
-  }
-}
-
 /* ---- Character sheet ---- */
 function buildArchetypeGrid(){
   const grid = document.getElementById('archetypeGrid');
@@ -2498,16 +2282,18 @@ function renderShop(){
     list.innerHTML = '<div class="empty">NENHUM ITEM NA LOJA — CRIE UM ABAIXO</div>';
   } else {
     state.shopItems.forEach(item=>{
+      const atFullHp = item.heal && state.playerHp >= state.playerMaxHp;
       const canAfford = item.custom ? true : state.gold >= item.cost;
+      const disabled = item.custom ? false : (!canAfford || atFullHp);
       const row = document.createElement('div');
       row.className = 'shop-item panel';
       row.innerHTML = `
         <div class="shop-item-body">
           <div class="shop-item-name">${escapeHtml(item.name)}</div>
-          <div class="shop-item-meta">${item.custom ? '<span class="shop-variable-badge">VALOR VARIÁVEL</span>' : 'RESGATE FIXO'}</div>
+          <div class="shop-item-meta">${item.custom ? '<span class="shop-variable-badge">VALOR VARIÁVEL</span>' : (item.heal ? '<span class="shop-variable-badge">RECUPERA VIDA</span>' : 'RESGATE FIXO')}</div>
         </div>
         <div class="shop-cost">${item.custom ? '?' : item.cost+' 🪙'}</div>
-        <button class="shop-buy-btn" data-buy="${item.id}" ${(!item.custom && !canAfford)?'disabled':''}>${item.custom?'RESGATAR':'COMPRAR'}</button>
+        <button class="shop-buy-btn" data-buy="${item.id}" ${disabled?'disabled':''} title="${atFullHp?'Vida já está cheia':''}">${item.custom?'RESGATAR':(item.heal?'USAR':'COMPRAR')}</button>
         <button class="h-del" data-shopdel="${item.id}">✕</button>
       `;
       list.appendChild(row);
@@ -2546,7 +2332,22 @@ function redeemItem(id){
     showToast('MOEDAS INSUFICIENTES');
     return;
   }
+  if(item.heal && state.playerHp >= state.playerMaxHp){
+    showToast('VIDA JÁ ESTÁ CHEIA');
+    return;
+  }
   state.gold -= item.cost;
+  if(item.heal){
+    const before = state.playerHp;
+    state.playerHp = Math.min(state.playerMaxHp, state.playerHp + item.heal);
+    const actualHeal = state.playerHp - before;
+    state.purchaseHistory.unshift({ id:cid(), name:item.name, cost:item.cost, note:'+'+actualHeal+' HP', date:todayStr() });
+    state.purchaseHistory = state.purchaseHistory.slice(0,20);
+    showToast('USADO: '+item.name+' · +'+actualHeal+' HP · -'+item.cost+' moedas');
+    saveState();
+    render();
+    return;
+  }
   state.purchaseHistory.unshift({ id:cid(), name:item.name, cost:item.cost, note:'', date:todayStr() });
   state.purchaseHistory = state.purchaseHistory.slice(0,20);
   showToast('RESGATADO: '+item.name+' · -'+item.cost+' moedas');
