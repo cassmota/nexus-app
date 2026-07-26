@@ -2,6 +2,14 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c0c0b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NEXUS">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
 <title>NEXUS // Protocolo de Evolução</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -66,7 +74,14 @@ body::before{
   100%{transform:translateY(-105vh) translateX(var(--drift,20px)); opacity:0;}
 }
 
-.wrap{position:relative; z-index:2; max-width:980px; margin:0 auto; padding:34px 22px 90px;}
+.wrap{
+  position:relative; z-index:2; max-width:980px; margin:0 auto;
+  padding:34px 22px 90px;
+  padding-left:max(22px, env(safe-area-inset-left));
+  padding-right:max(22px, env(safe-area-inset-right));
+  padding-top:max(34px, env(safe-area-inset-top));
+  padding-bottom:max(90px, env(safe-area-inset-bottom));
+}
 
 /* ---------- IDENTITY BANNER ---------- */
 .identity-banner{
@@ -84,6 +99,25 @@ body::before{
 .identity-phrase{font-family:'Oswald'; font-size:14px; font-weight:600; color:#fff; line-height:1.5; letter-spacing:.3px; position:relative; z-index:1;}
 .identity-phrase em{color:var(--cyan); font-style:normal;}
 .identity-empty-link{font-size:10px; color:var(--violet); cursor:pointer; text-decoration:underline; letter-spacing:.5px;}
+
+.share-journey-btn{
+  position:relative; z-index:1; margin-top:14px; display:inline-flex; align-items:center; gap:7px;
+  background:transparent; border:1px solid rgba(255,77,31,0.4); color:var(--cyan);
+  font-family:'JetBrains Mono'; font-size:9.5px; letter-spacing:1.5px; padding:9px 14px; border-radius:2px; cursor:pointer;
+  transition:all .15s;
+}
+.share-journey-btn:hover{background:rgba(255,77,31,0.1); border-color:var(--cyan);}
+
+.share-modal{
+  width:100%; max-width:400px; max-height:92vh; overflow-y:auto; position:relative;
+  background:var(--panel-solid); border:1px solid var(--line-bright); padding:22px;
+  animation:pop .3s cubic-bezier(.2,1.6,.4,1) both;
+}
+.share-modal-title{font-family:'Bebas Neue'; font-size:20px; letter-spacing:3px; color:#fff; text-align:center; margin-bottom:14px;}
+.share-canvas-wrap{width:100%; border:1px solid var(--line); border-radius:2px; overflow:hidden; margin-bottom:16px;}
+.share-canvas-wrap canvas{width:100%; height:auto; display:block;}
+.share-modal-actions{display:flex; gap:10px;}
+.share-modal-actions .btn{flex:1;}
 
 /* ---------- RITUAL RING (daily progress) ---------- */
 .ritual-ring-wrap{position:relative; width:52px; height:52px; flex-shrink:0;}
@@ -655,11 +689,15 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .overlay{
   position:fixed; inset:0; background:rgba(3,6,10,0.75); backdrop-filter:blur(6px);
   display:none; align-items:center; justify-content:center; z-index:50;
+  padding:16px;
+  padding-top:max(16px, env(safe-area-inset-top));
+  padding-bottom:max(16px, env(safe-area-inset-bottom));
 }
 .overlay.show{display:flex;}
 .lvlup-card{
   text-align:center; padding:50px 60px; position:relative;
   border:1px solid var(--line-bright); background:var(--panel-solid);
+  max-width:min(420px, 100%); max-height:90vh; overflow-y:auto; box-sizing:border-box;
   animation:pop .5s cubic-bezier(.2,1.6,.4,1) both;
 }
 @keyframes pop{ from{opacity:0; transform:scale(.8);} to{opacity:1; transform:scale(1);} }
@@ -668,6 +706,7 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .lvlup-card .sub{font-size:11px; letter-spacing:5px; color:var(--dim); margin-bottom:10px;}
 .lvlup-card .big{font-family:'Oswald'; font-size:52px; font-weight:700; color:#fff; text-shadow:0 0 24px rgba(255,77,31,0.6);}
 .lvlup-card .newlvl{font-family:'Oswald'; font-size:16px; color:var(--cyan); margin-top:8px; letter-spacing:2px;}
+.redeem-card{padding:34px 36px;}
 .lvlup-card button{margin-top:24px;}
 
 /* ---------- TOAST ---------- */
@@ -688,7 +727,47 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   .archetype-grid{grid-template-columns:repeat(3,1fr);}
   .view-switch{flex-wrap:wrap;}
   .view-btn{flex:1 1 40%; font-size:10px; letter-spacing:1.5px; padding:10px 4px;}
+  input, textarea, select { font-size:16px !important; }
+
+  /* Modals: less padding, smaller display type, always fit viewport */
+  .overlay{padding:12px;}
+  .lvlup-card{padding:32px 22px; max-width:100%;}
+  .lvlup-card .big{font-size:38px;}
+  .lvlup-card .sub{font-size:9.5px; letter-spacing:3px;}
+  .lvlup-card .newlvl{font-size:13px;}
+  .day-detail-card{padding:20px 18px; max-width:100%;}
+  .share-modal{padding:16px; max-width:100%;}
+  .share-modal-title{font-size:17px;}
+  .mural-lightbox-inner{padding:14px; max-width:100%;}
+  .redeem-card{padding:26px 20px;}
+
+  /* Legibility: bump tiny meta/label text up a notch on small screens */
+  .identity-greeting, .quest-header-title, .boss-header-title, .vice-header-title,
+  .section-title, .cal-legend, .h-meta, .vice-meta, .shop-item-meta, .day-detail-eyebrow,
+  .goal-progress-nums, .avatar-progress-label, .char-hint, .quest-warn{
+    font-size:10.5px !important;
+  }
+  .brand-text span{font-size:9px;}
+  .habit .h-name, .vice-name, .shop-item-name, .goal-item-name, .day-detail-name{ font-size:13.5px; }
+
+  /* Touch targets: bigger tap area for checkboxes and small icon buttons */
+  .check, .vice-check{width:26px; height:26px;}
+  .h-del, .goal-item-del{padding:8px;}
+  .view-btn{min-height:40px;}
+  .btn{padding:12px 16px;}
+
+  /* Cards/grids: force single column where multi-column assumed desktop width */
+  .sheet-wrap{flex-direction:column;}
+  .mural-grid{columns:2 140px;}
 }
+
+@media(max-width:400px){
+  .lvlup-card .big{font-size:30px;}
+  .avatar-panel, .sheet-panel, .chart-panel{padding:16px 14px;}
+  .quest-name, .boss-name, .goal-name{font-size:14px;}
+}
+body{ -webkit-tap-highlight-color:transparent; }
+button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:manipulation; }
 </style>
 </head>
 <body>
@@ -748,6 +827,10 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   <div class="panel identity-banner" id="identityBanner">
     <div class="identity-greeting" id="identityGreeting">BOM DIA, OPERADOR</div>
     <div class="identity-phrase" id="identityPhrase">Defina quem você está se tornando na aba <em>PERSONAGEM</em> — isso aparece aqui todo dia como lembrete.</div>
+    <button class="share-journey-btn" id="shareJourneyBtn">
+      <svg viewBox="0 0 20 20" width="13" height="13"><path d="M14 6a2 2 0 100-4 2 2 0 000 4zM6 12a2 2 0 100-4 2 2 0 000 4zM14 18a2 2 0 100-4 2 2 0 000 4z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M7.7 10.9L12.3 7.1M7.7 9.1l4.6 3.8" stroke="currentColor" stroke-width="1.4"/></svg>
+      COMPARTILHAR JORNADA
+    </button>
   </div>
 
   <div class="panel player">
@@ -1121,8 +1204,22 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
   </div>
 </div>
 
+<div class="overlay" id="shareOverlay">
+  <div class="share-modal">
+    <button class="mural-lightbox-close" id="shareModalClose">✕</button>
+    <div class="share-modal-title">SUA JORNADA</div>
+    <div class="share-canvas-wrap">
+      <canvas id="shareCanvas" width="1080" height="1350"></canvas>
+    </div>
+    <div class="share-modal-actions">
+      <button class="btn btn-ghost" id="shareDownloadBtn">BAIXAR IMAGEM</button>
+      <button class="btn btn-primary" id="shareNativeBtn" style="background:var(--cyan); border-color:var(--cyan);">COMPARTILHAR</button>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="redeemOverlay">
-  <div class="lvlup-card" style="text-align:left; padding:34px 36px;">
+  <div class="lvlup-card redeem-card" style="text-align:left;">
     <div class="sub" style="text-align:center; color:#ffcf8a;">RESGATE DE VALOR VARIÁVEL</div>
     <div class="big" style="text-align:center; font-size:22px; color:#ffb020; margin-bottom:18px;" id="redeemItemName">Vida Real</div>
     <label class="sub">O QUE VOCÊ VAI COMPRAR? (opcional)</label>
@@ -1180,6 +1277,14 @@ footer{text-align:center; margin-top:30px; font-size:9px; letter-spacing:3px; co
 <div class="toast" id="toast"></div>
 
 <script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('sw.js').catch(err=>{
+      console.warn('Service worker não registrado:', err);
+    });
+  });
+}
+
 /* ======================================================================
    CONFIGURAÇÃO DO FIREBASE
    Cole aqui o objeto firebaseConfig do seu projeto (Console do Firebase
@@ -3132,6 +3237,186 @@ function celebrateCompletion(el, xp, color){
   document.body.appendChild(xpTxt);
   setTimeout(()=>xpTxt.remove(), 1150);
 }
+
+/* ---- Share Journey ---- */
+async function drawShareCard(){
+  const canvas = document.getElementById('shareCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  try{ await document.fonts.load('700 90px "Bebas Neue"'); }catch(e){}
+  try{ await document.fonts.load('600 40px "Oswald"'); }catch(e){}
+  try{ await document.fonts.load('700 34px "JetBrains Mono"'); }catch(e){}
+  try{ await document.fonts.ready; }catch(e){}
+
+  // background
+  const bgGrad = ctx.createLinearGradient(0,0,0,H);
+  bgGrad.addColorStop(0,'#141311');
+  bgGrad.addColorStop(1,'#0c0c0b');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0,0,W,H);
+
+  const glow1 = ctx.createRadialGradient(W*0.15,H*0.05,0,W*0.15,H*0.05,W*0.7);
+  glow1.addColorStop(0,'rgba(255,77,31,0.16)');
+  glow1.addColorStop(1,'rgba(255,77,31,0)');
+  ctx.fillStyle = glow1;
+  ctx.fillRect(0,0,W,H);
+
+  const glow2 = ctx.createRadialGradient(W*0.9,H*0.15,0,W*0.9,H*0.15,W*0.5);
+  glow2.addColorStop(0,'rgba(255,212,0,0.1)');
+  glow2.addColorStop(1,'rgba(255,212,0,0)');
+  ctx.fillStyle = glow2;
+  ctx.fillRect(0,0,W,H);
+
+  // subtle diagonal texture lines
+  ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+  ctx.lineWidth = 1;
+  for(let i=-H;i<W;i+=26){
+    ctx.beginPath();
+    ctx.moveTo(i,0);
+    ctx.lineTo(i+H,H);
+    ctx.stroke();
+  }
+
+  const pad = 70;
+
+  // wordmark
+  ctx.fillStyle = '#ff4d1f';
+  ctx.font = '700 26px Oswald, sans-serif';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText('N E X U S', pad, 110);
+  ctx.fillStyle = '#8c887f';
+  ctx.font = '500 16px "JetBrains Mono", monospace';
+  ctx.fillText('PROTOCOLO DE EVOLUÇÃO', pad, 138);
+
+  // name
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '400 90px "Bebas Neue", sans-serif';
+  const displayName = (state.name || 'OPERADOR').toUpperCase();
+  ctx.fillText(displayName, pad, 250);
+
+  // rank tag
+  const rankIdx = Math.min(RANKS.length-1, Math.floor((state.level-1)/3));
+  const rankLabel = RANKS[rankIdx];
+  ctx.font = '700 22px "JetBrains Mono", monospace';
+  const rankText = rankLabel+'  ·  NÍVEL '+state.level;
+  ctx.fillStyle = '#ff4d1f';
+  ctx.fillText(rankText, pad, 295);
+
+  // divider
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(pad, 340);
+  ctx.lineTo(W-pad, 340);
+  ctx.stroke();
+
+  // identity phrase
+  let yCursor = 400;
+  const goal = state.character && state.character.goal ? state.character.goal.trim() : '';
+  if(goal){
+    ctx.fillStyle = '#ffd400';
+    ctx.font = '400 30px "Oswald", sans-serif';
+    const words = goal.split(' ');
+    let line = '';
+    const maxWidth = W - pad*2;
+    const lines = [];
+    words.forEach(w=>{
+      const test = (line+' '+w).trim();
+      if(ctx.measureText('"'+test+'"').width > maxWidth){ lines.push(line); line = w; }
+      else { line = test; }
+    });
+    if(line) lines.push(line);
+    lines.slice(0,3).forEach((l,i)=>{
+      ctx.fillText((i===0?'"':'')+l+(i===Math.min(lines.length,3)-1?'"':''), pad, yCursor + i*40);
+    });
+    yCursor += lines.slice(0,3).length*40 + 50;
+  } else {
+    yCursor = 380;
+  }
+
+  // stat grid
+  let totalHabits = 0, totalXpEver = 0;
+  Object.values(state.dailyLog||{}).forEach(log=>{ totalHabits += (log.habitsDone||0); totalXpEver += (log.xpGained||0); });
+  let topCat = null, topCatVal = -1;
+  Object.keys(state.categoryXp||{}).forEach(k=>{ if(state.categoryXp[k] > topCatVal){ topCatVal = state.categoryXp[k]; topCat = k; } });
+  const topCatLabel = topCat ? (CATS[topCat] ? CATS[topCat].label : topCat) : '—';
+
+  const stats = [
+    { label:'SEQUÊNCIA ATUAL', value: state.streak+' DIAS', color:'#ffb020' },
+    { label:'MOEDAS', value: String(state.gold), color:'#ffd400' },
+    { label:'HÁBITOS CUMPRIDOS', value: String(totalHabits), color:'#ff4d1f' },
+    { label:'FOCO PRINCIPAL', value: topCatLabel, color:'#22c55e' },
+  ];
+
+  const colW = (W - pad*2)/2;
+  const rowH = 130;
+  stats.forEach((s,i)=>{
+    const col = i%2, row = Math.floor(i/2);
+    const x = pad + col*colW;
+    const y = yCursor + row*rowH;
+    ctx.fillStyle = 'rgba(255,255,255,0.035)';
+    ctx.fillRect(x, y, colW-16, rowH-16);
+    ctx.fillStyle = s.color;
+    ctx.font = '700 44px "Bebas Neue", sans-serif';
+    ctx.fillText(s.value, x+22, y+62);
+    ctx.fillStyle = '#8c887f';
+    ctx.font = '500 14px "JetBrains Mono", monospace';
+    ctx.fillText(s.label, x+22, y+92);
+  });
+
+  // footer
+  const footerY = H - 60;
+  ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+  ctx.beginPath();
+  ctx.moveTo(pad, footerY-30);
+  ctx.lineTo(W-pad, footerY-30);
+  ctx.stroke();
+  ctx.fillStyle = '#4a463f';
+  ctx.font = '500 15px "JetBrains Mono", monospace';
+  const dateStr = new Date().toLocaleDateString('pt-BR', {day:'2-digit', month:'long', year:'numeric'});
+  ctx.fillText(dateStr.toUpperCase(), pad, footerY);
+  ctx.textAlign = 'right';
+  ctx.fillText('NEXUS · EVOLUÇÃO CONTÍNUA', W-pad, footerY);
+  ctx.textAlign = 'left';
+}
+
+function openShareModal(){
+  document.getElementById('shareOverlay').classList.add('show');
+  drawShareCard();
+}
+document.getElementById('shareJourneyBtn').onclick = openShareModal;
+document.getElementById('shareModalClose').onclick = ()=>document.getElementById('shareOverlay').classList.remove('show');
+document.getElementById('shareOverlay').addEventListener('click', (e)=>{
+  if(e.target.id==='shareOverlay') document.getElementById('shareOverlay').classList.remove('show');
+});
+
+document.getElementById('shareDownloadBtn').onclick = ()=>{
+  const canvas = document.getElementById('shareCanvas');
+  const link = document.createElement('a');
+  link.download = 'nexus-jornada-'+todayStr()+'.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+};
+
+document.getElementById('shareNativeBtn').onclick = async ()=>{
+  const canvas = document.getElementById('shareCanvas');
+  canvas.toBlob(async (blob)=>{
+    if(!blob) return;
+    const file = new File([blob], 'nexus-jornada.png', { type:'image/png' });
+    if(navigator.share && navigator.canShare && navigator.canShare({files:[file]})){
+      try{
+        await navigator.share({ files:[file], title:'Minha jornada no NEXUS', text:'Nível '+state.level+' · '+state.streak+' dias de sequência 🔥' });
+      }catch(e){ /* usuário cancelou */ }
+    } else {
+      const link = document.createElement('a');
+      link.download = 'nexus-jornada-'+todayStr()+'.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('IMAGEM BAIXADA — SEU NAVEGADOR NÃO SUPORTA COMPARTILHAMENTO DIRETO');
+    }
+  }, 'image/png');
+};
 
 /* ---- clock ---- */
 function tickClock(){
