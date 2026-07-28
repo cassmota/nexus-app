@@ -386,6 +386,32 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .dot.d3{background:rgba(255,77,31,0.55);}
 .dot.dv{background:#ef4444;}
 
+/* ---------- EVENTS ---------- */
+.event-card{padding:26px 24px; position:relative; overflow:hidden; text-align:center;}
+.reboot-card{
+  border:1px solid rgba(255,212,0,0.3);
+  background:
+    radial-gradient(ellipse 320px 200px at 50% 0%, rgba(255,212,0,0.08), transparent 70%),
+    var(--panel);
+}
+.event-badge{
+  position:absolute; top:14px; right:14px; font-size:8.5px; letter-spacing:2px; color:#ffd400;
+  border:1px solid rgba(255,212,0,0.4); padding:3px 8px; border-radius:2px;
+}
+.event-icon{margin:6px auto 10px;}
+.event-title{font-family:'Bebas Neue'; font-size:34px; letter-spacing:5px; color:#fff;}
+.event-sub{font-size:11px; color:var(--dim); max-width:420px; margin:8px auto 20px; line-height:1.6;}
+.event-body{text-align:left; max-width:460px; margin:0 auto 22px; padding-top:18px; border-top:1px solid var(--line);}
+.event-desc{font-size:11.5px; color:var(--text); line-height:1.7; margin-bottom:16px;}
+.event-what-title{font-size:9.5px; letter-spacing:2px; color:var(--rose); font-family:'Oswald'; font-weight:600;}
+.event-list{list-style:none; margin-top:8px; padding:0;}
+.event-list li{
+  font-size:11px; color:var(--dim); line-height:1.8; padding-left:16px; position:relative;
+}
+.event-list li::before{content:'—'; position:absolute; left:0; color:var(--dimmer);}
+.event-accept-btn{background:#ffd400; border-color:#ffd400; color:#1a1204; padding:13px 28px; font-size:11px;}
+.event-accept-btn:hover{background:#ffe040; border-color:#ffe040;}
+
 /* ---------- MURAL DOS SONHOS ---------- */
 .mural-add-panel{padding:16px 20px; margin-bottom:16px;}
 .mural-grid{
@@ -831,6 +857,7 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
     <button class="view-btn" id="viewBtnShop">LOJA</button>
     <button class="view-btn" id="viewBtnGoals">QUESTS</button>
     <button class="view-btn" id="viewBtnMural">MURAL</button>
+    <button class="view-btn" id="viewBtnEvents">EVENTOS</button>
   </div>
 
   <div id="dashboardView">
@@ -1167,6 +1194,45 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
 
   </div><!-- /muralView -->
 
+  <div id="eventsView" style="display:none">
+
+    <div class="char-intro panel">
+      <div class="char-intro-title">EVENTOS ESPECIAIS</div>
+      <p class="char-intro-text">Missões fora do ciclo comum, com regras e recompensas próprias. Alguns eventos são fixos, outros vão e voltam — fique de olho aqui de tempos em tempos.</p>
+    </div>
+
+    <div class="event-card panel reboot-card">
+      <div class="event-badge">EVENTO FIXO</div>
+      <div class="event-icon">
+        <svg viewBox="0 0 40 40" width="34" height="34"><path d="M20 6a14 14 0 11-9.9 4.1" fill="none" stroke="#ffd400" stroke-width="2.4" stroke-linecap="round"/><path d="M20 2v9l7-4.5z" fill="#ffd400"/></svg>
+      </div>
+      <div class="event-title">REBOOT</div>
+      <div class="event-sub">Um recomeço de verdade — pra quem ficou um tempo fora e quer voltar sem o peso do que ficou pra trás.</div>
+
+      <div class="event-body">
+        <p class="event-desc">Aceitar essa missão zera sua jornada por completo: nível, moedas e todo o histórico visual dos hábitos (o pixel grid) voltam à estaca zero. É uma decisão simbólica — um jeito de fechar um capítulo e abrir outro, sem carregar o que não deu certo antes.</p>
+        <div class="event-what-happens">
+          <div class="event-what-title">O QUE ACONTECE:</div>
+          <ul class="event-list">
+            <li>Nível volta para 1 e o XP zera</li>
+            <li>Todas as moedas são perdidas</li>
+            <li>Vida é restaurada a 100%</li>
+            <li>Sequência de dias (streak) reinicia</li>
+            <li>O histórico do pixel grid de todos os hábitos e maus hábitos é apagado</li>
+          </ul>
+          <div class="event-what-title" style="color:var(--emerald); margin-top:12px;">O QUE PERMANECE:</div>
+          <ul class="event-list">
+            <li>Seus hábitos, maus hábitos, quests e o mural dos sonhos continuam do jeito que estão</li>
+            <li>Sua identidade, foto e arquétipo na ficha de personagem</li>
+          </ul>
+        </div>
+      </div>
+
+      <button class="btn btn-primary event-accept-btn" id="rebootAcceptBtn">ACEITAR MISSÃO REBOOT</button>
+    </div>
+
+  </div><!-- /eventsView -->
+
   <footer>SISTEMA NEXUS &nbsp;·&nbsp; EVOLUÇÃO CONTÍNUA &nbsp;·&nbsp; v1.0</footer>
 </div>
 
@@ -1282,6 +1348,28 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
     <div class="big" style="color:var(--emerald); text-shadow:0 0 24px rgba(34,197,94,0.6);">ESCUDO ABSORVEU O GOLPE</div>
     <p class="char-hint" style="text-align:center; margin-top:12px; color:#a8f2d4;">Sua vida zerou, mas seu nível e suas moedas continuam intactos. Todo personagem tem direito a um tropeço — a proteção volta na próxima segunda-feira.</p>
     <button class="btn btn-primary" id="shieldOverlayClose" style="background:var(--emerald); border-color:var(--emerald); color:#04140c;">CONTINUAR</button>
+  </div>
+</div>
+
+<div class="overlay" id="rebootConfirmOverlay">
+  <div class="lvlup-card reboot-confirm-card" style="text-align:left;">
+    <div class="sub" style="text-align:center; color:#ffcf8a;">CONFIRMAÇÃO NECESSÁRIA</div>
+    <div class="big" style="text-align:center; font-size:26px; color:#ffd400;">TEM CERTEZA?</div>
+    <p class="char-hint" style="text-align:center; margin:14px 0;">Essa ação não pode ser desfeita. Você vai perder <b id="rebootLossPreview" style="color:var(--text);">nível e moedas atuais</b> e todo o histórico visual dos hábitos.</p>
+    <div class="form-actions" style="margin-top:18px; justify-content:center;">
+      <button class="btn btn-ghost" id="rebootCancelBtn">CANCELAR</button>
+      <button class="btn btn-primary" id="rebootConfirmBtn" style="background:#ffd400; border-color:#ffd400; color:#1a1204;">SIM, RECOMEÇAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="rebootDoneOverlay">
+  <div class="lvlup-card">
+    <div class="r" style="border-color:#ffd400 !important;"></div>
+    <div class="sub" style="color:#ffe89a;">REBOOT CONCLUÍDO</div>
+    <div class="big" style="color:#ffd400; text-shadow:0 0 24px rgba(255,212,0,0.6);">BEM-VINDO DE VOLTA</div>
+    <p class="char-hint" style="text-align:center; margin-top:12px; color:#ffe89a;">A página está em branco de novo. O que você faz com ela a partir de agora é o que importa — não o que ficou pra trás.</p>
+    <button class="btn btn-primary" id="rebootDoneClose" style="background:#ffd400; border-color:#ffd400; color:#1a1204;">COMEÇAR DE NOVO</button>
   </div>
 </div>
 
@@ -1885,6 +1973,46 @@ function showShield(){
   document.getElementById('shieldOverlay').classList.add('show');
 }
 document.getElementById('shieldOverlayClose').onclick = ()=>document.getElementById('shieldOverlay').classList.remove('show');
+
+/* ---- Evento: REBOOT ---- */
+document.getElementById('rebootAcceptBtn').onclick = ()=>{
+  document.getElementById('rebootLossPreview').textContent =
+    'nível '+state.level+' e '+state.gold+' moedas';
+  document.getElementById('rebootConfirmOverlay').classList.add('show');
+};
+document.getElementById('rebootCancelBtn').onclick = ()=>{
+  document.getElementById('rebootConfirmOverlay').classList.remove('show');
+};
+document.getElementById('rebootConfirmBtn').onclick = ()=>{
+  document.getElementById('rebootConfirmOverlay').classList.remove('show');
+  performReboot();
+  setTimeout(()=>document.getElementById('rebootDoneOverlay').classList.add('show'), 300);
+};
+document.getElementById('rebootDoneClose').onclick = ()=>{
+  document.getElementById('rebootDoneOverlay').classList.remove('show');
+  setView('dashboard');
+};
+
+function performReboot(){
+  state.level = 1;
+  state.xp = 0;
+  state.gold = 0;
+  state.playerHp = state.playerMaxHp;
+  state.streak = 0;
+  state.lastActiveDate = null;
+  state.dailyLog = {};
+  state.shieldUsed = false;
+  state.shieldWeekStart = null;
+  state.quest = null;
+  Object.keys(state.categoryXp||{}).forEach(k=>{ state.categoryXp[k] = 0; });
+  state.habits.forEach(h=>{ h.done = false; h.streak = 0; h.lastDone = null; });
+  state.vices.forEach(v=>{ v.done = false; v.lastDone = null; });
+  state.bosses.forEach(b=>{ b.hp = b.maxHp; b.defeated = false; });
+  saveState();
+  render();
+  showToast('REBOOT CONCLUÍDO — SUA JORNADA COMEÇA DE NOVO');
+}
+
 
 function renderVices(){
   const list = document.getElementById('viceList');
@@ -2598,12 +2726,14 @@ const viewBtnCal = document.getElementById('viewBtnCal');
 const viewBtnShop = document.getElementById('viewBtnShop');
 const viewBtnGoals = document.getElementById('viewBtnGoals');
 const viewBtnMural = document.getElementById('viewBtnMural');
+const viewBtnEvents = document.getElementById('viewBtnEvents');
 const dashboardView = document.getElementById('dashboardView');
 const characterView = document.getElementById('characterView');
 const calendarView = document.getElementById('calendarView');
 const shopView = document.getElementById('shopView');
 const goalsView = document.getElementById('goalsView');
 const muralView = document.getElementById('muralView');
+const eventsView = document.getElementById('eventsView');
 function setView(v){
   activeView = v;
   dashboardView.style.display = v==='dashboard' ? '' : 'none';
@@ -2612,12 +2742,14 @@ function setView(v){
   shopView.style.display = v==='shop' ? '' : 'none';
   goalsView.style.display = v==='goals' ? '' : 'none';
   muralView.style.display = v==='mural' ? '' : 'none';
+  eventsView.style.display = v==='events' ? '' : 'none';
   viewBtnDash.classList.toggle('on', v==='dashboard');
   viewBtnChar.classList.toggle('on', v==='character');
   viewBtnCal.classList.toggle('on', v==='calendar');
   viewBtnShop.classList.toggle('on', v==='shop');
   viewBtnGoals.classList.toggle('on', v==='goals');
   viewBtnMural.classList.toggle('on', v==='mural');
+  viewBtnEvents.classList.toggle('on', v==='events');
 }
 viewBtnDash.onclick = ()=>setView('dashboard');
 viewBtnChar.onclick = ()=>setView('character');
@@ -2625,6 +2757,7 @@ viewBtnCal.onclick = ()=>setView('calendar');
 viewBtnShop.onclick = ()=>setView('shop');
 viewBtnGoals.onclick = ()=>setView('goals');
 viewBtnMural.onclick = ()=>setView('mural');
+viewBtnEvents.onclick = ()=>setView('events');
 
 
 /* ---- Random Quest ---- */
