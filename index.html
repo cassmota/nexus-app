@@ -8,7 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="NEXUS">
-
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.json">
 <title>NEXUS // Protocolo de Evolução</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -250,11 +251,21 @@ body::before{
 
 /* ---------- HABIT LIST ---------- */
 .habit{
-  display:flex; align-items:center; gap:14px; padding:15px 18px; margin-bottom:8px;
+  display:flex; flex-direction:column; gap:10px; padding:15px 18px; margin-bottom:8px;
   border-left:2px solid var(--cat-color, var(--cyan));
   animation:rise .35s ease both;
 }
+.habit-top{display:flex; align-items:center; gap:14px;}
 @keyframes rise{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+.day-tracker{display:flex; flex-wrap:wrap; gap:3px; padding-left:36px;}
+.day-tracker-cell{
+  width:11px; height:11px; border-radius:2.5px; flex-shrink:0;
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.05);
+  transition:transform .1s ease;
+}
+.day-tracker-cell.filled{border-color:transparent;}
+.day-tracker-cell.today{box-shadow:0 0 0 1px var(--cat-color, var(--cyan));}
+.day-tracker-cell:hover{transform:scale(1.35);}
 .check{
   width:22px; height:22px; border:1px solid var(--dimmer); border-radius:3px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s;
@@ -603,10 +614,11 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .vice-header-title{display:flex; align-items:center; gap:8px; font-family:'Oswald'; font-size:13px; letter-spacing:3px; color:#ff8a9a;}
 .vice-sub{font-size:10px; letter-spacing:1px; color:var(--dim);}
 .vice{
-  display:flex; align-items:center; gap:14px; padding:15px 18px; margin-bottom:8px;
+  display:flex; flex-direction:column; gap:10px; padding:15px 18px; margin-bottom:8px;
   border-left:2px solid rgba(255,60,90,0.5);
   animation:rise .35s ease both;
 }
+.vice-top{display:flex; align-items:center; gap:14px;}
 .vice-check{
   width:22px; height:22px; border:1px solid rgba(255,90,110,0.4); border-radius:3px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s;
@@ -1677,6 +1689,27 @@ function renderTabs(){
   });
 }
 
+function buildDayTrackerHTML(kind, itemId, color, days){
+  days = days || 35;
+  const today = todayStr();
+  let cells = '';
+  for(let i=days-1; i>=0; i--){
+    const d = new Date();
+    d.setDate(d.getDate()-i);
+    const ds = localDateStr(d);
+    const log = state.dailyLog[ds];
+    let done = false;
+    if(log){
+      if(kind==='habit') done = (log.habitsList||[]).some(e=>e.habitId===itemId);
+      else done = (log.vicesList||[]).some(e=>e.viceId===itemId);
+    }
+    const isToday = ds===today;
+    const style = done ? ('background:'+color+';') : '';
+    cells += `<div class="day-tracker-cell ${done?'filled':''} ${isToday?'today':''}" style="${style}" title="${ds}${done?(kind==='habit'?' · concluído':' · marcado'):''}"></div>`;
+  }
+  return cells;
+}
+
 function renderHabits(){
   const list = document.getElementById('habitList');
   list.innerHTML = '';
@@ -1691,13 +1724,16 @@ function renderHabits(){
     row.className = 'habit panel';
     row.style.setProperty('--cat-color', c.color);
     row.innerHTML = `
-      <div class="check ${h.done?'done':''}" data-id="${h.id}"></div>
-      <div class="h-body">
-        <div class="h-name ${h.done?'done':''}">${escapeHtml(h.name)}</div>
-        <div class="h-meta"><span><span class="cat-dot" style="background:${c.color}"></span>${c.label}</span><span>🔥 ${h.streak} dias</span></div>
+      <div class="habit-top">
+        <div class="check ${h.done?'done':''}" data-id="${h.id}"></div>
+        <div class="h-body">
+          <div class="h-name ${h.done?'done':''}">${escapeHtml(h.name)}</div>
+          <div class="h-meta"><span><span class="cat-dot" style="background:${c.color}"></span>${c.label}</span><span>🔥 ${h.streak} dias</span></div>
+        </div>
+        <div class="h-xp">+${h.xp} XP</div>
+        <button class="h-del" data-del="${h.id}">✕</button>
       </div>
-      <div class="h-xp">+${h.xp} XP</div>
-      <button class="h-del" data-del="${h.id}">✕</button>
+      <div class="day-tracker">${buildDayTrackerHTML('habit', h.id, c.color)}</div>
     `;
     list.appendChild(row);
   });
@@ -1861,13 +1897,16 @@ function renderVices(){
     const row = document.createElement('div');
     row.className = 'vice panel';
     row.innerHTML = `
-      <div class="vice-check ${v.done?'done':''}" data-viceid="${v.id}"></div>
-      <div class="h-body">
-        <div class="vice-name ${v.done?'done':''}">${escapeHtml(v.name)}</div>
-        <div class="vice-meta">${v.done?'marcado hoje':'em aberto'}</div>
+      <div class="vice-top">
+        <div class="vice-check ${v.done?'done':''}" data-viceid="${v.id}"></div>
+        <div class="h-body">
+          <div class="vice-name ${v.done?'done':''}">${escapeHtml(v.name)}</div>
+          <div class="vice-meta">${v.done?'marcado hoje':'em aberto'}</div>
+        </div>
+        <div class="vice-dmg">-${v.dmg} HP</div>
+        <button class="h-del" data-vicedel="${v.id}">✕</button>
       </div>
-      <div class="vice-dmg">-${v.dmg} HP</div>
-      <button class="h-del" data-vicedel="${v.id}">✕</button>
+      <div class="day-tracker">${buildDayTrackerHTML('vice', v.id, '#ef4444')}</div>
     `;
     list.appendChild(row);
   });
