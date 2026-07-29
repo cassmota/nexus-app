@@ -457,6 +457,10 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 
 @media(max-width:640px){
   .mural-grid{columns:2 150px;}
+  .path-grid{grid-template-columns:repeat(auto-fill, 62px);}
+  .path-tile{width:62px; height:62px;}
+  .path-tile .tile-cost{font-size:10.5px;}
+  .path-tile .tile-type-icon{font-size:14px;}
 }
 
 /* ---------- DAY DETAIL MODAL ---------- */
@@ -597,6 +601,81 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .history-left{color:var(--text);}
 .history-left span{display:block; font-size:9px; color:var(--dim); margin-top:2px; letter-spacing:1px;}
 .history-cost{color:#ffb020; font-weight:700; letter-spacing:1px; flex-shrink:0;}
+
+/* Quick item (Poção de Vida) — reuses shop-item look, standalone above the path */
+.quick-item-panel{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:16px 18px; margin-bottom:22px; border-left:2px solid #22c55e;
+}
+.quick-item-body{display:flex; align-items:center; gap:12px;}
+.quick-item-icon{font-size:22px;}
+.quick-item-name{font-family:'Oswald'; font-size:14px; font-weight:500; color:var(--text);}
+.quick-item-meta{font-size:9px; color:var(--dim); letter-spacing:.5px; margin-top:2px;}
+
+/* ---------- REWARD PATH (TRILHA) — grade de quadradinhos clicáveis ---------- */
+.path-grid{
+  display:grid; grid-template-columns:repeat(auto-fill, 74px); gap:9px;
+  justify-content:start; padding:6px 2px;
+}
+.path-tile{
+  position:relative; width:74px; height:74px; border-radius:6px; cursor:default;
+  background:var(--panel); border:1px solid var(--line);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  user-select:none;
+}
+.path-tile .tile-step{position:absolute; top:4px; left:6px; font-size:8px; color:var(--dimmer); font-family:'JetBrains Mono';}
+.path-tile .tile-type-icon{font-size:16px; line-height:1;}
+.path-tile .tile-cost{font-family:'JetBrains Mono'; font-weight:700; font-size:12px; color:var(--text);}
+.path-tile .tile-cost .coin{font-size:9px; opacity:.7;}
+.path-tile .tile-edit{
+  position:absolute; top:3px; right:3px; width:18px; height:18px; border-radius:3px;
+  background:rgba(0,0,0,0.35); border:none; color:var(--dim); font-size:9px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+.path-tile .tile-edit:hover{color:#fff; background:rgba(0,0,0,0.6);}
+
+/* locked */
+.path-tile.locked{opacity:.4; filter:grayscale(.5);}
+.path-tile.locked .tile-cost{color:var(--dim);}
+
+/* current / clickable */
+.path-tile.current{cursor:pointer; animation:tilePulse 1.6s ease-in-out infinite;}
+.path-tile.current:hover{transform:translateY(-3px) scale(1.04);}
+.path-tile.current:active{transform:translateY(0) scale(.97);}
+.path-tile.current.type-progress{border-color:var(--cyan); box-shadow:0 0 0 3px rgba(255,77,31,0.15);}
+.path-tile.current.type-reward{border-color:#ffb020; box-shadow:0 0 0 3px rgba(255,176,32,0.15);}
+.path-tile.current.type-cash{border-color:#22c55e; box-shadow:0 0 0 3px rgba(34,197,94,0.15);}
+.path-tile.current .tile-cost{color:#fff;}
+@keyframes tilePulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(255,176,32,0.15);}
+  50%{box-shadow:0 0 0 7px rgba(255,176,32,0.05);}
+}
+.path-tile.current.type-progress{animation-name:tilePulseCyan;}
+.path-tile.current.type-cash{animation-name:tilePulseGreen;}
+@keyframes tilePulseCyan{ 0%,100%{box-shadow:0 0 0 3px rgba(255,77,31,0.18);} 50%{box-shadow:0 0 0 7px rgba(255,77,31,0.05);} }
+@keyframes tilePulseGreen{ 0%,100%{box-shadow:0 0 0 3px rgba(34,197,94,0.18);} 50%{box-shadow:0 0 0 7px rgba(34,197,94,0.05);} }
+.path-tile.current.unaffordable{animation:none; opacity:.55; cursor:not-allowed;}
+.path-tile.current.unaffordable:hover{transform:none;}
+
+/* claimed */
+.path-tile.claimed{cursor:default;}
+.path-tile.claimed.type-progress{background:rgba(255,77,31,0.12); border-color:rgba(255,77,31,0.3);}
+.path-tile.claimed.type-reward{background:rgba(255,176,32,0.12); border-color:rgba(255,176,32,0.3);}
+.path-tile.claimed.type-cash{background:rgba(34,197,94,0.12); border-color:rgba(34,197,94,0.3);}
+.path-tile.claimed .tile-check{position:absolute; bottom:4px; right:5px; font-size:11px; color:#22c55e;}
+
+.path-current-detail{
+  margin-top:14px; padding:14px 16px; border-radius:2px; border:1px solid var(--line-bright);
+  background:var(--panel); display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+}
+.path-current-name{font-family:'Oswald'; font-size:14px; color:var(--text); font-weight:500;}
+.path-current-tag{font-size:8.5px; letter-spacing:1.5px; padding:2px 7px; border-radius:2px; margin-left:8px; vertical-align:middle;}
+.path-current-tag.reward{color:#ffb020; border:1px solid rgba(255,176,32,0.4);}
+.path-current-tag.cash{color:#22c55e; border:1px solid rgba(34,197,94,0.4);}
+.path-current-tag.progress{color:var(--cyan); border:1px solid rgba(255,77,31,0.4);}
+.path-current-action-hint{font-size:10px; color:var(--dim); letter-spacing:.5px;}
+
 
 /* ---------- VIEW SWITCH ---------- */
 .view-switch{display:flex; gap:8px; margin-bottom:22px;}
@@ -1122,33 +1201,27 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
     </div>
 
     <div class="char-intro panel">
-      <div class="char-intro-title">ECONOMIA DE FICHAS</div>
-      <p class="char-intro-text">Moeda só motiva de verdade quando pode ser trocada por algo que você realmente quer. Cadastre recompensas reais e resgate com o ouro que você conquistou nos hábitos — inclusive o item especial <em>Vida Real</em>, onde você mesmo define o preço na hora de resgatar.</p>
+      <div class="char-intro-title">A TRILHA</div>
+      <p class="char-intro-text">Cada passo custa mais que o anterior — de propósito. Progresso fácil vira rotina sem graça rápido demais; um caminho que exige esforço crescente mantém a recompensa valendo a pena. Suba a trilha gastando o ouro que seus hábitos geram, e desbloqueie prêmios e marcos de dinheiro real pra gastar sem culpa.</p>
     </div>
 
-    <div class="panel" style="padding:14px 14px 6px;">
-      <div id="shopList"></div>
-      <button class="add-toggle" id="shopAddToggle">+ NOVO ITEM</button>
-      <div class="add-form" id="shopAddForm">
-        <input type="text" id="shopName" placeholder="Nome do item — ex: 1 hora de jogo" maxlength="40">
-        <div class="row2" style="flex-direction:column; gap:14px;">
-          <div>
-            <label class="sub">TIPO DE PREÇO</label>
-            <div class="chip-group" id="shopTypeChips"></div>
-          </div>
-          <div id="shopCostBlock">
-            <label class="sub">CUSTO (MOEDAS)</label>
-            <input type="number" id="shopCost" min="1" placeholder="Ex: 50" class="char-input">
-          </div>
-        </div>
-        <div class="form-actions">
-          <button class="btn btn-ghost" id="shopCancelAdd">CANCELAR</button>
-          <button class="btn btn-primary" id="shopConfirmAdd" style="background:#ffb020; border-color:#ffb020; color:#160e02;">CRIAR</button>
+    <div class="panel quick-item-panel">
+      <div class="quick-item-body">
+        <div class="quick-item-icon">💊</div>
+        <div>
+          <div class="quick-item-name">Poção de Vida</div>
+          <div class="quick-item-meta">Recupera 25 HP na hora — não faz parte da trilha</div>
         </div>
       </div>
+      <button class="shop-buy-btn" id="potionBuyBtn">20 🪙 · USAR</button>
     </div>
 
-    <div class="section-title" style="margin:24px 2px 10px;">HISTÓRICO DE RESGATES</div>
+    <div class="path-grid" id="pathTrack"></div>
+    <div class="path-current-detail" id="pathCurrentDetail" style="display:none;"></div>
+
+    <button class="add-toggle" id="pathExtendHint" style="pointer-events:none; opacity:.5;">A trilha continua além do que você já alcançou...</button>
+
+    <div class="section-title" style="margin:24px 2px 10px;">HISTÓRICO DE CONQUISTAS</div>
     <div class="panel" style="padding:6px 14px;">
       <div id="historyList"></div>
     </div>
@@ -1295,18 +1368,32 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
   </div>
 </div>
 
-<div class="overlay" id="redeemOverlay">
+<div class="overlay" id="pathEditOverlay">
   <div class="lvlup-card redeem-card" style="text-align:left;">
-    <div class="sub" style="text-align:center; color:#ffcf8a;">RESGATE DE VALOR VARIÁVEL</div>
-    <div class="big" style="text-align:center; font-size:22px; color:#ffb020; margin-bottom:18px;" id="redeemItemName">Vida Real</div>
-    <label class="sub">O QUE VOCÊ VAI COMPRAR? (opcional)</label>
-    <input type="text" id="redeemNote" class="char-input" maxlength="60" placeholder="Ex: Ingresso de cinema" style="margin-bottom:14px;">
-    <label class="sub">QUANTO VAI CUSTAR (MOEDAS)?</label>
-    <input type="number" id="redeemAmount" class="char-input" min="1" placeholder="Ex: 120">
-    <div class="form-actions" style="margin-top:18px;">
-      <button class="btn btn-ghost" id="redeemCancel">CANCELAR</button>
-      <button class="btn btn-primary" id="redeemConfirm" style="background:#ffb020; border-color:#ffb020; color:#160e02;">CONFIRMAR RESGATE</button>
+    <div class="sub" style="text-align:center; color:#ffcf8a;">CONFIGURAR ESTE MARCO</div>
+    <div class="big" style="text-align:center; font-size:20px; color:#ffb020; margin-bottom:18px;" id="pathEditNodeCost">Custa 300 moedas</div>
+    <div id="pathEditRewardFields">
+      <label class="sub">NOME DA RECOMPENSA</label>
+      <input type="text" id="pathEditName" class="char-input" maxlength="50" placeholder="Ex: 1 hora de jogo" style="margin-bottom:6px;">
     </div>
+    <div id="pathEditCashFields" style="display:none;">
+      <label class="sub">VALOR EM DINHEIRO REAL (R$)</label>
+      <input type="number" id="pathEditCashAmount" class="char-input" min="1" placeholder="Ex: 50">
+    </div>
+    <div class="form-actions" style="margin-top:18px;">
+      <button class="btn btn-ghost" id="pathEditCancel">CANCELAR</button>
+      <button class="btn btn-primary" id="pathEditSave" style="background:#ffb020; border-color:#ffb020; color:#160e02;">SALVAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="pathClaimOverlay">
+  <div class="lvlup-card">
+    <div class="r" style="border-color:#ffb020 !important;"></div>
+    <div class="sub" style="color:#ffe0a3;">MARCO CONQUISTADO</div>
+    <div class="big" style="color:#ffb020; text-shadow:0 0 24px rgba(255,176,32,0.6);" id="pathClaimTitle">RECOMPENSA</div>
+    <div class="newlvl" id="pathClaimSub" style="color:#ffe0a3;">1 hora de jogo</div>
+    <button class="btn btn-primary" id="pathClaimClose" style="background:#ffb020; border-color:#ffb020; color:#160e02; margin-top:10px;">CONTINUAR NA TRILHA</button>
   </div>
 </div>
 
@@ -1503,8 +1590,6 @@ let pendingBossHp = 250;
 let pendingBossHabit = null;
 let pendingViceDmg = 20;
 let pendingArchetype = 'guerreiro';
-let pendingShopType = 'fixed';
-let pendingRedeemItemId = null;
 let calRef = new Date();
 
 function localDateStr(d){
@@ -1562,12 +1647,8 @@ function defaultState(){
     character:{ age:'', archetype:'guerreiro', goal:'', style:'', behavior:'', photo:null },
     categoryXp:{ corpo:0, mente:0, disciplina:0, espirito:0, foco:0 },
     dailyLog:{},
-    shopItems:[
-      { id:cid(), name:'Vida Real', cost:null, custom:true },
-      { id:cid(), name:'Poção de Vida (+25 HP)', cost:20, custom:false, heal:25 },
-      { id:cid(), name:'30 min de série ou jogo', cost:30, custom:false },
-      { id:cid(), name:'Um doce ou sobremesa', cost:15, custom:false },
-    ],
+    pathPosition:0,
+    rewardPath: buildDefaultPath(),
     purchaseHistory:[]
   };
 }
@@ -1585,15 +1666,9 @@ function migrateAndFinalizeState(){
     if(!log.habitsList) log.habitsList = [];
     if(!log.vicesList) log.vicesList = [];
   });
-  if(!state.shopItems) state.shopItems = [
-    { id:cid(), name:'Vida Real', cost:null, custom:true },
-    { id:cid(), name:'Poção de Vida (+25 HP)', cost:20, custom:false, heal:25 },
-    { id:cid(), name:'30 min de série ou jogo', cost:30, custom:false },
-    { id:cid(), name:'Um doce ou sobremesa', cost:15, custom:false },
-  ];
-  if(!state.shopItems.some(it=>it.heal)){
-    state.shopItems.push({ id:cid(), name:'Poção de Vida (+25 HP)', cost:20, custom:false, heal:25 });
-  }
+  if(!state.rewardPath || state.rewardPath.length===0) state.rewardPath = buildDefaultPath();
+  if(state.pathPosition === undefined) state.pathPosition = 0;
+  while(state.pathPosition >= state.rewardPath.length - 2) extendPath();
   if(!state.purchaseHistory) state.purchaseHistory = [];
   if(state.playerHp === undefined) state.playerHp = 100;
   if(state.gold === undefined) state.gold = 0;
@@ -2544,39 +2619,128 @@ document.getElementById('dayDetailOverlay').addEventListener('click', (e)=>{
 });
 
 /* ---- Shop ---- */
+/* ---- Trilha de Recompensas (path) ---- */
+const PATH_STEP_SPECS = [
+  {cost:50,  type:'progress'},
+  {cost:100, type:'reward', name:'Pequena recompensa'},
+  {cost:150, type:'progress'},
+  {cost:220, type:'reward', name:'Recompensa média'},
+  {cost:300, type:'progress'},
+  {cost:400, type:'cash', cashAmount:20},
+  {cost:500, type:'progress'},
+  {cost:650, type:'reward', name:'Recompensa especial'},
+  {cost:800, type:'progress'},
+  {cost:1000,type:'reward', name:'Grande recompensa'},
+  {cost:1300,type:'progress'},
+  {cost:1600,type:'cash', cashAmount:100},
+];
+
+function buildDefaultPath(){
+  return PATH_STEP_SPECS.map((s,i)=>({
+    id:cid(), idx:i, cost:s.cost, type:s.type,
+    name:s.name||null, cashAmount:s.cashAmount||null, claimed:false
+  }));
+}
+
+function extendPath(){
+  const path = state.rewardPath;
+  const last = path[path.length-1];
+  const idx = path.length;
+  const newCost = Math.round((last.cost*1.32)/10)*10;
+  let type = 'progress';
+  if(idx % 6 === 5) type = 'cash';
+  else if(idx % 2 === 1) type = 'reward';
+  const cashAmount = type==='cash' ? Math.round(newCost/16)*1 : null;
+  path.push({
+    id:cid(), idx, cost:newCost, type,
+    name: type==='reward' ? 'Nova recompensa' : null,
+    cashAmount, claimed:false
+  });
+}
+
 function renderShop(){
   document.getElementById('shopGoldNum').textContent = state.gold;
 
-  const list = document.getElementById('shopList');
-  list.innerHTML = '';
-  if(state.shopItems.length===0){
-    list.innerHTML = '<div class="empty">NENHUM ITEM NA LOJA — CRIE UM ABAIXO</div>';
-  } else {
-    state.shopItems.forEach(item=>{
-      const atFullHp = item.heal && state.playerHp >= state.playerMaxHp;
-      const canAfford = item.custom ? true : state.gold >= item.cost;
-      const disabled = item.custom ? false : (!canAfford || atFullHp);
-      const row = document.createElement('div');
-      row.className = 'shop-item panel';
-      row.innerHTML = `
-        <div class="shop-item-body">
-          <div class="shop-item-name">${escapeHtml(item.name)}</div>
-          <div class="shop-item-meta">${item.custom ? '<span class="shop-variable-badge">VALOR VARIÁVEL</span>' : (item.heal ? '<span class="shop-variable-badge">RECUPERA VIDA</span>' : 'RESGATE FIXO')}</div>
-        </div>
-        <div class="shop-cost">${item.custom ? '?' : item.cost+' 🪙'}</div>
-        <button class="shop-buy-btn" data-buy="${item.id}" ${disabled?'disabled':''} title="${atFullHp?'Vida já está cheia':''}">${item.custom?'RESGATAR':(item.heal?'USAR':'COMPRAR')}</button>
-        <button class="h-del" data-shopdel="${item.id}">✕</button>
-      `;
-      list.appendChild(row);
-    });
+  while(state.pathPosition >= state.rewardPath.length - 2) extendPath();
+
+  const TYPE_ICON = { progress:'👣', reward:'🎁', cash:'💰' };
+  const track = document.getElementById('pathTrack');
+  track.innerHTML = '';
+  const visibleCount = Math.min(state.rewardPath.length, state.pathPosition + 18);
+  for(let i=0; i<visibleCount; i++){
+    const node = state.rewardPath[i];
+    const isClaimed = node.claimed;
+    const isCurrent = i === state.pathPosition;
+    const isLocked = i > state.pathPosition;
+    const canAfford = state.gold >= node.cost;
+
+    const tile = document.createElement('div');
+    const classes = ['path-tile', 'type-'+node.type];
+    if(isLocked) classes.push('locked');
+    if(isCurrent) classes.push('current');
+    if(isCurrent && !canAfford) classes.push('unaffordable');
+    if(isClaimed) classes.push('claimed');
+    tile.className = classes.join(' ');
+
+    const editBtn = (isCurrent && node.type!=='progress')
+      ? `<button class="tile-edit" data-pathedit="${node.id}" title="Editar">✎</button>` : '';
+
+    tile.innerHTML = `
+      <span class="tile-step">${i+1}</span>
+      ${editBtn}
+      <div class="tile-type-icon">${isClaimed ? '✓' : (isLocked ? '🔒' : TYPE_ICON[node.type])}</div>
+      <div class="tile-cost">${node.cost}<span class="coin"> 🪙</span></div>
+    `;
+
+    if(isCurrent){
+      tile.title = canAfford ? 'Clique para desbloquear' : 'Faltam '+(node.cost-state.gold)+' moedas';
+      tile.onclick = (e)=>{
+        if(e.target.closest('.tile-edit')) return;
+        advancePathNode(node.id);
+      };
+    } else if(isClaimed){
+      const label = node.type==='cash' ? ('R$ '+(node.cashAmount||0)+',00 já liberado') : (node.type==='reward' ? (node.name||'Recompensa') : 'Passagem concluída');
+      tile.title = label;
+    } else {
+      tile.title = 'Bloqueado — complete o passo atual primeiro';
+    }
+
+    track.appendChild(tile);
   }
-  list.querySelectorAll('[data-buy]').forEach(el=> el.onclick = ()=>redeemItem(el.dataset.buy));
-  list.querySelectorAll('[data-shopdel]').forEach(el=> el.onclick = ()=>deleteShopItem(el.dataset.shopdel));
+
+  document.querySelectorAll('[data-pathedit]').forEach(el=>{
+    el.onclick = (e)=>{ e.stopPropagation(); openPathEdit(el.dataset.pathedit); };
+  });
+
+  // painel de detalhe do degrau atual
+  const detail = document.getElementById('pathCurrentDetail');
+  const curNode = state.rewardPath[state.pathPosition];
+  if(curNode){
+    detail.style.display = 'flex';
+    const canAfford = state.gold >= curNode.cost;
+    let name, tagHtml;
+    if(curNode.type==='progress'){
+      name = 'Passagem simples';
+      tagHtml = '<span class="path-current-tag progress">AVANÇO</span>';
+    } else if(curNode.type==='cash'){
+      name = 'R$ '+(curNode.cashAmount||0)+',00 pra gastar sem culpa';
+      tagHtml = '<span class="path-current-tag cash">DINHEIRO REAL</span>';
+    } else {
+      name = curNode.name || 'Recompensa a definir';
+      tagHtml = '<span class="path-current-tag reward">RECOMPENSA</span>';
+    }
+    detail.innerHTML = `
+      <div><span class="path-current-name">${escapeHtml(name)}</span>${tagHtml}</div>
+      <div class="path-current-action-hint">${canAfford ? 'Clique no quadrado ' + (state.pathPosition+1) + ' pra desbloquear · -'+curNode.cost+' 🪙' : 'Faltam '+(curNode.cost-state.gold)+' 🪙 pra desbloquear'}</div>
+    `;
+  } else {
+    detail.style.display = 'none';
+  }
 
   const hist = document.getElementById('historyList');
   hist.innerHTML = '';
   if(state.purchaseHistory.length===0){
-    hist.innerHTML = '<div class="empty">NENHUM RESGATE AINDA</div>';
+    hist.innerHTML = '<div class="empty">NENHUMA CONQUISTA AINDA</div>';
   } else {
     state.purchaseHistory.slice(0,20).forEach(h=>{
       const row = document.createElement('div');
@@ -2587,125 +2751,106 @@ function renderShop(){
   }
 }
 
-function redeemItem(id){
-  const item = state.shopItems.find(x=>x.id===id);
-  if(!item) return;
-  if(item.custom){
-    pendingRedeemItemId = id;
-    document.getElementById('redeemItemName').textContent = item.name;
-    document.getElementById('redeemNote').value = '';
-    document.getElementById('redeemAmount').value = '';
-    document.getElementById('redeemOverlay').classList.add('show');
-    setTimeout(()=>document.getElementById('redeemAmount').focus(), 50);
+function advancePathNode(nodeId){
+  const idx = state.pathPosition;
+  const node = state.rewardPath[idx];
+  if(!node || node.id !== nodeId) return;
+  if(state.gold < node.cost){
+    showToast('MOEDAS INSUFICIENTES · FALTAM '+(node.cost-state.gold));
     return;
   }
-  if(state.gold < item.cost){
-    showToast('MOEDAS INSUFICIENTES');
-    return;
+  state.gold -= node.cost;
+  node.claimed = true;
+  state.pathPosition += 1;
+
+  if(node.type==='reward'){
+    const rewardName = node.name || 'Recompensa';
+    state.purchaseHistory.unshift({ id:cid(), name:rewardName, cost:node.cost, note:'', date:todayStr() });
+    state.purchaseHistory = state.purchaseHistory.slice(0,30);
+    saveState();
+    render();
+    showPathClaim('RECOMPENSA CONQUISTADA', rewardName);
+  } else if(node.type==='cash'){
+    const cashLabel = 'R$ '+(node.cashAmount||0)+',00 liberado';
+    state.purchaseHistory.unshift({ id:cid(), name:'Dinheiro real', cost:node.cost, note:cashLabel, date:todayStr() });
+    state.purchaseHistory = state.purchaseHistory.slice(0,30);
+    saveState();
+    render();
+    showPathClaim('DINHEIRO REAL LIBERADO', 'Gaste R$ '+(node.cashAmount||0)+',00 sem culpa nenhuma');
+  } else {
+    saveState();
+    render();
+    showToast('VOCÊ AVANÇOU NA TRILHA · -'+node.cost+' moedas');
   }
-  if(item.heal && state.playerHp >= state.playerMaxHp){
+}
+
+function showPathClaim(title, sub){
+  document.getElementById('pathClaimTitle').textContent = title;
+  document.getElementById('pathClaimSub').textContent = sub;
+  document.getElementById('pathClaimOverlay').classList.add('show');
+}
+document.getElementById('pathClaimClose').onclick = ()=>{
+  document.getElementById('pathClaimOverlay').classList.remove('show');
+};
+
+let pendingPathEditId = null;
+function openPathEdit(nodeId){
+  const node = state.rewardPath.find(n=>n.id===nodeId);
+  if(!node) return;
+  pendingPathEditId = nodeId;
+  document.getElementById('pathEditNodeCost').textContent = 'Custa '+node.cost+' moedas';
+  const rewardFields = document.getElementById('pathEditRewardFields');
+  const cashFields = document.getElementById('pathEditCashFields');
+  if(node.type==='cash'){
+    rewardFields.style.display = 'none';
+    cashFields.style.display = 'block';
+    document.getElementById('pathEditCashAmount').value = node.cashAmount || '';
+  } else {
+    rewardFields.style.display = 'block';
+    cashFields.style.display = 'none';
+    document.getElementById('pathEditName').value = node.name || '';
+  }
+  document.getElementById('pathEditOverlay').classList.add('show');
+}
+document.getElementById('pathEditCancel').onclick = ()=>{
+  document.getElementById('pathEditOverlay').classList.remove('show');
+};
+document.getElementById('pathEditSave').onclick = ()=>{
+  const node = state.rewardPath.find(n=>n.id===pendingPathEditId);
+  if(!node) return;
+  if(node.type==='cash'){
+    const amt = Math.floor(Number(document.getElementById('pathEditCashAmount').value));
+    if(amt && amt>0) node.cashAmount = amt;
+  } else {
+    const name = document.getElementById('pathEditName').value.trim();
+    if(name) node.name = name;
+  }
+  document.getElementById('pathEditOverlay').classList.remove('show');
+  saveState();
+  render();
+};
+
+document.getElementById('potionBuyBtn').onclick = ()=>{
+  const cost = 20, heal = 25;
+  if(state.playerHp >= state.playerMaxHp){
     showToast('VIDA JÁ ESTÁ CHEIA');
     return;
   }
-  state.gold -= item.cost;
-  if(item.heal){
-    const before = state.playerHp;
-    state.playerHp = Math.min(state.playerMaxHp, state.playerHp + item.heal);
-    const actualHeal = state.playerHp - before;
-    state.purchaseHistory.unshift({ id:cid(), name:item.name, cost:item.cost, note:'+'+actualHeal+' HP', date:todayStr() });
-    state.purchaseHistory = state.purchaseHistory.slice(0,20);
-    showToast('USADO: '+item.name+' · +'+actualHeal+' HP · -'+item.cost+' moedas');
-    saveState();
-    render();
+  if(state.gold < cost){
+    showToast('MOEDAS INSUFICIENTES');
     return;
   }
-  state.purchaseHistory.unshift({ id:cid(), name:item.name, cost:item.cost, note:'', date:todayStr() });
-  state.purchaseHistory = state.purchaseHistory.slice(0,20);
-  showToast('RESGATADO: '+item.name+' · -'+item.cost+' moedas');
-  saveState();
-  render();
-}
-
-document.getElementById('redeemCancel').onclick = ()=>{
-  document.getElementById('redeemOverlay').classList.remove('show');
-  pendingRedeemItemId = null;
-};
-document.getElementById('redeemConfirm').onclick = ()=>{
-  const item = state.shopItems.find(x=>x.id===pendingRedeemItemId);
-  if(!item) return;
-  const amount = Math.floor(Number(document.getElementById('redeemAmount').value));
-  const note = document.getElementById('redeemNote').value.trim();
-  if(!amount || amount<=0){
-    document.getElementById('redeemAmount').focus();
-    return;
-  }
-  if(amount > state.gold){
-    showToast('VOCÊ NÃO TEM '+amount+' MOEDAS — SALDO: '+state.gold);
-    return;
-  }
-  state.gold -= amount;
-  state.purchaseHistory.unshift({ id:cid(), name:item.name, cost:amount, note, date:todayStr() });
-  state.purchaseHistory = state.purchaseHistory.slice(0,20);
-  showToast('RESGATADO: '+item.name+' · -'+amount+' moedas');
-  document.getElementById('redeemOverlay').classList.remove('show');
-  pendingRedeemItemId = null;
+  state.gold -= cost;
+  const before = state.playerHp;
+  state.playerHp = Math.min(state.playerMaxHp, state.playerHp + heal);
+  const actualHeal = state.playerHp - before;
+  state.purchaseHistory.unshift({ id:cid(), name:'Poção de Vida', cost, note:'+'+actualHeal+' HP', date:todayStr() });
+  state.purchaseHistory = state.purchaseHistory.slice(0,30);
+  showToast('USADO: Poção de Vida · +'+actualHeal+' HP · -'+cost+' moedas');
   saveState();
   render();
 };
 
-function deleteShopItem(id){
-  state.shopItems = state.shopItems.filter(x=>x.id!==id);
-  saveState();
-  render();
-}
-
-const shopAddToggle = document.getElementById('shopAddToggle');
-const shopAddForm = document.getElementById('shopAddForm');
-shopAddToggle.onclick = ()=>{
-  buildShopTypeChips();
-  shopAddForm.classList.toggle('open');
-  shopAddToggle.style.display = shopAddForm.classList.contains('open')?'none':'block';
-  if(shopAddForm.classList.contains('open')) document.getElementById('shopName').focus();
-};
-document.getElementById('shopCancelAdd').onclick = ()=>{
-  shopAddForm.classList.remove('open');
-  shopAddToggle.style.display='block';
-  document.getElementById('shopName').value='';
-  document.getElementById('shopCost').value='';
-};
-
-function buildShopTypeChips(){
-  const box = document.getElementById('shopTypeChips');
-  box.innerHTML = '';
-  const types = [ {v:'fixed', label:'PREÇO FIXO'}, {v:'variable', label:'VALOR VARIÁVEL'} ];
-  types.forEach(t=>{
-    const chip = document.createElement('button');
-    chip.type='button';
-    chip.className = 'chip' + (pendingShopType===t.v?' on':'');
-    chip.style.setProperty('--chip-color', '#ffb020');
-    chip.textContent = t.label;
-    chip.onclick = ()=>{ pendingShopType = t.v; buildShopTypeChips(); };
-    box.appendChild(chip);
-  });
-  document.getElementById('shopCostBlock').style.display = pendingShopType==='fixed' ? 'block' : 'none';
-}
-
-document.getElementById('shopConfirmAdd').onclick = ()=>{
-  const name = document.getElementById('shopName').value.trim();
-  if(!name){ document.getElementById('shopName').focus(); return; }
-  let cost = null;
-  if(pendingShopType==='fixed'){
-    cost = Math.floor(Number(document.getElementById('shopCost').value));
-    if(!cost || cost<=0){ document.getElementById('shopCost').focus(); return; }
-  }
-  state.shopItems.push({ id:cid(), name, cost, custom: pendingShopType==='variable' });
-  document.getElementById('shopName').value='';
-  document.getElementById('shopCost').value='';
-  shopAddForm.classList.remove('open');
-  shopAddToggle.style.display='block';
-  saveState();
-  render();
-};
 
 document.getElementById('charSave').onclick = ()=>{
   state.name = document.getElementById('charName').value.trim() || 'Operador';
