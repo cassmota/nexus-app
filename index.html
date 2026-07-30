@@ -1634,7 +1634,7 @@ function localDateStr(d){
 function todayStr(){ return localDateStr(new Date()); }
 function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
 function xpToNext(level){ return 100 + level*50; }
-function goldForXp(xp){ return Math.max(1, Math.round(xp/2)); }
+function goldForXp(xp){ return Math.max(1, Math.round(xp/6)); }
 function weekStartStr(dateStr){
   const d = new Date(dateStr+'T00:00:00');
   const day = d.getDay();
