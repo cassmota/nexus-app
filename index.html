@@ -676,7 +676,6 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .path-current-tag.progress{color:var(--cyan); border:1px solid rgba(255,77,31,0.4);}
 .path-current-action-hint{font-size:10px; color:var(--dim); letter-spacing:.5px;}
 
-<<<<<<< HEAD
 /* ---------- REWARD PICKER MODAL ---------- */
 .reward-picker-card{max-height:80vh; overflow-y:auto;}
 .reward-options-list{display:flex; flex-direction:column; gap:7px; margin:16px 0;}
@@ -695,8 +694,6 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .reward-option-add input{flex:1; min-width:180px;}
 .reward-option-add .btn{flex-shrink:0;}
 
-=======
->>>>>>> 0a448568262a8dce9eb9f679179f8c1e1d9965e4
 
 /* ---------- VIEW SWITCH ---------- */
 .view-switch{display:flex; gap:8px; margin-bottom:22px;}
@@ -1396,7 +1393,6 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
     <div id="pathEditRewardFields">
       <label class="sub">NOME DA RECOMPENSA</label>
       <input type="text" id="pathEditName" class="char-input" maxlength="50" placeholder="Ex: 1 hora de jogo" style="margin-bottom:6px;">
-<<<<<<< HEAD
     </div>
     <div id="pathEditCashFields" style="display:none;">
       <label class="sub">VALOR EM DINHEIRO REAL (R$)</label>
@@ -1430,27 +1426,7 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
     </div>
     <div class="form-actions" style="margin-top:16px;">
       <button class="btn btn-ghost" id="rewardPickerCancel" style="width:100%;">CANCELAR</button>
-=======
->>>>>>> 0a448568262a8dce9eb9f679179f8c1e1d9965e4
     </div>
-    <div id="pathEditCashFields" style="display:none;">
-      <label class="sub">VALOR EM DINHEIRO REAL (R$)</label>
-      <input type="number" id="pathEditCashAmount" class="char-input" min="1" placeholder="Ex: 50">
-    </div>
-    <div class="form-actions" style="margin-top:18px;">
-      <button class="btn btn-ghost" id="pathEditCancel">CANCELAR</button>
-      <button class="btn btn-primary" id="pathEditSave" style="background:#ffb020; border-color:#ffb020; color:#160e02;">SALVAR</button>
-    </div>
-  </div>
-</div>
-
-<div class="overlay" id="pathClaimOverlay">
-  <div class="lvlup-card">
-    <div class="r" style="border-color:#ffb020 !important;"></div>
-    <div class="sub" style="color:#ffe0a3;">MARCO CONQUISTADO</div>
-    <div class="big" style="color:#ffb020; text-shadow:0 0 24px rgba(255,176,32,0.6);" id="pathClaimTitle">RECOMPENSA</div>
-    <div class="newlvl" id="pathClaimSub" style="color:#ffe0a3;">1 hora de jogo</div>
-    <button class="btn btn-primary" id="pathClaimClose" style="background:#ffb020; border-color:#ffb020; color:#160e02; margin-top:10px;">CONTINUAR NA TRILHA</button>
   </div>
 </div>
 
@@ -1705,7 +1681,6 @@ function defaultState(){
     categoryXp:{ corpo:0, mente:0, disciplina:0, espirito:0, foco:0 },
     dailyLog:{},
     pathPosition:0,
-<<<<<<< HEAD
     rewardOptions: [
       '🍬 Um doce ou sobremesa',
       '🎮 1 hora de videogame',
@@ -1718,8 +1693,6 @@ function defaultState(){
       '📱 30 min de redes sociais sem peso na consciência',
       '🛍️ Uma pequena compra que você queria fazer',
     ],
-=======
->>>>>>> 0a448568262a8dce9eb9f679179f8c1e1d9965e4
     rewardPath: buildDefaultPath(),
     purchaseHistory:[]
   };
@@ -1740,15 +1713,12 @@ function migrateAndFinalizeState(){
   });
   if(!state.rewardPath || state.rewardPath.length===0) state.rewardPath = buildDefaultPath();
   if(state.pathPosition === undefined) state.pathPosition = 0;
-<<<<<<< HEAD
   if(!state.rewardOptions) state.rewardOptions = [
     '🍬 Um doce ou sobremesa', '🎮 1 hora de videogame', '🎬 Assistir 1 filme',
     '📺 1 episódio extra de série', '☕ Um café ou bebida especial', '🍕 Pedir sua comida favorita',
     '🎵 Ouvir seu álbum favorito com calma', '🛌 30 min de descanso sem culpa',
     '📱 30 min de redes sociais sem peso na consciência', '🛍️ Uma pequena compra que você queria fazer',
   ];
-=======
->>>>>>> 0a448568262a8dce9eb9f679179f8c1e1d9965e4
   while(state.pathPosition >= state.rewardPath.length - 2) extendPath();
   if(!state.purchaseHistory) state.purchaseHistory = [];
   if(state.playerHp === undefined) state.playerHp = 100;
@@ -2763,11 +2733,7 @@ function renderShop(){
     if(isClaimed) classes.push('claimed');
     tile.className = classes.join(' ');
 
-<<<<<<< HEAD
     const editBtn = (isCurrent && node.type==='cash')
-=======
-    const editBtn = (isCurrent && node.type!=='progress')
->>>>>>> 0a448568262a8dce9eb9f679179f8c1e1d9965e4
       ? `<button class="tile-edit" data-pathedit="${node.id}" title="Editar">✎</button>` : '';
 
     tile.innerHTML = `
@@ -2844,7 +2810,6 @@ function advancePathNode(nodeId){
     showToast('MOEDAS INSUFICIENTES · FALTAM '+(node.cost-state.gold));
     return;
   }
-<<<<<<< HEAD
 
   if(node.type==='reward'){
     openRewardPicker(node);
@@ -2867,31 +2832,6 @@ function advancePathNode(nodeId){
     render();
     showToast('VOCÊ AVANÇOU NA TRILHA · -'+node.cost+' moedas');
   }
-=======
-  state.gold -= node.cost;
-  node.claimed = true;
-  state.pathPosition += 1;
-
-  if(node.type==='reward'){
-    const rewardName = node.name || 'Recompensa';
-    state.purchaseHistory.unshift({ id:cid(), name:rewardName, cost:node.cost, note:'', date:todayStr() });
-    state.purchaseHistory = state.purchaseHistory.slice(0,30);
-    saveState();
-    render();
-    showPathClaim('RECOMPENSA CONQUISTADA', rewardName);
-  } else if(node.type==='cash'){
-    const cashLabel = 'R$ '+(node.cashAmount||0)+',00 liberado';
-    state.purchaseHistory.unshift({ id:cid(), name:'Dinheiro real', cost:node.cost, note:cashLabel, date:todayStr() });
-    state.purchaseHistory = state.purchaseHistory.slice(0,30);
-    saveState();
-    render();
-    showPathClaim('DINHEIRO REAL LIBERADO', 'Gaste R$ '+(node.cashAmount||0)+',00 sem culpa nenhuma');
-  } else {
-    saveState();
-    render();
-    showToast('VOCÊ AVANÇOU NA TRILHA · -'+node.cost+' moedas');
-  }
->>>>>>> 0a448568262a8dce9eb9f679179f8c1e1d9965e4
 }
 
 function showPathClaim(title, sub){
@@ -2899,7 +2839,6 @@ function showPathClaim(title, sub){
   document.getElementById('pathClaimSub').textContent = sub;
   document.getElementById('pathClaimOverlay').classList.add('show');
 }
-<<<<<<< HEAD
 
 /* ---- Seletor de pequenas recompensas ---- */
 let pendingRewardPickNode = null;
@@ -2973,8 +2912,6 @@ document.getElementById('rewardOptionAddBtn').onclick = ()=>{
 document.getElementById('rewardOptionNewInput').addEventListener('keydown', (e)=>{
   if(e.key==='Enter') document.getElementById('rewardOptionAddBtn').click();
 });
-=======
->>>>>>> 0a448568262a8dce9eb9f679179f8c1e1d9965e4
 document.getElementById('pathClaimClose').onclick = ()=>{
   document.getElementById('pathClaimOverlay').classList.remove('show');
 };
