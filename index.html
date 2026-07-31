@@ -386,6 +386,26 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .dot.d3{background:rgba(255,77,31,0.55);}
 .dot.dv{background:#ef4444;}
 
+/* ---------- PRESENTES DO UNIVERSO ---------- */
+.gift-add-panel{padding:16px 20px; margin-bottom:16px;}
+.gift-photo-picker{
+  position:relative; width:100%; height:160px; margin-bottom:12px; overflow:hidden; cursor:pointer;
+  border:1px dashed var(--dimmer); border-radius:2px; background:rgba(255,212,0,0.03);
+  transition:border-color .15s;
+}
+.gift-photo-picker:hover{border-color:#ffd400;}
+.gift-photo-picker img{width:100%; height:100%; object-fit:cover; display:block;}
+.gift-photo-placeholder{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; color:var(--dim);}
+.gift-photo-placeholder span{font-size:9px; letter-spacing:1.5px;}
+.gift-card{padding:0; margin-bottom:16px; overflow:hidden; border-left:2px solid #ffd400;}
+.gift-card-photo{width:100%; max-height:280px; object-fit:cover; display:block;}
+.gift-card-body{padding:18px 20px;}
+.gift-card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;}
+.gift-card-title{font-family:'Oswald'; font-size:15px; font-weight:600; color:#fff; letter-spacing:.3px;}
+.gift-card-date{font-size:9px; color:#ffd400; letter-spacing:1.5px; margin-top:4px;}
+.gift-card-desc{font-size:12px; color:var(--dim); line-height:1.7; white-space:pre-wrap;}
+.gift-empty{text-align:center; padding:44px 20px; color:var(--dim); font-size:11px; letter-spacing:1px;}
+
 /* ---------- EVENTS ---------- */
 .event-card{padding:26px 24px; position:relative; overflow:hidden; text-align:center;}
 .reboot-card{
@@ -411,6 +431,32 @@ label.sub{font-size:9px; letter-spacing:2px; color:var(--dimmer); display:block;
 .event-list li::before{content:'—'; position:absolute; left:0; color:var(--dimmer);}
 .event-accept-btn{background:#ffd400; border-color:#ffd400; color:#1a1204; padding:13px 28px; font-size:11px;}
 .event-accept-btn:hover{background:#ffe040; border-color:#ffe040;}
+
+.event-section-header{margin:30px 2px 12px;}
+.event-section-title{font-family:'Chakra Petch','Oswald',sans-serif; font-size:12px; letter-spacing:3px; color:var(--emerald); font-weight:600;}
+.event-section-sub{font-size:10.5px; color:var(--dim); margin-top:6px; line-height:1.6; max-width:560px;}
+
+.challenge-card{padding:20px 22px; margin-bottom:12px; border-left:2px solid var(--dimmer); position:relative;}
+.challenge-card.active{border-left-color:var(--emerald);}
+.challenge-top{display:flex; align-items:flex-start; justify-content:space-between; gap:14px; margin-bottom:10px;}
+.challenge-name{font-family:'Oswald'; font-size:15px; font-weight:600; color:#fff; letter-spacing:.3px;}
+.challenge-desc{font-size:10.5px; color:var(--dim); margin-top:4px; line-height:1.6;}
+.challenge-reward-badge{
+  flex-shrink:0; font-size:11px; font-weight:700; color:#ffd400; letter-spacing:.5px; white-space:nowrap;
+  border:1px solid rgba(255,212,0,0.35); padding:6px 10px; border-radius:2px;
+}
+.challenge-progress-row{display:flex; align-items:center; gap:10px; margin-top:12px;}
+.challenge-days{display:flex; gap:5px; flex:1;}
+.challenge-day-pip{
+  flex:1; height:8px; border-radius:2px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.06);
+}
+.challenge-day-pip.done{background:var(--emerald); border-color:var(--emerald);}
+.challenge-day-pip.today{box-shadow:0 0 0 1px var(--emerald);}
+.challenge-progress-label{font-size:9.5px; color:var(--dim); letter-spacing:.5px; white-space:nowrap;}
+.challenge-actions{display:flex; gap:8px; margin-top:14px;}
+.challenge-actions .btn{flex:1;}
+.challenge-checkin-btn{background:var(--emerald); border-color:var(--emerald); color:#04140c;}
+.challenge-checkin-btn:disabled{opacity:.4; cursor:not-allowed; background:var(--dimmer); border-color:var(--dimmer); color:var(--dim);}
 
 /* ---------- MURAL DOS SONHOS ---------- */
 .mural-add-panel{padding:16px 20px; margin-bottom:16px;}
@@ -955,6 +1001,7 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
     <button class="view-btn" id="viewBtnGoals">QUESTS</button>
     <button class="view-btn" id="viewBtnMural">MURAL</button>
     <button class="view-btn" id="viewBtnEvents">EVENTOS</button>
+    <button class="view-btn" id="viewBtnGifts">PRESENTES</button>
   </div>
 
   <div id="dashboardView">
@@ -1322,7 +1369,47 @@ button, .check, .vice-check, .goal-check, .cal-cell, .mural-card { touch-action:
       <button class="btn btn-primary event-accept-btn" id="rebootAcceptBtn">ACEITAR MISSÃO REBOOT</button>
     </div>
 
+    <div class="event-section-header">
+      <div class="event-section-title">DESAFIOS DE PREPARO FÍSICO</div>
+      <p class="event-section-sub">Eventos que se repetem — aceite, cumpra os dias seguidos e receba o ouro. Quanto maior o esforço exigido, maior a recompensa.</p>
+    </div>
+
+    <div id="challengesList"></div>
+
   </div><!-- /eventsView -->
+
+  <div id="giftsView" style="display:none">
+
+    <div class="char-intro panel">
+      <div class="char-intro-title">PRESENTES DO UNIVERSO</div>
+      <p class="char-intro-text">Disciplina não é só sobre o que você constrói — também sobre o que passa a notar. Perceber as coisas boas que chegam reforça, na sua própria mente, que o esforço está valendo a pena. Registre aqui as conquistas, coincidências felizes e presentes que vieram na sua direção desde que você começou a se tornar essa pessoa.</p>
+    </div>
+
+    <div class="panel gift-add-panel">
+      <button class="add-toggle" id="giftAddToggle" style="border-color:rgba(255,212,0,0.4); color:#ffd400;">+ NOVO PRESENTE</button>
+      <div class="add-form" id="giftAddForm">
+        <input type="file" id="giftPhotoInput" accept="image/*" style="display:none;">
+        <div class="gift-photo-picker" id="giftPhotoPicker">
+          <div class="gift-photo-placeholder" id="giftPhotoPlaceholder">
+            <svg viewBox="0 0 40 40" width="26" height="26"><circle cx="20" cy="15" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M7 34c1-8 7-12 13-12s12 4 13 12" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+            <span>ADICIONAR FOTO (opcional)</span>
+          </div>
+          <img id="giftPhotoPreviewImg" style="display:none;">
+          <button class="photo-remove" id="giftPhotoRemoveBtn" style="display:none;">✕</button>
+        </div>
+        <input type="text" id="giftTitle" placeholder="O que você recebeu? — ex: Uma proposta de trabalho inesperada" maxlength="70">
+        <textarea id="giftDesc" class="char-textarea" maxlength="500" placeholder="Descreva com calma — o que aconteceu, como você se sentiu, por que isso importa pra você."></textarea>
+        <div class="form-actions">
+          <button class="btn btn-ghost" id="giftCancelAdd">CANCELAR</button>
+          <button class="btn btn-primary" id="giftConfirmAdd" style="background:#ffd400; border-color:#ffd400; color:#1a1204;">REGISTRAR PRESENTE</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="giftsList"></div>
+    <div class="gift-empty panel" id="giftsEmpty" style="display:none;">Nenhum presente registrado ainda — quando algo bom acontecer na sua jornada, volte aqui e guarde essa lembrança.</div>
+
+  </div><!-- /giftsView -->
 
   <footer>SISTEMA NEXUS &nbsp;·&nbsp; EVOLUÇÃO CONTÍNUA &nbsp;·&nbsp; v1.0</footer>
 </div>
@@ -1612,6 +1699,17 @@ const QUEST_POOL = [
   { name:'2 horas de estudo focado, sem distrações', tier:'dificil', xp:48, gold:28, minutes:180, dmg:26 },
   { name:'Treino completo, nenhuma série pulada', tier:'dificil', xp:50, gold:30, minutes:150, dmg:26 },
 ];
+
+const CHALLENGE_DEFS = [
+  { id:'wallballs',  name:'Wall Ball Blitz',      desc:'100 wall balls num único dia.',                         days:1, xp:25,  gold:45,  tier:'facil' },
+  { id:'centuria',   name:'Prova Total',           desc:'100 flexões + 100 abdominais + 100 agachamentos, tudo no mesmo dia.', days:1, xp:45, gold:110, tier:'dificil' },
+  { id:'burpee',     name:'Burpee Gauntlet',       desc:'50 burpees por dia, 3 dias seguidos.',                  days:3, xp:30,  gold:120, tier:'dificil' },
+  { id:'corrida5k',  name:'Sprint Semanal',        desc:'5km correndo ou caminhando, 3 dias seguidos.',          days:3, xp:32,  gold:130, tier:'dificil' },
+  { id:'flexoes100', name:'Century de Flexões',    desc:'100 flexões por dia, 5 dias seguidos.',                 days:5, xp:35,  gold:150, tier:'medio' },
+  { id:'abdominais', name:'Abdômen de Ferro',      desc:'100 abdominais por dia, 5 dias seguidos.',              days:5, xp:35,  gold:150, tier:'medio' },
+  { id:'agachamento',name:'Pernas de Aço',         desc:'100 agachamentos por dia, 5 dias seguidos.',            days:5, xp:35,  gold:150, tier:'medio' },
+  { id:'passos10k',  name:'10 Mil Passos',         desc:'10.000 passos por dia, 7 dias seguidos.',               days:7, xp:40,  gold:200, tier:'medio' },
+];
 const RANKS = ['RECRUTA','OPERADOR','ADEPTO','VANGUARDA','ESPECTRO','ASCENDENTE','LENDA'];
 
 let state = null;
@@ -1664,6 +1762,8 @@ function defaultState(){
     quest:null,
     quests:[],
     mural:[],
+    gifts:[],
+    challenges:{},
     habits:[
       {id:cid(), name:'Treino de força ou corrida', cat:'corpo', xp:35, done:false, lastDone:null, streak:0},
       {id:cid(), name:'Ler 15 minutos', cat:'mente', xp:10, done:false, lastDone:null, streak:0},
@@ -1729,10 +1829,13 @@ function migrateAndFinalizeState(){
   if(state.quest === undefined) state.quest = null;
   if(!state.quests) state.quests = [];
   if(!state.mural) state.mural = [];
+  if(!state.gifts) state.gifts = [];
+  if(!state.challenges) state.challenges = {};
   state.quests.forEach(g=>{ if(g.photo===undefined) g.photo = null; });
   rolloverDaily();
   rolloverBosses();
   rolloverShield();
+  rolloverChallenges();
 }
 
 let unsubscribeSnapshot = null;
@@ -1815,6 +1918,18 @@ function rolloverShield(){
   }
 }
 
+function rolloverChallenges(){
+  const today = todayStr();
+  Object.keys(state.challenges).forEach(id=>{
+    const c = state.challenges[id];
+    if(!c.accepted || c.progress<=0) return;
+    if(c.lastCheckIn && c.lastCheckIn!==today){
+      const gap = daysBetween(c.lastCheckIn, today);
+      if(gap>1){ c.progress = 0; c.lastCheckIn = null; }
+    }
+  });
+}
+
 function render(){
   document.getElementById('playerName').value = state.name;
   const rankIdx = Math.min(RANKS.length-1, Math.floor((state.level-1)/3));
@@ -1865,6 +1980,8 @@ function render(){
   renderIdentityBanner();
   renderRitualRing();
   renderMural();
+  renderGifts();
+  renderChallenges();
 }
 
 function renderAttrs(){
@@ -2139,6 +2256,116 @@ function performReboot(){
   showToast('REBOOT CONCLUÍDO — SUA JORNADA COMEÇA DE NOVO');
 }
 
+/* ---- Desafios de preparo físico (eventos repetíveis) ---- */
+function getChallengeState(id){
+  if(!state.challenges[id]) state.challenges[id] = { accepted:false, progress:0, lastCheckIn:null };
+  return state.challenges[id];
+}
+
+function renderChallenges(){
+  const list = document.getElementById('challengesList');
+  if(!list) return;
+  list.innerHTML = '';
+  const today = todayStr();
+  const tierColor = { facil:'var(--emerald)', medio:'#ffb020', dificil:'var(--rose)' };
+  const tierLabel = { facil:'FÁCIL', medio:'MÉDIO', dificil:'DIFÍCIL' };
+
+  CHALLENGE_DEFS.forEach(def=>{
+    const c = getChallengeState(def.id);
+    const card = document.createElement('div');
+    card.className = 'challenge-card panel'+(c.accepted?' active':'');
+
+    let pips = '';
+    for(let i=0;i<def.days;i++){
+      const done = i < c.progress;
+      pips += `<div class="challenge-day-pip ${done?'done':''}"></div>`;
+    }
+
+    const checkedInToday = c.lastCheckIn===today;
+    let actionsHtml = '';
+    if(!c.accepted){
+      actionsHtml = `<div class="challenge-actions"><button class="btn btn-primary challenge-checkin-btn" data-challengeaccept="${def.id}">ACEITAR DESAFIO</button></div>`;
+    } else {
+      actionsHtml = `<div class="challenge-actions">
+        <button class="btn btn-ghost" data-challengeabandon="${def.id}">ABANDONAR</button>
+        <button class="btn challenge-checkin-btn" data-challengecheckin="${def.id}" ${checkedInToday?'disabled':''}>${checkedInToday?'JÁ MARCADO HOJE':'MARCAR HOJE'}</button>
+      </div>`;
+    }
+
+    card.innerHTML = `
+      <div class="challenge-top">
+        <div>
+          <div class="challenge-name">${def.name} <span class="shop-variable-badge" style="color:${tierColor[def.tier]}; border-color:${tierColor[def.tier]}66;">${tierLabel[def.tier]}</span></div>
+          <div class="challenge-desc">${def.desc}</div>
+        </div>
+        <div class="challenge-reward-badge">+${def.gold} 🪙</div>
+      </div>
+      ${def.days>1 ? `<div class="challenge-progress-row">
+        <div class="challenge-days">${pips}</div>
+        <div class="challenge-progress-label">${c.progress}/${def.days} dias</div>
+      </div>` : ''}
+      ${actionsHtml}
+    `;
+    list.appendChild(card);
+  });
+
+  list.querySelectorAll('[data-challengeaccept]').forEach(el=> el.onclick = ()=> acceptChallenge(el.dataset.challengeaccept));
+  list.querySelectorAll('[data-challengecheckin]').forEach(el=> el.onclick = ()=> checkInChallenge(el.dataset.challengecheckin));
+  list.querySelectorAll('[data-challengeabandon]').forEach(el=> el.onclick = ()=> abandonChallenge(el.dataset.challengeabandon));
+}
+
+function acceptChallenge(id){
+  const c = getChallengeState(id);
+  c.accepted = true;
+  c.progress = 0;
+  c.lastCheckIn = null;
+  saveState();
+  render();
+}
+
+function abandonChallenge(id){
+  state.challenges[id] = { accepted:false, progress:0, lastCheckIn:null };
+  saveState();
+  render();
+}
+
+function checkInChallenge(id){
+  const def = CHALLENGE_DEFS.find(d=>d.id===id);
+  const c = getChallengeState(id);
+  if(!def || !c.accepted) return;
+  const today = todayStr();
+  if(c.lastCheckIn===today) return;
+
+  if(c.lastCheckIn){
+    const gap = daysBetween(c.lastCheckIn, today);
+    if(gap > 1){
+      c.progress = 0;
+      showToast('SEQUÊNCIA QUEBRADA — '+def.name+' REINICIOU DO ZERO');
+    }
+  }
+
+  c.progress += 1;
+  c.lastCheckIn = today;
+
+  if(c.progress >= def.days){
+    gainXp(def.xp);
+    state.gold += def.gold;
+    state.challenges[id] = { accepted:false, progress:0, lastCheckIn:null };
+    saveState();
+    render();
+    setTimeout(()=>showChallengeComplete(def), 300);
+  } else {
+    saveState();
+    render();
+    showToast('DIA MARCADO · '+c.progress+'/'+def.days+' — '+def.name);
+  }
+}
+
+function showChallengeComplete(def){
+  document.getElementById('pathClaimTitle').textContent = 'DESAFIO CONCLUÍDO';
+  document.getElementById('pathClaimSub').textContent = def.name+' · +'+def.gold+' moedas · +'+def.xp+' XP';
+  document.getElementById('pathClaimOverlay').classList.add('show');
+}
 
 function renderVices(){
   const list = document.getElementById('viceList');
@@ -2995,6 +3222,7 @@ const viewBtnShop = document.getElementById('viewBtnShop');
 const viewBtnGoals = document.getElementById('viewBtnGoals');
 const viewBtnMural = document.getElementById('viewBtnMural');
 const viewBtnEvents = document.getElementById('viewBtnEvents');
+const viewBtnGifts = document.getElementById('viewBtnGifts');
 const dashboardView = document.getElementById('dashboardView');
 const characterView = document.getElementById('characterView');
 const calendarView = document.getElementById('calendarView');
@@ -3002,6 +3230,7 @@ const shopView = document.getElementById('shopView');
 const goalsView = document.getElementById('goalsView');
 const muralView = document.getElementById('muralView');
 const eventsView = document.getElementById('eventsView');
+const giftsView = document.getElementById('giftsView');
 function setView(v){
   activeView = v;
   dashboardView.style.display = v==='dashboard' ? '' : 'none';
@@ -3011,6 +3240,7 @@ function setView(v){
   goalsView.style.display = v==='goals' ? '' : 'none';
   muralView.style.display = v==='mural' ? '' : 'none';
   eventsView.style.display = v==='events' ? '' : 'none';
+  giftsView.style.display = v==='gifts' ? '' : 'none';
   viewBtnDash.classList.toggle('on', v==='dashboard');
   viewBtnChar.classList.toggle('on', v==='character');
   viewBtnCal.classList.toggle('on', v==='calendar');
@@ -3018,6 +3248,7 @@ function setView(v){
   viewBtnGoals.classList.toggle('on', v==='goals');
   viewBtnMural.classList.toggle('on', v==='mural');
   viewBtnEvents.classList.toggle('on', v==='events');
+  viewBtnGifts.classList.toggle('on', v==='gifts');
 }
 viewBtnDash.onclick = ()=>setView('dashboard');
 viewBtnChar.onclick = ()=>setView('character');
@@ -3026,6 +3257,7 @@ viewBtnShop.onclick = ()=>setView('shop');
 viewBtnGoals.onclick = ()=>setView('goals');
 viewBtnMural.onclick = ()=>setView('mural');
 viewBtnEvents.onclick = ()=>setView('events');
+viewBtnGifts.onclick = ()=>setView('gifts');
 
 
 /* ---- Random Quest ---- */
@@ -3504,6 +3736,126 @@ document.getElementById('goalConfirmAdd').onclick = ()=>{
   goalAddToggle.style.display='block';
   saveState();
   render();
+};
+
+/* ---- Presentes do Universo (gratitude journal) ---- */
+let pendingGiftPhoto = null;
+
+function renderGifts(){
+  const list = document.getElementById('giftsList');
+  const empty = document.getElementById('giftsEmpty');
+  list.innerHTML = '';
+  if(state.gifts.length===0){
+    list.style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
+  list.style.display = '';
+  empty.style.display = 'none';
+
+  const sorted = [...state.gifts].sort((a,b)=> (b.createdAt||0) - (a.createdAt||0));
+  sorted.forEach(g=>{
+    const card = document.createElement('div');
+    card.className = 'gift-card panel';
+    const [y,m,d] = g.date.split('-');
+    const dateLabel = d+'/'+m+'/'+y;
+    card.innerHTML = `
+      ${g.photo ? `<img class="gift-card-photo" src="${g.photo}" alt="">` : ''}
+      <div class="gift-card-body">
+        <div class="gift-card-top">
+          <div>
+            <div class="gift-card-title">${escapeHtml(g.title)}</div>
+            <div class="gift-card-date">${dateLabel}</div>
+          </div>
+          <button class="h-del" data-giftdel="${g.id}">✕</button>
+        </div>
+        ${g.description ? `<div class="gift-card-desc">${escapeHtml(g.description)}</div>` : ''}
+      </div>
+    `;
+    list.appendChild(card);
+  });
+  list.querySelectorAll('[data-giftdel]').forEach(el=> el.onclick = ()=> deleteGift(el.dataset.giftdel));
+}
+
+function deleteGift(id){
+  state.gifts = state.gifts.filter(g=>g.id!==id);
+  saveState();
+  render();
+}
+
+const giftAddToggle = document.getElementById('giftAddToggle');
+const giftAddForm = document.getElementById('giftAddForm');
+giftAddToggle.onclick = ()=>{
+  giftAddForm.classList.toggle('open');
+  giftAddToggle.style.display = giftAddForm.classList.contains('open')?'none':'block';
+  if(giftAddForm.classList.contains('open')) document.getElementById('giftTitle').focus();
+};
+function resetGiftForm(){
+  document.getElementById('giftTitle').value = '';
+  document.getElementById('giftDesc').value = '';
+  pendingGiftPhoto = null;
+  document.getElementById('giftPhotoPreviewImg').style.display = 'none';
+  document.getElementById('giftPhotoPlaceholder').style.display = 'flex';
+  document.getElementById('giftPhotoRemoveBtn').style.display = 'none';
+}
+document.getElementById('giftCancelAdd').onclick = ()=>{
+  giftAddForm.classList.remove('open');
+  giftAddToggle.style.display='block';
+  resetGiftForm();
+};
+
+document.getElementById('giftPhotoPicker').onclick = (e)=>{
+  if(e.target.id==='giftPhotoRemoveBtn') return;
+  document.getElementById('giftPhotoInput').click();
+};
+document.getElementById('giftPhotoInput').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    const img = new Image();
+    img.onload = ()=>{
+      const maxDim = 900;
+      let w = img.width, h = img.height;
+      if(w>h){ if(w>maxDim){ h = Math.round(h*maxDim/w); w = maxDim; } }
+      else { if(h>maxDim){ w = Math.round(w*maxDim/h); h = maxDim; } }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      pendingGiftPhoto = canvas.toDataURL('image/jpeg', 0.85);
+      const previewImg = document.getElementById('giftPhotoPreviewImg');
+      previewImg.src = pendingGiftPhoto;
+      previewImg.style.display = 'block';
+      document.getElementById('giftPhotoPlaceholder').style.display = 'none';
+      document.getElementById('giftPhotoRemoveBtn').style.display = 'flex';
+    };
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+});
+document.getElementById('giftPhotoRemoveBtn').onclick = (e)=>{
+  e.stopPropagation();
+  pendingGiftPhoto = null;
+  document.getElementById('giftPhotoPreviewImg').style.display = 'none';
+  document.getElementById('giftPhotoPlaceholder').style.display = 'flex';
+  document.getElementById('giftPhotoRemoveBtn').style.display = 'none';
+};
+
+document.getElementById('giftConfirmAdd').onclick = ()=>{
+  const title = document.getElementById('giftTitle').value.trim();
+  const description = document.getElementById('giftDesc').value.trim();
+  if(!title){ document.getElementById('giftTitle').focus(); return; }
+  state.gifts.push({
+    id:cid(), title, description, photo:pendingGiftPhoto,
+    date:todayStr(), createdAt:Date.now()
+  });
+  giftAddForm.classList.remove('open');
+  giftAddToggle.style.display='block';
+  resetGiftForm();
+  saveState();
+  render();
+  showToast('PRESENTE REGISTRADO');
 };
 
 /* ---- Mural dos Sonhos (vision board) ---- */
